@@ -1,4 +1,4 @@
-package gameoftheropet1;
+package gameoftheropeT1.main;
 
 /**
  *
