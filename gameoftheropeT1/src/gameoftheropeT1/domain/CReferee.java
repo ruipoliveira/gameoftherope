@@ -9,6 +9,6 @@ package gameoftheropeT1.domain;
  *
  * @author roliveira
  */
-public class CReferee {
+public class CReferee extends Thread{
     
 }

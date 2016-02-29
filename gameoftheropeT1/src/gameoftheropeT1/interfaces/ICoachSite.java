@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameoftheropeT1.domain;
+package gameoftheropeT1.interfaces;
 
 /**
  *
- * @author roliveira
+ * @author gabriel
  */
-public class CCoache extends Thread{
-        
+public interface ICoachSite {
+    
+    public void informReferee(int coachId);
 }

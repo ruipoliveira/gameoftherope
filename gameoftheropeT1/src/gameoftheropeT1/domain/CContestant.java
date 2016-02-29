@@ -9,6 +9,6 @@ package gameoftheropeT1.domain;
  *
  * @author roliveira
  */
-public class CContestant {
+public class CContestant extends Thread{
     
 }

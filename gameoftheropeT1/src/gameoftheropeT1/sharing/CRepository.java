@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package gameoftheropeT1.sharing;
+import gameoftheropeT1.interfaces.*; // import all interfaces
 
 /**
  *

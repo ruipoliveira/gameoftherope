@@ -7,15 +7,10 @@ package gameoftheropeT1.interfaces;
 
 /**
  *
- * @author roliveira
+ * @author gabriel
  */
-
-// numTrial -> numero do trial
-
-public interface IRefereePlayground {
-    public void callTrial(int numTrial);
+public interface IContestantsBench {
+    public boolean seatDown(int coachId, int contestId);
     
-    public void startTrial();
-    
-    public char assertTrialDecision();
+    public void followCoachAdvice(int coachId, int contestId);
 }
