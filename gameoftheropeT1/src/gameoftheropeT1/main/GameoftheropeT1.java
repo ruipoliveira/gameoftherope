@@ -1,5 +1,10 @@
 package gameoftheropeT1.main;
 
+import gameoftheropeT1.sharing.*;
+import gameoftheropeT1.domain.*; 
+import gameoftheropeT1.interfaces.*; 
+
+
 /**
  *
  * @author roliveira
