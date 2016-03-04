@@ -6,7 +6,7 @@
 package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
-import newpackage.state.EContestantsState;
+import gameoftheropeT1.state.EContestantsState;
 
 /**
  *

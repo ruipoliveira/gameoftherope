@@ -10,7 +10,7 @@ package gameoftheropeT1.domain;
  * @author roliveira
  */
 import gameoftheropeT1.interfaces.*;
-import newpackage.state.ERefereeState;
+import gameoftheropeT1.state.ERefereeState;
 
 public class CReferee extends Thread{
     private final IRefereeBench bench;
