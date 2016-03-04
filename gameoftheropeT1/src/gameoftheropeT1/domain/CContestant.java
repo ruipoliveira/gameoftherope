@@ -35,8 +35,11 @@ public class CContestant extends Thread{
     @Override
     public void run()
     {
-        
+        int id = 1;
+        followCoachAdvice(id);
     }
+    
+    
     
     public void setState(EContestantsState state) {
         this.state = state;
@@ -44,5 +47,9 @@ public class CContestant extends Thread{
     
     public EContestantsState getCurrentState() {
         return state;
+    }
+    
+    private void followCoachAdvice(int coachId){
+        bench.followCoachAdvice(coachId, coachId);
     }
 }
