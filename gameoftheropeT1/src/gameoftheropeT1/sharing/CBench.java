@@ -11,30 +11,34 @@ import gameoftheropeT1.interfaces.*;
  * @author roliveira
  */
 public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
-
+    
+    private int totalContestantsBench; // numero total de jogadores no banco 
+    private int numContests; // numero de jogadores no campo
+   
     @Override
-    public void callContestants(int coachId) {
+    public synchronized void callContestants(int coachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean seatDown(int coachId, int contestId) {
+    public synchronized boolean seatDown(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void followCoachAdvice(int coachId, int contestId) {
+    public synchronized void followCoachAdvice(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void declareGameWinner(char winner) {
+    public synchronized void declareGameWinner(char winner) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void declareMatchWinner() {
+    public synchronized void declareMatchWinner() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
     
 }

@@ -13,27 +13,27 @@ import gameoftheropeT1.interfaces.*; // import all interfaces
 public class CPlayground implements ICoachPlayground, IContestantsPlayground, IRefereePlayground{
 
     @Override
-    public void reviewNotes(int coachId) {
+    public synchronized void reviewNotes(int coachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setReady(int coachId, int contestId) {
+    public synchronized void setReady(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void callTrial(int numTrial) {
+    public synchronized void callTrial(int numTrial) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void startTrial() {
+    public synchronized void startTrial() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public char assertTrialDecision() {
+    public synchronized char assertTrialDecision() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
