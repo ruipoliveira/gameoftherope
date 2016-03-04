@@ -5,10 +5,44 @@
  */
 package gameoftheropeT1.domain;
 
+import gameoftheropeT1.interfaces.*;
+import newpackage.state.EContestantsState;
+
 /**
  *
  * @author roliveira
  */
 public class CContestant extends Thread{
+    private final IContestantsBench bench;
+    private final IContestantsPlayground playground;
+    private final IContestantsSite site;
+    private final IContestantsRepository repository;
     
+    private EContestantsState state; 
+    private final int id;
+    
+    public CContestant(int id, IContestantsBench bench, IContestantsPlayground playground, IContestantsSite site, IContestantsRepository repository)
+    {
+        this.bench = bench;
+        this.playground = playground;
+        this.site = site;
+        this.repository = repository;
+        this.id = id;
+        state = EContestantsState.SEAT_AT_THE_BENCH;
+        
+    }
+    
+    @Override
+    public void run()
+    {
+        
+    }
+    
+    public void setState(EContestantsState state) {
+        this.state = state;
+    }
+    
+    public EContestantsState getCurrentState() {
+        return state;
+    }
 }
