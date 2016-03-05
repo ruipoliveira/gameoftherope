@@ -12,16 +12,29 @@ import gameoftheropeT1.interfaces.*; // import all interfaces
  */
 public class CPlayground implements ICoachPlayground, IContestantsPlayground, IRefereePlayground{
 
+    public CPlayground(){
+        
+    }
+    
+    /***********/
+    /** COACH **/
+    /***********/   
     @Override
     public synchronized void reviewNotes(int coachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /*****************/
+    /** CONTESTANTS **/
+    /*****************/
     @Override
-    public synchronized void setReady(int coachId, int contestId) {
+    public synchronized void getReady(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /*************/
+    /** REFEREE **/
+    /*************/
     @Override
     public synchronized void callTrial(int numTrial) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

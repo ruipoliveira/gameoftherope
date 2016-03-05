@@ -34,26 +34,29 @@ public class CCoach extends Thread{
     
     @Override
     public void run(){
-        callContestants(); 
-        
-        
+        System.out.println("Run coach #"+this.idCoach); 
+        do {
+            reviewNotes (this.idCoach);     /* the coach reviews his notes */
+            callContestants(this.idCoach);  /* the coach calls contestants to a trial */
+            informReferee(this.idCoach);    /* the coach informs the referee the team is ready */
+        }while (false); // endOperCoach(this.idCoach) ?? 
+
+
     }
     
-    private void callContestants()
-    {
+    private void callContestants(int idCoach){
         bench.callContestants(idCoach);
     }
     
-    private void informReferre()
-    {
+    private void informReferee(int idCoach){
         site.informReferee(idCoach);
     }
     
-    private void reviewNotes(){
+    private void reviewNotes(int idCoach){
         playground.reviewNotes(idCoach);
     }
     
-    public void setState(ECoachesState state) {
+    public void setState(ECoachesState state){
         this.state = state;
     }
     

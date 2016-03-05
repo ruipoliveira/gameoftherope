@@ -10,5 +10,5 @@ package gameoftheropeT1.interfaces;
  * @author gabriel
  */
 public interface IContestantsPlayground {
-    public void setReady(int coachId, int contestId);
+    public void getReady(int coachId, int contestId);
 }

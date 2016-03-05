@@ -15,11 +15,22 @@ public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int totalContestantsBench; // numero total de jogadores no banco 
     private int numContests; // numero de jogadores no campo
    
+    public CBench(){
+        
+    }
+    
+    /***********/
+    /** COACH **/
+    /***********/
+    
     @Override
     public synchronized void callContestants(int coachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /*****************/
+    /** CONTESTANTS **/
+    /*****************/
     @Override
     public synchronized boolean seatDown(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -29,7 +40,10 @@ public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
     public synchronized void followCoachAdvice(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /*************/
+    /** REFEREE **/
+    /*************/
     @Override
     public synchronized void declareGameWinner(char winner) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -33,12 +33,21 @@ public class CContestant extends Thread{
     }
     
     @Override
-    public void run()
-    {
-        int id = 1;
-        followCoachAdvice(id);
+    public void run() {
+        int cId =1; /* coach identification */
+        int nId = 2;  /* contestant identification */
+  
+        System.out.println("Run Contestant #"+ this.id); 
+        do {
+            if (seatDown (cId,nId)) break; /* the contestant goes to the bench to rest a little bit */
+            
+            followCoachAdvice (cId,nId); /* the contestant complies to coach decision */
+            getReady(cId,nId); /* the contestant takes place at his end of the rope */
+
+            amDone (cId,nId); /* the contestant ends his effort */
+        } while (false); // acaba o jogo.... 
+
     }
-    
     
     
     public void setState(EContestantsState state) {
@@ -49,7 +58,21 @@ public class CContestant extends Thread{
         return state;
     }
     
-    private void followCoachAdvice(int coachId){
-        bench.followCoachAdvice(coachId, coachId);
+    public boolean seatDown(int coachId, int contestId){
+        return bench.seatDown(coachId, contestId); 
     }
+    
+    public void followCoachAdvice(int coachId, int contestId){
+        bench.followCoachAdvice(coachId, contestId);
+    }
+    
+    public void amDone(int coachId, int contestId){
+        site.amDone(coachId, contestId);
+    }
+    
+    public void getReady(int coachId, int contestId){
+        playground.getReady(coachId, contestId);
+    }
+    
+    
 }
