@@ -18,16 +18,15 @@ public class CCoach extends Thread{
     private final ICoachBench bench; 
     private final ICoachPlayground playground; 
     private final ICoachRepository repository;
-    private final ICoachSite site; 
+    
     private final int idCoach; 
     
-    public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
+    public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, 
             ICoachRepository repository ){
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach; 
         this.bench = bench;
         this.playground = playground;
-        this.site = site; 
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
     }
@@ -49,11 +48,11 @@ public class CCoach extends Thread{
     }
     
     private void informReferee(int idCoach){
-        site.informReferee(idCoach);
+        playground.informReferee(idCoach);
     }
     
     private void reviewNotes(int idCoach){
-        playground.reviewNotes(idCoach);
+        bench.reviewNotes(idCoach);
     }
     
     public void setState(ECoachesState state){

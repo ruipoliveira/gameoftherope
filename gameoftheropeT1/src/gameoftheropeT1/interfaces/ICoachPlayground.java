@@ -10,6 +10,6 @@ package gameoftheropeT1.interfaces;
  * @author gabriel
  */
 public interface ICoachPlayground {
-    
-    public void reviewNotes(int coachId);
+        
+    public void informReferee(int coachId);
 }

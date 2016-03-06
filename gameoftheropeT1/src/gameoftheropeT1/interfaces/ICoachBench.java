@@ -13,4 +13,6 @@ public interface ICoachBench {
     
     public void callContestants(int coachId);
     
+    public void reviewNotes(int coachId);
+    
 }

@@ -10,7 +10,7 @@ import gameoftheropeT1.interfaces.*;
  *
  * @author roliveira
  */
-public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
+public class CBench implements ICoachBench, IContestantsBench{
     
     private int totalContestantsBench; // numero total de jogadores no banco 
     private int numContests; // numero de jogadores no campo
@@ -19,18 +19,22 @@ public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
     }
     
-    /***********/
-    /** COACH **/
-    /***********/
+     ///////////       ////////////////////////////////
+    /////////// COACH ///////////////////////////////
     
     @Override
     public synchronized void callContestants(int coachId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    /*****************/
-    /** CONTESTANTS **/
-    /*****************/
+    @Override
+    public synchronized void reviewNotes(int coachId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    ///////////             //////////////////////////
+    /////////// CONTESTANTS ///////////////////////////////
+    
     @Override
     public synchronized boolean seatDown(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -40,19 +44,4 @@ public class CBench implements ICoachBench, IContestantsBench, IRefereeBench{
     public synchronized void followCoachAdvice(int coachId, int contestId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    /*************/
-    /** REFEREE **/
-    /*************/
-    @Override
-    public synchronized void declareGameWinner(char winner) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public synchronized void declareMatchWinner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
 }

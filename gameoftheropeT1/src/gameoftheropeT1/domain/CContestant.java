@@ -15,19 +15,17 @@ import gameoftheropeT1.state.EContestantsState;
 public class CContestant extends Thread{
     private final IContestantsBench bench;
     private final IContestantsPlayground playground;
-    private final IContestantsSite site;
     private final IContestantsRepository repository;
     
     private EContestantsState state; 
-    private final int id;
+    private final int contId;
     
-    public CContestant(int id, IContestantsBench bench, IContestantsPlayground playground, IContestantsSite site, IContestantsRepository repository)
+    public CContestant(int contId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
     {
         this.bench = bench;
         this.playground = playground;
-        this.site = site;
         this.repository = repository;
-        this.id = id;
+        this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         
     }
@@ -37,7 +35,7 @@ public class CContestant extends Thread{
         int cId =1; /* coach identification */
         int nId = 2;  /* contestant identification */
   
-        System.out.println("Run Contestant #"+ this.id); 
+        System.out.println("Run Contestant #"+ this.contId); 
         do {
             if (seatDown (cId,nId)) break; /* the contestant goes to the bench to rest a little bit */
             
@@ -58,19 +56,19 @@ public class CContestant extends Thread{
         return state;
     }
     
-    public boolean seatDown(int coachId, int contestId){
+    private boolean seatDown(int coachId, int contestId){
         return bench.seatDown(coachId, contestId); 
     }
     
-    public void followCoachAdvice(int coachId, int contestId){
+    private void followCoachAdvice(int coachId, int contestId){
         bench.followCoachAdvice(coachId, contestId);
     }
     
-    public void amDone(int coachId, int contestId){
-        site.amDone(coachId, contestId);
+    private void amDone(int coachId, int contId){
+        playground.amDone(coachId, contId);
     }
     
-    public void getReady(int coachId, int contestId){
+    private void getReady(int coachId, int contestId){
         playground.getReady(coachId, contestId);
     }
     

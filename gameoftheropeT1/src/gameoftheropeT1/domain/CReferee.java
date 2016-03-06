@@ -14,15 +14,13 @@ import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.state.ERefereeState;
 
 public class CReferee extends Thread{
-    private final IRefereeBench bench;
     private final IRefereeSite site;
     private final IRefereePlayground playground;
     private final IRefereeRepository repository;
     private ERefereeState state;
     
     
-    public CReferee(IRefereeBench bench, IRefereePlayground playground, IRefereeSite site, IRefereeRepository repository){
-        this.bench = bench;
+    public CReferee(IRefereePlayground playground, IRefereeSite site, IRefereeRepository repository){
         this.playground = playground;
         this.site = site;
         this.repository = repository;
@@ -62,9 +60,7 @@ public class CReferee extends Thread{
         return state;
     }
     
-    private void announceNewGame(int numGame){
-        site.announceNewGame(numGame);
-    }
+    
     
     private void callTrial(int numTrial){
         playground.callTrial(numTrial);
@@ -78,12 +74,17 @@ public class CReferee extends Thread{
         return playground.assertTrialDecision(); 
     }
     
+    
     private void declareGameWinner(char winner){
-        bench.declareGameWinner(winner);
+        site.declareGameWinner(winner);
     }
     
     private void declareMatchWinner(){
-        bench.declareMatchWinner();
+        site.declareMatchWinner();
+    }
+    
+    private void announceNewGame(int numGame){
+        site.announceNewGame(numGame);
     }
     
     
