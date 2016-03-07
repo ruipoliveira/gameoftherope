@@ -12,7 +12,7 @@ package gameoftheropeT1.interfaces;
 public interface IRefereeSite {
     public void announceNewGame(int numGame);
     
-    public void declareGameWinner(char winner);
+    public void declareGameWinner(char decision);
     
     public void declareMatchWinner();
         

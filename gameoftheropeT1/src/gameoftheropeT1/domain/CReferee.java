@@ -24,30 +24,62 @@ public class CReferee extends Thread{
         this.playground = playground;
         this.site = site;
         this.repository = repository;
-        state = ERefereeState.START_OF_A_GAME;
+        state = ERefereeState.START_OF_THE_MATCH;
     }
     
     @Override
     /*This function represents the life cycle of Referee.*/
     public void run() {
-        int g, t;           /* trial number */ 
+        int g, t = 0;           /* trial number */ 
         char decision;      /* trial decision */
 
         System.out.println("Run referee..."); 
 
-        for (g = 0; g < CConstant.GAMES_PER_MATCH; g++) {
-            announceNewGame(g);         /* the referee opens a new game */
-            t = 0;                      /* the referee initializes trial number */
-            do{ 
-                callTrial(t);           /* the referee calls the contestants to a new trial */
-                startTrial();           /* the referee gives pulling command */
-                decision = assertTrialDecision();   /* the referee checks trial result */
-                t += 1;   /* increment trial number */
-            } while (decision == CConstant.GAME_CONTINUATION);   /* is game to be continued? */
-            
-            declareGameWinner (decision); /* the referee announces the winner of the game */
+        for (g = 1; g <= CConstant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
+            switch(state)
+            {
+                case START_OF_THE_MATCH:
+                     t = 0;
+                     announceNewGame(g);
+                     state = ERefereeState.START_OF_A_GAME;
+                break; 
+                
+                case START_OF_A_GAME:
+                     callTrial(t);
+                     state = ERefereeState.TEAMS_READY;
+                break;
+                
+                case TEAMS_READY:
+                     startTrial();
+                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
+                break;
+                
+                case WAIT_FOR_TRIAL_CONCLUSION:
+                    decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
+                    t += 1;
+                    if(decision == 'C'){ // se receber continuacao do jogo, faz calltrial
+                        callTrial(t);
+                        state = ERefereeState.TEAMS_READY;
+                    }
+                    else{
+                        declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
+                        state = ERefereeState.END_OF_A_GAME;
+                    }
+                break; 
+                 
+                case END_OF_A_GAME:
+                    if(g < CConstant.GAMES_PER_MATCH)
+                        state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
+                    
+                    else{
+                        declareMatchWinner();
+                        state = ERefereeState.END_OF_A_GAME; // termina o encontro
+                    } 
+                break;    
+            }
+       
         }
-        declareMatchWinner(); /* the referee announces the winner of the match */
+      
         
     }
     /* actualiza estado */
