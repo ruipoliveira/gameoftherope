@@ -10,9 +10,12 @@ package gameoftheropeT1.main;
  * @author roliveira
  */
 public class CConstant {
+    public final static int OPPOSING_TEAMS = 2; 
     public final static int GAMES_PER_MATCH = 3; 
     public final static char GAME_CONTINUATION = 'C'; 
     public final static int CONTESTANTS_IN_TRAIL = 3; 
     public final static int MAX_TRAILS_PER_GAME = 6; 
     public final static int KNOCK_OUT = 4;  
+    public final static int ELEMENTS_IN_TEAM = 5; 
+    
 }
