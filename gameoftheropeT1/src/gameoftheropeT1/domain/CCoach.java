@@ -16,16 +16,18 @@ public class CCoach extends Thread{
     
     private ECoachesState state; 
     private final ICoachBench bench; 
-    private final ICoachPlayground playground; 
+    private final ICoachSite site; 
+    private final ICoachPlayground playground;
     private final ICoachRepository repository;
     
     private final int idCoach; 
     
-    public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, 
+    public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
             ICoachRepository repository ){
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach; 
         this.bench = bench;
+        this.site = site; 
         this.playground = playground;
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
@@ -35,12 +37,19 @@ public class CCoach extends Thread{
     public void run(){
         System.out.println("Run coach #"+this.idCoach); 
         do {
-            reviewNotes (this.idCoach);     /* the coach reviews his notes */
-            callContestants(this.idCoach);  /* the coach calls contestants to a trial */
-            informReferee(this.idCoach);    /* the coach informs the referee the team is ready */
-        }while (false); // endOperCoach(this.idCoach) ?? 
-
-
+            switch(this.state){
+                case WATCH_TRIAL:
+                    reviewNotes(this.idCoach);     /* the coach reviews his notes */
+                    break; 
+                case WAIT_FOR_REFEREE_COMMAND: 
+                    callContestants(this.idCoach);  /* the coach calls contestants to a trial */
+                    break; 
+                case ASSEMBLE_TEAM:
+                    informReferee(this.idCoach);    /* the coach informs the referee the team is ready */
+                    break; 
+            }
+        }while (endOperCoach(this.idCoach));
+        
     }
     
     private void callContestants(int idCoach){
@@ -57,6 +66,10 @@ public class CCoach extends Thread{
     
     public void setState(ECoachesState state){
         this.state = state;
+    }
+    
+    public boolean endOperCoach(int idCoach){
+        return site.endOperCoach(idCoach); 
     }
     
     public ECoachesState getCurrentState() {

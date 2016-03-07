@@ -15,4 +15,5 @@ public interface IRefereeSite {
     public void declareGameWinner(char winner);
     
     public void declareMatchWinner();
+        
 }

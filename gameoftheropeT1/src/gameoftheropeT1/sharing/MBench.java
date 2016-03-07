@@ -10,14 +10,15 @@ import gameoftheropeT1.interfaces.*;
  *
  * @author roliveira
  */
-public class CBench implements ICoachBench, IContestantsBench{
+public class MBench implements ICoachBench, IContestantsBench{
     
     private int totalContestantsBench; // numero total de jogadores no banco 
     private int numContests; // numero de jogadores no campo
    
-    public CBench(){
+    public MBench(){
         
     }
+    
     
      ///////////       ////////////////////////////////
     /////////// COACH ///////////////////////////////

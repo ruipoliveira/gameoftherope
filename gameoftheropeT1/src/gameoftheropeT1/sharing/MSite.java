@@ -10,7 +10,7 @@ import gameoftheropeT1.interfaces.*;
  *
  * @author gabriel
  */
-public class CSite implements IRefereeSite{
+public class MSite implements IRefereeSite, ICoachSite{
 
     @Override
     public synchronized void announceNewGame(int numGame) {
@@ -24,6 +24,11 @@ public class CSite implements IRefereeSite{
     
     @Override
     public synchronized void declareMatchWinner() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean endOperCoach(int idCoach) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

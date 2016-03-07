@@ -10,7 +10,7 @@ import gameoftheropeT1.interfaces.*;
  *
  * @author gabriel
  */
-public class CPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
+public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
 
       ///////////       ////////////////////////////////
     /////////// REFEREE ///////////////////////////////
