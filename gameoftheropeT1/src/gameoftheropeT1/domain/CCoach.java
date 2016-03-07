@@ -40,12 +40,15 @@ public class CCoach extends Thread{
             switch(this.state){
                 case WATCH_TRIAL:
                     reviewNotes(this.idCoach);     /* the coach reviews his notes */
+                    state = ECoachesState.WAIT_FOR_REFEREE_COMMAND;
                     break; 
                 case WAIT_FOR_REFEREE_COMMAND: 
                     callContestants(this.idCoach);  /* the coach calls contestants to a trial */
+                    state = ECoachesState.ASSEMBLE_TEAM;
                     break; 
                 case ASSEMBLE_TEAM:
                     informReferee(this.idCoach);    /* the coach informs the referee the team is ready */
+                    state = ECoachesState.WATCH_TRIAL;
                     break; 
             }
         }while (endOperCoach(this.idCoach));
