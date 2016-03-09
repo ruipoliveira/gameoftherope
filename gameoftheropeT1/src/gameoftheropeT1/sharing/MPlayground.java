@@ -5,6 +5,7 @@
  */
 package gameoftheropeT1.sharing;
 import gameoftheropeT1.interfaces.*;
+import gameoftheropeT1.main.Constant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,11 +16,14 @@ import java.util.logging.Logger;
 public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
 
     private boolean newTrial;
-    private boolean newComand; 
+    private boolean newComand;
+    private double strength;
     
     public MPlayground(){
         newTrial = false; 
-        newComand = false; 
+        newComand = false;
+        
+        strength = 0;
     }
     
       ///////////       ////////////////////////////////
@@ -47,12 +51,27 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         
         
         
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public synchronized char assertTrialDecision() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
+        
+        char decision;
+        strength = Math.random();
+        
+        if(strength <= 0){
+            decision = Constant.GAME_END;
+            return decision;
+        }
+        
+        else{
+            decision = Constant.GAME_CONTINUATION;
+            return decision;
+        }
+            
+        
     }
 
     ///////////       ////////////////////////////////

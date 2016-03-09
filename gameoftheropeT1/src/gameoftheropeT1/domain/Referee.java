@@ -57,14 +57,17 @@ public class Referee extends Thread{
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
                     t += 1;
-                    if(decision == 'C'){ // se receber continuacao do jogo, faz calltrial
+                    if(decision == Constant.GAME_CONTINUATION){ // se receber continuacao do jogo, faz calltrial
                         callTrial(t);
                         state = ERefereeState.TEAMS_READY;
                     }
-                    else{
+                    else if(decision == Constant.GAME_END){
                         declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
                         state = ERefereeState.END_OF_A_GAME;
                     }
+                    
+                    else
+                        state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
                 break; 
                  
                 case END_OF_A_GAME:
@@ -73,7 +76,7 @@ public class Referee extends Thread{
                     
                     else{
                         declareMatchWinner();
-                        state = ERefereeState.END_OF_A_GAME; // termina o encontro
+                        state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
                     } 
                 break;    
             }

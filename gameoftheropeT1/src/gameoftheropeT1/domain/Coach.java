@@ -55,8 +55,7 @@ public class Coach extends Thread{
                     state = ECoachesState.ASSEMBLE_TEAM;
                     teamAssemble = true; 
                     break; 
-                case ASSEMBLE_TEAM:
-                    
+                case ASSEMBLE_TEAM:                   
                     informReferee(idCoach, teamAssemble);    /* the coach informs the referee the team is ready */
                     state = ECoachesState.WATCH_TRIAL;
                     break; 

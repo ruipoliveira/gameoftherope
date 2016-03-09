@@ -52,6 +52,8 @@ public class MBench implements ICoachBench, IContestantsBench{
     
     @Override
     public synchronized void reviewNotes(int coachId) {
+        
+      
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
