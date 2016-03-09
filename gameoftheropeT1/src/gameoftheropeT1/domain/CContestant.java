@@ -17,10 +17,13 @@ public class CContestant extends Thread{
     private final IContestantsPlayground playground;
     private final IContestantsRepository repository;
     
+    private int coachId;
     private EContestantsState state; 
     private final int contId;
     
-    public CContestant(int contId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
+    private int contestStrength;
+    
+    public CContestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
     {
         this.bench = bench;
         this.playground = playground;
@@ -28,30 +31,32 @@ public class CContestant extends Thread{
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         
+        contestStrength = 0;
+        this.coachId = coachId;
+        
     }
     
     @Override
     public void run() {
-        int cId =1; /* coach identification */
-        int nId = 2;  /* contestant identification */
+        
   
         System.out.println("Run Contestant #"+ this.contId); 
         do {
             switch(this.state)
             {
                 case SEAT_AT_THE_BENCH:
-                    followCoachAdvice (cId,nId); /* the contestant complies to coach decision */
+                    followCoachAdvice (contId,coachId); /* the contestant complies to coach decision */
                     state = EContestantsState.STAND_IN_POSITION;
                 break;
                 
                 case STAND_IN_POSITION:
-                    getReady(cId,nId); /* the contestant takes place at his end of the rope */
+                    getReady(contId,coachId); /* the contestant takes place at his end of the rope */
                     state = EContestantsState.DO_YOUR_BEST;
                 break;
                 
                 case DO_YOUR_BEST:
-                    amDone (cId,nId); /* the contestant ends his effort */                    
-                    if (seatDown (cId,nId)) break; /* the contestant goes to the bench to rest a little bit */
+                    amDone (contId, coachId, contestStrength); /* the contestant ends his effort */                    
+                    if (seatDown (contId,coachId)) break; /* the contestant goes to the bench to rest a little bit */
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                 break;    
             }         
@@ -76,8 +81,8 @@ public class CContestant extends Thread{
         bench.followCoachAdvice(coachId, contestId);
     }
     
-    private void amDone(int coachId, int contId){
-        playground.amDone(coachId, contId);
+    private void amDone(int coachId, int contId, int contestStrength){
+        playground.amDone(coachId, contId, contestStrength);
     }
     
     private void getReady(int coachId, int contestId){

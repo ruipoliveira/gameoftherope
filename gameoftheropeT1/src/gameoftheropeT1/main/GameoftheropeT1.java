@@ -20,10 +20,12 @@ public class GameoftheropeT1 {
      */
     public static void main(String[] args) throws IOException {
         String logname = "";
-        if (args.length > 0)
-            logname = "logging"+hour()+".txt";
+    
+        logname = "logging"+hour()+".txt";
         
-
+        System.out.print(logname);
+        
+            
         
     }
     

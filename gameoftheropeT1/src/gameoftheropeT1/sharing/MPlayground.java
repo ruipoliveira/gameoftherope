@@ -44,9 +44,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+  
     @Override
-    public synchronized void amDone(int coachId, int contId) {
+    public void amDone(int coachId, int contId, int contestStrength) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

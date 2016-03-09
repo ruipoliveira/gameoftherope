@@ -12,5 +12,6 @@ package gameoftheropeT1.interfaces;
 public interface IContestantsPlayground {
     public void getReady(int coachId, int contId);
     
-    public void amDone(int coachId, int contId);
+
+    public void amDone(int coachId, int contId, int contestStrength);
 }

@@ -13,15 +13,17 @@ import gameoftheropeT1.interfaces.*;
 public class MBench implements ICoachBench, IContestantsBench{
     
     private int totalContestantsBench; // numero total de jogadores no banco 
-    private int numContests; // numero de jogadores no campo
+    
    
     public MBench(){
         
     }
     
     
-     ///////////       ////////////////////////////////
-    /////////// COACH ///////////////////////////////
+    /**************/
+        /** COACH **/
+        /**
+     * @param coachId************/ 
     
     @Override
     public synchronized void callContestants(int coachId) {
@@ -33,8 +35,12 @@ public class MBench implements ICoachBench, IContestantsBench{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    ///////////             //////////////////////////
-    /////////// CONTESTANTS ///////////////////////////////
+/**************/
+        /** CONTESTANTS **/
+        /**
+     * @param coachId* 
+     * @param contestId* 
+     * @return **********/ 
     
     @Override
     public synchronized boolean seatDown(int coachId, int contestId) {

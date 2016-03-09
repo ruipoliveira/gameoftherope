@@ -20,7 +20,7 @@ public class CCoach extends Thread{
     private final ICoachPlayground playground;
     private final ICoachRepository repository;
     
-    private final int idCoach; 
+    private final int idCoach;
     
     public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
             ICoachRepository repository ){
@@ -77,6 +77,10 @@ public class CCoach extends Thread{
     
     public ECoachesState getCurrentState() {
         return state;
+    }
+    
+    public int getIdCoach(){ // id do treinador respectivo
+        return idCoach;
     }
     
 }
