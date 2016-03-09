@@ -12,13 +12,27 @@ import gameoftheropeT1.interfaces.*;
  */
 public class MSite implements IRefereeSite, ICoachSite{
 
+    private boolean newGame;
+    private boolean endOfGame; 
+    
+    public MSite(){
+        newGame = false; 
+        endOfGame = false; 
+    }
+    
+    
     @Override
     public synchronized void announceNewGame(int numGame) {
+        
+        newGame = true; 
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public synchronized void declareGameWinner(char winner) {
+        endOfGame = true; 
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -29,7 +43,7 @@ public class MSite implements IRefereeSite, ICoachSite{
 
     @Override
     public boolean endOperCoach(int idCoach) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return endOfGame; 
     }
     
 }

@@ -12,7 +12,7 @@ import gameoftheropeT1.state.EContestantsState;
  *
  * @author roliveira
  */
-public class CContestant extends Thread{
+public class Contestant extends Thread{
     private final IContestantsBench bench;
     private final IContestantsPlayground playground;
     private final IContestantsRepository repository;
@@ -23,7 +23,7 @@ public class CContestant extends Thread{
     
     private int contestStrength;
     
-    public CContestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
+    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
     {
         this.bench = bench;
         this.playground = playground;

@@ -9,18 +9,18 @@ package gameoftheropeT1.domain;
  *
  * @author roliveira
  */
-import gameoftheropeT1.main.CConstant;
+import gameoftheropeT1.main.Constant;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.state.ERefereeState;
 
-public class CReferee extends Thread{
+public class Referee extends Thread{
     private final IRefereeSite site;
     private final IRefereePlayground playground;
     private final IRefereeRepository repository;
     private ERefereeState state;
     
     
-    public CReferee(IRefereePlayground playground, IRefereeSite site, IRefereeRepository repository){
+    public Referee(IRefereePlayground playground, IRefereeSite site, IRefereeRepository repository){
         this.playground = playground;
         this.site = site;
         this.repository = repository;
@@ -35,7 +35,7 @@ public class CReferee extends Thread{
 
         System.out.println("Run referee..."); 
 
-        for (g = 1; g <= CConstant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
+        for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
             switch(state)
             {
                 case START_OF_THE_MATCH:
@@ -68,7 +68,7 @@ public class CReferee extends Thread{
                 break; 
                  
                 case END_OF_A_GAME:
-                    if(g < CConstant.GAMES_PER_MATCH)
+                    if(g < Constant.GAMES_PER_MATCH)
                         state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
                     
                     else{

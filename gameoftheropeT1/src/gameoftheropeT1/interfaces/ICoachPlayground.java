@@ -11,5 +11,5 @@ package gameoftheropeT1.interfaces;
  */
 public interface ICoachPlayground {
         
-    public void informReferee(int coachId);
+    public void informReferee(int coachId, boolean teamAssemble);
 }

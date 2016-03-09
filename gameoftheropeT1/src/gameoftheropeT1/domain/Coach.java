@@ -12,7 +12,7 @@ import gameoftheropeT1.state.ECoachesState;
  *
  * @author roliveira
  */
-public class CCoach extends Thread{
+public class Coach extends Thread{
     
     private ECoachesState state; 
     private final ICoachBench bench; 
@@ -22,7 +22,12 @@ public class CCoach extends Thread{
     
     private final int idCoach;
     
-    public CCoach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
+    private boolean newComand; 
+    private boolean callContestants;
+    private boolean teamAssemble; 
+
+
+    public Coach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
             ICoachRepository repository ){
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach; 
@@ -31,27 +36,32 @@ public class CCoach extends Thread{
         this.playground = playground;
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
+        newComand = false; 
+        callContestants = false; 
+        teamAssemble= false; 
     }
     
     @Override
     public void run(){
-        System.out.println("Run coach #"+this.idCoach); 
+        System.out.println("Run coach #"+idCoach); 
         do {
             switch(this.state){
                 case WATCH_TRIAL:
-                    reviewNotes(this.idCoach);     /* the coach reviews his notes */
+                    reviewNotes(idCoach);     /* the coach reviews his notes */
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND;
                     break; 
                 case WAIT_FOR_REFEREE_COMMAND: 
-                    callContestants(this.idCoach);  /* the coach calls contestants to a trial */
+                    callContestants(idCoach);  /* the coach calls contestants to a trial */
                     state = ECoachesState.ASSEMBLE_TEAM;
+                    teamAssemble = true; 
                     break; 
                 case ASSEMBLE_TEAM:
-                    informReferee(this.idCoach);    /* the coach informs the referee the team is ready */
+                    
+                    informReferee(idCoach, teamAssemble);    /* the coach informs the referee the team is ready */
                     state = ECoachesState.WATCH_TRIAL;
                     break; 
             }
-        }while (endOperCoach(this.idCoach));
+        }while (endOperCoach(idCoach));
         
     }
     
@@ -59,8 +69,8 @@ public class CCoach extends Thread{
         bench.callContestants(idCoach);
     }
     
-    private void informReferee(int idCoach){
-        playground.informReferee(idCoach);
+    private void informReferee(int idCoach, boolean teamAssemble){
+        playground.informReferee(idCoach, teamAssemble);
     }
     
     private void reviewNotes(int idCoach){

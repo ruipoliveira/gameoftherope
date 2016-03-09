@@ -5,6 +5,9 @@
  */
 package gameoftheropeT1.sharing;
 import gameoftheropeT1.interfaces.*;
+import gameoftheropeT1.main.Constant;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,10 +16,15 @@ import gameoftheropeT1.interfaces.*;
 public class MBench implements ICoachBench, IContestantsBench{
     
     private int totalContestantsBench; // numero total de jogadores no banco 
-    
+    private boolean callContestant; 
+    private boolean newComand; 
+    private boolean teamAssemble; 
+    private int nrContestantInPull; 
    
     public MBench(){
-        
+        callContestant = false; 
+        newComand = false; 
+        nrContestantInPull= 0; 
     }
     
     
@@ -27,6 +35,18 @@ public class MBench implements ICoachBench, IContestantsBench{
     
     @Override
     public synchronized void callContestants(int coachId) {
+        
+        while(newComand == false){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        callContestant = true; 
+        notify();  
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -49,6 +69,27 @@ public class MBench implements ICoachBench, IContestantsBench{
 
     @Override
     public synchronized void followCoachAdvice(int coachId, int contestId) {
+        
+        while (callContestant ==false){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        nrContestantInPull++; 
+        if (nrContestantInPull == Constant.CONTESTANTS_IN_TRIAL){
+            teamAssemble = true; 
+            notifyAll();
+        }
+        
+
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
+
+
 }
