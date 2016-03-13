@@ -19,4 +19,6 @@ public class Constant {
     public final static int KNOCK_OUT = 4;  
     public final static int ELEMENTS_IN_TEAM = 5; 
     
+    public final static int NUM_OF_COACHES = 2;  // num de treinadores
+    
 }

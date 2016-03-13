@@ -12,7 +12,7 @@ import static gameoftheropeT1.domain.Contestant.nrContestantsInPull;
  * @author gabriel
  */
 public interface IContestantsBench {
-    public boolean seatDown(int coachId, int contId);
+    public boolean seatDown(int coachId, int contId, int nrContestantsInPull);
     
     public void followCoachAdvice(int coachId, int contId, int nrContestantsInPull);
 }

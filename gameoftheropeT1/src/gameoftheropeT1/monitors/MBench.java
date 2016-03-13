@@ -19,10 +19,18 @@ public class MBench implements ICoachBench, IContestantsBench{
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble; 
+    private boolean endOfGame;  // para os jogadores se sentarem
+    private boolean sentados;
+    
+    private int lastPlayer;
    
     public MBench(MRepository rep){
         callContestant = false; 
         newComand = false; 
+        teamAssemble = false;
+        
+        endOfGame = false;
+        sentados = false;
     }
     
     
@@ -50,7 +58,7 @@ public class MBench implements ICoachBench, IContestantsBench{
     @Override
     public synchronized void reviewNotes(int coachId) {
         
-      
+    
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -60,8 +68,24 @@ public class MBench implements ICoachBench, IContestantsBench{
     /*****************/
     
     @Override
-    public synchronized boolean seatDown(int coachId, int contestId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean seatDown(int coachId, int contestId, int nrContestantsInPull) {
+        
+        while(endOfGame == false){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        nrContestantsInPull--;  // vao saindo do campo
+        if(nrContestantsInPull == 0)
+        {
+            sentados = true;
+            notifyAll();
+        }
+        
+        return sentados;
     }
 
     @Override
@@ -80,6 +104,7 @@ public class MBench implements ICoachBench, IContestantsBench{
         if (nrContestantsInPull == Constant.CONTESTANTS_IN_TRIAL){
             nrContestantsInPull=0; 
             teamAssemble = true; 
+            lastPlayer = 0;
             notifyAll();
         }
         

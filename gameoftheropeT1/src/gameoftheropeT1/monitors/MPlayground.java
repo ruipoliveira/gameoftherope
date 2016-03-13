@@ -19,11 +19,19 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean newComand;
     private double strength;
     
+    private int nCoaches; // para  informReferee  os 2 treinadores tem de informar o arbtiro 
+    //que as suas equipas estao prontas
+    
+    private int lastPlayer;
+    
     public MPlayground(MRepository rep){
         newTrial = false; 
         newComand = false;
         
         strength = 0;
+        
+        
+        nCoaches = 0;
     }
     
       ///////////       ////////////////////////////////
@@ -58,7 +66,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
         
         char decision;
-        strength = Math.random();
+        
+        strength = generateStrength();
         
         if(strength <= 0){
             decision = Constant.GAME_END;
@@ -86,9 +95,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
         
-        newTrial = true; 
-        notify(); 
-        
+        nCoaches++;
+        if(nCoaches == Constant.NUM_OF_COACHES){           
+            newTrial = true; 
+            nCoaches = 0;
+            notify(); 
+        }       
     }
 
     
@@ -96,6 +108,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     /////////// CONTESTANTS ///////////////////////////////
     @Override
     public synchronized void getReady(int coachId, int contId) {
+        
+        strength = 0; 
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -107,8 +121,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
 
     
-    private int generateStrength(){
-        return (int) Math.random()*100; 
+    private double generateStrength(){
+        return Math.random()*100; 
     }
 
 
