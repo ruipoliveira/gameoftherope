@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameoftheropeT1.sharing;
+package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 
 /**
@@ -16,7 +16,7 @@ public class MSite implements IRefereeSite, ICoachSite{
     private boolean endOfGame; 
     private boolean endOfMatch;
     
-    public MSite(){
+    public MSite(MRepository rep ){
         newGame = false; 
         endOfGame = false; 
         endOfMatch = false;

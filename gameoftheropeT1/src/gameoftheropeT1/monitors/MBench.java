@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameoftheropeT1.sharing;
+package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
 import java.util.logging.Level;
@@ -19,19 +19,16 @@ public class MBench implements ICoachBench, IContestantsBench{
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble; 
-    private int nrContestantInPull; 
    
-    public MBench(){
+    public MBench(MRepository rep){
         callContestant = false; 
         newComand = false; 
-        nrContestantInPull= 0; 
     }
     
     
-    /**************/
-        /** COACH **/
-        /**
-     * @param coachId************/ 
+    /***********/
+    /** COACH **/
+    /***********/
     
     @Override
     public synchronized void callContestants(int coachId) {
@@ -57,12 +54,10 @@ public class MBench implements ICoachBench, IContestantsBench{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-/**************/
-        /** CONTESTANTS **/
-        /**
-     * @param coachId* 
-     * @param contestId* 
-     * @return **********/ 
+
+    /*****************/
+    /** CONTESTANTS **/
+    /*****************/
     
     @Override
     public synchronized boolean seatDown(int coachId, int contestId) {
@@ -70,7 +65,7 @@ public class MBench implements ICoachBench, IContestantsBench{
     }
 
     @Override
-    public synchronized void followCoachAdvice(int coachId, int contestId) {
+    public synchronized void followCoachAdvice(int coachId, int contestId, int nrContestantsInPull) {
         
         while (callContestant ==false){
             try { 
@@ -80,15 +75,14 @@ public class MBench implements ICoachBench, IContestantsBench{
             }
         }
         
-        nrContestantInPull++; 
-        if (nrContestantInPull == Constant.CONTESTANTS_IN_TRIAL){
+        /*apenas o ultimo jogador avisa o treinador que a equipa está */
+        nrContestantsInPull++; 
+        if (nrContestantsInPull == Constant.CONTESTANTS_IN_TRIAL){
+            nrContestantsInPull=0; 
             teamAssemble = true; 
             notifyAll();
         }
         
-
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

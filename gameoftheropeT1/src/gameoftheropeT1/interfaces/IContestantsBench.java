@@ -5,6 +5,8 @@
  */
 package gameoftheropeT1.interfaces;
 
+import static gameoftheropeT1.domain.Contestant.nrContestantsInPull;
+
 /**
  *
  * @author gabriel
@@ -12,5 +14,5 @@ package gameoftheropeT1.interfaces;
 public interface IContestantsBench {
     public boolean seatDown(int coachId, int contId);
     
-    public void followCoachAdvice(int coachId, int contId);
+    public void followCoachAdvice(int coachId, int contId, int nrContestantsInPull);
 }

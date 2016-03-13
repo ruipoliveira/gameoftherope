@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameoftheropeT1.sharing;
+package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
 import java.util.logging.Level;
@@ -19,7 +19,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean newComand;
     private double strength;
     
-    public MPlayground(){
+    public MPlayground(MRepository rep){
         newTrial = false; 
         newComand = false;
         
@@ -28,13 +28,15 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
       ///////////       ////////////////////////////////
     /////////// REFEREE ///////////////////////////////
+    
+    
+    
     @Override
     public synchronized void callTrial(int numTrial) {
         
         newComand = true; 
-        notifyAll(); 
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        notifyAll();
+                
     }
 
     @Override
@@ -47,9 +49,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
-        
         
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -77,7 +76,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     ///////////       ////////////////////////////////
     /////////// COACH ///////////////////////////////
     @Override
-    public void informReferee(int coachId, boolean teamAssemble) {
+    public synchronized void informReferee(int coachId, boolean teamAssemble) {
+        
         while(teamAssemble == false){
             try {
                 wait();
@@ -89,7 +89,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         newTrial = true; 
         notify(); 
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
@@ -104,6 +103,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public void amDone(int coachId, int contId, int contestStrength) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+    
+    private int generateStrength(){
+        return (int) Math.random()*100; 
     }
 
 

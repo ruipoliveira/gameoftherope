@@ -12,7 +12,9 @@ import gameoftheropeT1.state.EContestantsState;
  *
  * @author roliveira
  */
+
 public class Contestant extends Thread{
+    public static int nrContestantsInPull; 
     private final IContestantsBench bench;
     private final IContestantsPlayground playground;
     private final IContestantsRepository repository;
@@ -45,7 +47,7 @@ public class Contestant extends Thread{
             switch(this.state)
             {
                 case SEAT_AT_THE_BENCH:
-                    followCoachAdvice (contId,coachId); /* the contestant complies to coach decision */
+                    followCoachAdvice (contId,coachId, nrContestantsInPull); /* the contestant complies to coach decision */
                     state = EContestantsState.STAND_IN_POSITION;
                 break;
                 
@@ -77,8 +79,8 @@ public class Contestant extends Thread{
         return bench.seatDown(coachId, contestId); 
     }
     
-    private void followCoachAdvice(int coachId, int contestId){
-        bench.followCoachAdvice(coachId, contestId);
+    private void followCoachAdvice(int coachId, int contestId, int nrContestantsInPull){
+        bench.followCoachAdvice(coachId, contestId, nrContestantsInPull);
     }
     
     private void amDone(int coachId, int contId, int contestStrength){
