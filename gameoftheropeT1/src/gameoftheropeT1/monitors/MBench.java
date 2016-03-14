@@ -21,6 +21,8 @@ public class MBench implements ICoachBench, IContestantsBench{
     private boolean teamAssemble; 
     private boolean endOfGame;  // para os jogadores se sentarem
     private boolean sentados;
+    private int nrContestantsInPull; 
+    private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
     
     private int lastPlayer;
    
@@ -28,9 +30,12 @@ public class MBench implements ICoachBench, IContestantsBench{
         callContestant = false; 
         newComand = false; 
         teamAssemble = false;
+        nrContestantsInPull = 0; 
+        nrContestantsInTrial = Constant.CONTESTANTS_IN_TRIAL; 
         
         endOfGame = false;
         sentados = false;
+        
     }
     
     
@@ -68,7 +73,7 @@ public class MBench implements ICoachBench, IContestantsBench{
     /*****************/
     
     @Override
-    public synchronized boolean seatDown(int coachId, int contestId, int nrContestantsInPull) {
+    public synchronized boolean seatDown(int coachId, int contestId) {
         
         while(endOfGame == false){
             try {
@@ -78,18 +83,18 @@ public class MBench implements ICoachBench, IContestantsBench{
             }
         }
         
-        nrContestantsInPull--;  // vao saindo do campo
-        if(nrContestantsInPull == 0)
-        {
+        nrContestantsInTrial--;  // vao saindo do campo
+        if(nrContestantsInTrial == 0) {
             sentados = true;
             notifyAll();
+            nrContestantsInTrial = Constant.CONTESTANTS_IN_TRIAL; 
         }
         
         return sentados;
     }
 
     @Override
-    public synchronized void followCoachAdvice(int coachId, int contestId, int nrContestantsInPull) {
+    public synchronized void followCoachAdvice(int coachId, int contestId) {
         
         while (callContestant ==false){
             try { 
@@ -104,7 +109,6 @@ public class MBench implements ICoachBench, IContestantsBench{
         if (nrContestantsInPull == Constant.CONTESTANTS_IN_TRIAL){
             nrContestantsInPull=0; 
             teamAssemble = true; 
-            lastPlayer = 0;
             notifyAll();
         }
         

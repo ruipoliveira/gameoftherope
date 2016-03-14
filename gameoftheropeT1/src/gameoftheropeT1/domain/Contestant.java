@@ -14,7 +14,6 @@ import gameoftheropeT1.state.EContestantsState;
  */
 
 public class Contestant extends Thread{
-    public static int nrContestantsInPull; 
     private final IContestantsBench bench;
     private final IContestantsPlayground playground;
     private final IContestantsRepository repository;
@@ -45,10 +44,13 @@ public class Contestant extends Thread{
         System.out.println("Run Contestant #"+ this.contId); 
         do {
             switch(this.state)
-            {
+            {                             
                 case SEAT_AT_THE_BENCH:
-                    followCoachAdvice (contId,coachId, nrContestantsInPull); /* the contestant complies to coach decision */
+                    followCoachAdvice (contId,coachId); /* the contestant complies to coach decision */
                     state = EContestantsState.STAND_IN_POSITION;
+                    
+                    
+                    
                 break;
                 
                 case STAND_IN_POSITION:
@@ -58,7 +60,7 @@ public class Contestant extends Thread{
                 
                 case DO_YOUR_BEST:
                     amDone (contId, coachId, contestStrength); /* the contestant ends his effort */                    
-                    if (seatDown (contId,coachId,nrContestantsInPull)) break; /* the contestant goes to the bench to rest a little bit */
+                    if (seatDown (contId,coachId)) break; /* the contestant goes to the bench to rest a little bit */
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                 break;    
             }         
@@ -75,12 +77,12 @@ public class Contestant extends Thread{
         return state;
     }
     
-    private boolean seatDown(int coachId, int contestId, int nrContestantsInPull){
-        return bench.seatDown(coachId, contestId, nrContestantsInPull); 
+    private boolean seatDown(int coachId, int contestId){
+        return bench.seatDown(coachId, contestId); 
     }
     
-    private void followCoachAdvice(int coachId, int contestId, int nrContestantsInPull){
-        bench.followCoachAdvice(coachId, contestId, nrContestantsInPull);
+    private void followCoachAdvice(int coachId, int contestId){
+        bench.followCoachAdvice(coachId, contestId);
     }
     
     private void amDone(int coachId, int contId, int contestStrength){

@@ -19,6 +19,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean newComand;
     private double strength;
     
+    private int numTrial; 
     private int nCoaches; // para  informReferee  os 2 treinadores tem de informar o arbtiro 
     //que as suas equipas estao prontas
     
@@ -27,7 +28,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     public MPlayground(MRepository rep){
         newTrial = false; 
         newComand = false;
-        
+        numTrial = 0; 
         strength = 0;
         
         
@@ -41,6 +42,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
     @Override
     public synchronized void callTrial(int numTrial) {
+        this.numTrial = numTrial; 
         
         newComand = true; 
         notifyAll();
@@ -57,9 +59,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
     }
 
     @Override

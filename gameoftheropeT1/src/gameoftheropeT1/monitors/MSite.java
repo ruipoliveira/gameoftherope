@@ -27,9 +27,7 @@ public class MSite implements IRefereeSite, ICoachSite{
     public synchronized void announceNewGame(int numGame) {
         
         System.out.printf("Game number: ",numGame); // apenas para ter a certeza que actualiza o numero do jogo
-        newGame = true; 
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        newGame = true;
     }
 
     @Override

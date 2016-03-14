@@ -30,13 +30,13 @@ public class GameoftheropeT1 {
         
         MRepository repository = new MRepository(logname, Constant.OPPOSING_TEAMS ,Constant.ELEMENTS_IN_TEAM );
 
-        
-        
         /*
-        MBench bench = new MBench(log);
-        MPlayground playground = new MPlayground(log);
         
-        MSite site = new MSite(log);
+        
+        MBench bench = new MBench(repository);
+        MPlayground playground = new MPlayground(repository);
+        
+        MSite site = new MSite(repository);
         
         Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, (IRefereeRepository) repository);
         
@@ -48,10 +48,10 @@ public class GameoftheropeT1 {
 
         
         for (int idc = 1; idc <= Constant.OPPOSING_TEAMS ; idc++){
-            coach.add(new Coach(idc, log, shop));
+            coach.add(new Coach(idc, repository, shop));
             
             for (int idct = 1; idct <= Constant.ELEMENTS_IN_TEAM; idct++)
-                contestant.add(new Contestant(idct, idc, log, shop, workshop));          
+                contestant.add(new Contestant(idct, idc, repository));          
         }
             
     
