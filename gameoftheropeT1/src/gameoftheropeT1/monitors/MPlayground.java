@@ -29,6 +29,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     //que as suas equipas estao prontas
     
     private int lastPlayer;
+    private int pulls;
+    private boolean ultimoPuxou;
     
     public MPlayground(MRepository rep){
         newTrial = false; 
@@ -37,6 +39,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strength = 0;
         startTrial = false; 
         
+        ultimoPuxou = false;
+        pulls = 0;
         
         nCoaches = 0;
     }
@@ -102,7 +106,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         if(nCoaches == Constant.NUM_OF_COACHES){           
             newTrial = true; 
             nCoaches = 0;
-            notify(); 
+            notifyAll(); 
         }       
     }
 
@@ -124,7 +128,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
   
     @Override
-    public void amDone(int coachId, int contId, int contestStrength) {
+    public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
         try {
             Thread.sleep(4000);
@@ -132,8 +136,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //flag 
-        
+        //flag
+        pulls++;
+        if(pulls == 6){          
+            ultimoPuxou = true;
+            notifyAll();
+        }
     }
 
 
