@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package gameoftheropeT1.monitors;
+import gameoftheropeT1.domain.Contestant;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean newComand;
     private double strength;
     
+    private ArrayList<Contestant> constestant; 
+    
+    private boolean startTrial; 
     private int numTrial; 
     private int nCoaches; // para  informReferee  os 2 treinadores tem de informar o arbtiro 
     //que as suas equipas estao prontas
@@ -30,6 +35,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         newComand = false;
         numTrial = 0; 
         strength = 0;
+        startTrial = false; 
         
         
         nCoaches = 0;
@@ -59,7 +65,10 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-                
+        
+        startTrial = true; 
+        notifyAll(); 
+        
     }
 
     @Override
@@ -87,13 +96,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void informReferee(int coachId, boolean teamAssemble) {
         
-        while(teamAssemble == false){
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
         
         nCoaches++;
         if(nCoaches == Constant.NUM_OF_COACHES){           
@@ -109,14 +112,28 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void getReady(int coachId, int contId) {
         
-        strength = 0; 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while(startTrial == false){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+         
     }
 
   
     @Override
     public void amDone(int coachId, int contId, int contestStrength) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //flag 
+        
     }
 
 

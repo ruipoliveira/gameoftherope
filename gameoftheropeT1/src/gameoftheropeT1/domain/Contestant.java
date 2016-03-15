@@ -29,6 +29,7 @@ public class Contestant extends Thread{
         this.bench = bench;
         this.playground = playground;
         this.repository = repository;
+        
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         
@@ -48,9 +49,7 @@ public class Contestant extends Thread{
                 case SEAT_AT_THE_BENCH:
                     followCoachAdvice (contId,coachId); /* the contestant complies to coach decision */
                     state = EContestantsState.STAND_IN_POSITION;
-                    
-                    
-                    
+
                 break;
                 
                 case STAND_IN_POSITION:
@@ -65,7 +64,6 @@ public class Contestant extends Thread{
                 break;    
             }         
         } while (endOperContestants(this.contId)); // acaba o jogo.... 
-
     }
     
     

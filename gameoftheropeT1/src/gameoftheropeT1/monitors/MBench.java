@@ -54,10 +54,17 @@ public class MBench implements ICoachBench, IContestantsBench{
             }
         }
         callContestant = true; 
-        notify();  
+        notifyAll();  
         
+        //wait até que os jogadores fiquem posicionados 
+        while(teamAssemble == false){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
