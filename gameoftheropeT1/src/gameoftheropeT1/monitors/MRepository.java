@@ -37,20 +37,20 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             pw = new PrintWriter(log);
             
             
-            StringBuilder sb = new StringBuilder("Ref ");
+            StringBuilder sb = new StringBuilder("Ref");
             StringBuilder sb2 = new StringBuilder("Sta ");
             
             for(int i = 1; i <= nrCoaches; i++){
-                sb.append("Coa_").append(i);
+                sb.append(" Coa ").append(i);
                 sb2.append(" Stat ");
                 
                 for (int j = 1; j<= nrContestants; j++){
-                    sb.append("Cont_").append(i);
+                    sb.append(" Cont ").append(i);
                     sb2.append("Sta SG ");
                 }
             }
             
-            sb.append("      Trial ");
+            sb.append("       Trial ");
             sb2.append(" 3 2 1 . 1 2 3 NB PS ");
             
             pw.println("Game of the Rope - Description of the internal state"); 

@@ -17,12 +17,14 @@ public class Referee extends Thread{
     private final IRefereeSite site;
     private final IRefereePlayground playground;
     private final IRefereeRepository repository;
+    private final IRefereeBench bench; 
     private ERefereeState state;
     
     
-    public Referee(IRefereePlayground playground, IRefereeSite site, IRefereeRepository repository){
+    public Referee(IRefereePlayground playground, IRefereeSite site, IRefereeBench bench, IRefereeRepository repository){
         this.playground = playground;
         this.site = site;
+        this.bench = bench; 
         this.repository = repository;
         state = ERefereeState.START_OF_THE_MATCH;
     }
@@ -40,6 +42,7 @@ public class Referee extends Thread{
             {
                 case START_OF_THE_MATCH:
                      t = 0;
+                     
                      announceNewGame(g);
                      state = ERefereeState.START_OF_A_GAME;
                     break; 
@@ -98,7 +101,7 @@ public class Referee extends Thread{
     
     
     private void callTrial(int numTrial){
-        playground.callTrial(numTrial);
+        bench.callTrial(numTrial);
     }
     
     private void startTrial(){

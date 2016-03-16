@@ -15,6 +15,8 @@ public class MSite implements IRefereeSite, ICoachSite{
     private boolean newGame;
     private boolean endOfGame; 
     private boolean endOfMatch;
+    private int posPull; 
+    
     
     public MSite(MRepository rep ){
         newGame = false; 
@@ -25,9 +27,10 @@ public class MSite implements IRefereeSite, ICoachSite{
     
     @Override
     public synchronized void announceNewGame(int numGame) {
-        
-        System.out.printf("Game number: ",numGame); // apenas para ter a certeza que actualiza o numero do jogo
+                
+        System.out.println("Game number: "+numGame); // apenas para ter a certeza que actualiza o numero do jogo
         newGame = true;
+
     }
 
     @Override

@@ -9,12 +9,9 @@ package gameoftheropeT1.interfaces;
  *
  * @author roliveira
  */
-
-// numTrial -> numero do trial
-
-public interface IRefereePlayground {
+public interface IRefereeBench {
     
-    public void startTrial();
+        public void callTrial(int nrTrial);
+
     
-    public char assertTrialDecision();
 }

@@ -8,6 +8,9 @@ import gameoftheropeT1.domain.Contestant;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,8 +23,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean newTrial;
     private boolean newComand;
     private double strength;
-    
-    private ArrayList<Contestant> constestant; 
+
+    private Map<Integer, List<Integer>> coachAndTeam;
     
     private boolean startTrial; 
     private int numTrial; 
@@ -37,8 +40,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         newComand = false;
         numTrial = 0; 
         strength = 0;
-        startTrial = false; 
+        startTrial = false;
         
+        coachAndTeam = new HashMap<Integer, List<Integer>>(); 
         ultimoPuxou = false;
         pulls = 0;
         
@@ -49,15 +53,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     /////////// REFEREE ///////////////////////////////
     
     
-    
-    @Override
-    public synchronized void callTrial(int numTrial) {
-        this.numTrial = numTrial; 
-        
-        newComand = true; 
-        notifyAll();
-                
-    }
+
 
     @Override
     public synchronized void startTrial() {
@@ -146,8 +142,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
 
     
-    private double generateStrength(){
-        return Math.random()*100; 
+    private int generateStrength(){
+        return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
 
 

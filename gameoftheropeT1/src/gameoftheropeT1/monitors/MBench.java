@@ -6,6 +6,10 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author roliveira
  */
-public class MBench implements ICoachBench, IContestantsBench{
+public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     private int totalContestantsBench; // numero total de jogadores no banco 
     private boolean callContestant; 
@@ -23,9 +27,15 @@ public class MBench implements ICoachBench, IContestantsBench{
     private boolean sentados;
     private int nrContestantsInPull; 
     private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
+    private int numTrial; 
+    
     
     private int lastPlayer;
-   
+    private int strength;
+    
+    Map<Integer, List<Integer>> coachAndTeamInBench; 
+
+    
     public MBench(MRepository rep){
         callContestant = false; 
         newComand = false; 
@@ -36,6 +46,12 @@ public class MBench implements ICoachBench, IContestantsBench{
         endOfGame = false;
         sentados = false;
         
+        coachAndTeamInBench = new HashMap<>();
+        coachAndTeamInBench.put(1, new ArrayList<Integer>() );
+        strength = 0; 
+        
+        
+        numTrial = 0; 
     }
     
     
@@ -44,7 +60,8 @@ public class MBench implements ICoachBench, IContestantsBench{
     /***********/
     
     @Override
-    public synchronized void callContestants(int coachId) {
+    public synchronized void callContestants(int coachId ) {
+        System.out.println("Estou a espera... feito parvo"); 
         
         while(newComand == false){
             try { 
@@ -53,9 +70,20 @@ public class MBench implements ICoachBench, IContestantsBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+       
+
+        
+       // List<Integer> 
+        
+        //for(coachAndTeamInBench)
+            
+            
         callContestant = true; 
         notifyAll();  
         
+        
+        
+        System.out.println("Em espera da equipa"); 
         //wait até que os jogadores fiquem posicionados 
         while(teamAssemble == false){
             try {
@@ -65,7 +93,22 @@ public class MBench implements ICoachBench, IContestantsBench{
             }
         }
         
+        
+        System.out.println("Equipa formada"); 
+        
     }
+    
+        
+    @Override
+    public synchronized void callTrial(int numTrial) {
+        this.numTrial = numTrial; 
+        
+        System.out.println("Trial" + numTrial);
+        newComand = true; 
+        notifyAll();
+                
+    }
+    
     
     @Override
     public synchronized void reviewNotes(int coachId) {
@@ -111,9 +154,25 @@ public class MBench implements ICoachBench, IContestantsBench{
             }
         }
         
+        
+        System.out.println("chamar jogadores.."); 
+/*
+        List<Integer> idContestId = new ArrayList<Integer>(); 
+        idContestId.add(contestId); 
+        
+        this.coachAndTeamInBench.put(coachId,idContestId); 
+        
+  */
+        coachAndTeamInBench.get(coachId).add(contestId); 
+        
+        System.out.println(coachAndTeamInBench.toString()); 
+  
+
+        
         /*apenas o ultimo jogador avisa o treinador que a equipa está */
         nrContestantsInPull++; 
-        if (nrContestantsInPull == Constant.CONTESTANTS_IN_TRIAL){
+        System.out.println(nrContestantsInPull); 
+        if (nrContestantsInPull == 2){
             nrContestantsInPull=0; 
             teamAssemble = true; 
             notifyAll();
@@ -122,6 +181,12 @@ public class MBench implements ICoachBench, IContestantsBench{
     }
 
 
+    public static int generateStrength(){
+        return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
+    }
+
+
+        
 
 
 }

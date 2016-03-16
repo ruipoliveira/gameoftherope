@@ -6,6 +6,7 @@
 package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
+import static gameoftheropeT1.monitors.MBench.generateStrength;
 import gameoftheropeT1.state.EContestantsState;
 
 /**
@@ -33,7 +34,7 @@ public class Contestant extends Thread{
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         
-        contestStrength = 0;
+        contestStrength = generateStrength();
         this.coachId = coachId;
         
     }
@@ -47,7 +48,7 @@ public class Contestant extends Thread{
             switch(this.state)
             {                             
                 case SEAT_AT_THE_BENCH:
-                    followCoachAdvice (contId,coachId); /* the contestant complies to coach decision */
+                    followCoachAdvice (coachId, contId); /* the contestant complies to coach decision */
                     state = EContestantsState.STAND_IN_POSITION;
 
                 break;
@@ -95,5 +96,10 @@ public class Contestant extends Thread{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    
+    public static int generateStrength(){
+        return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
+    }
+        
     
 }
