@@ -47,7 +47,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         sentados = false;
         
         coachAndTeamInBench = new HashMap<>();
-        coachAndTeamInBench.put(1, new ArrayList<Integer>() );
+        for (int i =1; i<= 2; i++){
+            coachAndTeamInBench.put(i, new ArrayList<Integer>());
+        }
+
+
         strength = 0; 
         
         
@@ -59,9 +63,10 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     /** COACH **/
     /***********/
     
+   
     @Override
     public synchronized void callContestants(int coachId ) {
-        System.out.println("Estou a espera... feito parvo"); 
+        System.out.println("Treinador #"+coachId+" espera por um novo jogo"); 
         
         while(newComand == false){
             try { 
@@ -94,7 +99,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         
-        System.out.println("Equipa formada"); 
+        System.out.println("Equipa #"+coachId+" formada"); 
         
     }
     
@@ -165,14 +170,13 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
   */
         coachAndTeamInBench.get(coachId).add(contestId); 
         
-        System.out.println(coachAndTeamInBench.toString()); 
   
 
         
         /*apenas o ultimo jogador avisa o treinador que a equipa está */
         nrContestantsInPull++; 
-        System.out.println(nrContestantsInPull); 
         if (nrContestantsInPull == 2){
+            System.out.println(coachAndTeamInBench.toString()); 
             nrContestantsInPull=0; 
             teamAssemble = true; 
             notifyAll();

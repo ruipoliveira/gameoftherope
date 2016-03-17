@@ -64,7 +64,7 @@ public class Contestant extends Thread{
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                 break;    
             }         
-        } while (endOperContestants(this.contId)); // acaba o jogo.... 
+        } while (true); // acaba o jogo.... 
     }
     
     
