@@ -7,9 +7,13 @@ package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.main.Constant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +33,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
     private int numTrial; 
     
+    
+    private int nrEquipas; 
     
     private int lastPlayer;
     private int strength;
@@ -53,6 +59,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
 
         strength = 0; 
+        
+        nrEquipas = 0; 
         
         
         numTrial = 0; 
@@ -85,7 +93,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             
         callContestant = true; 
         notifyAll();  
-        
+        teamAssemble = false; 
         
         
         System.out.println("Em espera da equipa"); 
@@ -98,8 +106,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
-        
         System.out.println("Equipa #"+coachId+" formada"); 
+        teamAssemble = false; 
         
     }
     
@@ -161,25 +169,35 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         System.out.println("chamar jogadores.."); 
-/*
-        List<Integer> idContestId = new ArrayList<Integer>(); 
-        idContestId.add(contestId); 
-        
-        this.coachAndTeamInBench.put(coachId,idContestId); 
-        
-  */
-        coachAndTeamInBench.get(coachId).add(contestId); 
-        
-  
 
-        
+        coachAndTeamInBench.get(coachId).add(contestId); 
+    
         /*apenas o ultimo jogador avisa o treinador que a equipa está */
-        nrContestantsInPull++; 
-        if (nrContestantsInPull == 2){
-            System.out.println(coachAndTeamInBench.toString()); 
-            nrContestantsInPull=0; 
+        
+        //nrContestantsInPull++;  
+        //System.out.println(nrContestantsInPull +" -->" + coachAndTeamInBench.toString()); 
+        
+        
+        
+        if (coachAndTeamInBench.get(coachId).size() == 5){
+            
+            List<Integer> constestantInPullID = new ArrayList<Integer>(); 
+
+            System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
+
+            Collections.shuffle(coachAndTeamInBench.get(coachId)); 
+                
+            for (int i =1; i<=3; i++){
+                constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
+            }
+            
+            
+            System.out.println("Equipa #"+coachId+" vão jogar: "+ constestantInPullID.toString());
+            
             teamAssemble = true; 
             notifyAll();
+            
+            
         }
         
     }
@@ -190,7 +208,32 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     }
 
 
+    
+    private void shuffleArray(int[] ar){
+        Random rnd = ThreadLocalRandom.current();
         
+        for (int i = ar.length - 1; i > 0; i--){
+            int index = rnd.nextInt(i + 1);
+            int a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
+    }
+    
+    private int[] contestantInTrial(int[] arrayIdContestant){
+        String s = "";
+        
+        for (int i =0; i<arrayIdContestant.length; i++)
+            arrayIdContestant[i] = i+1; 
+         
+        shuffleArray(arrayIdContestant);
+        for (int i = 0; i < 2; i++)
+            s += arrayIdContestant[i]+",";
+        
+        return Arrays.stream(s.split(",")).filter(word -> !word.isEmpty()).mapToInt(Integer::parseInt).toArray();
+
+        
+    }
 
 
 }

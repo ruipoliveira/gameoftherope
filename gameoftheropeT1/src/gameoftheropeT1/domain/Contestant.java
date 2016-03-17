@@ -100,6 +100,8 @@ public class Contestant extends Thread{
     public static int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
+    
+    
         
     
 }

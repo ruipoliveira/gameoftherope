@@ -55,7 +55,7 @@ public class GameoftheropeT1 {
             coach.add(new Coach(idc, (ICoachBench) bench, (ICoachPlayground) playground,
                     (ICoachSite) site, repository));
             
-            for (int idct = 1; idct <= 2; idct++){
+            for (int idct = 1; idct <= 5; idct++){
                 contestant.add(new Contestant(idct, idc, (IContestantsBench) bench,
                     (IContestantsPlayground) playground, repository));
             }
@@ -96,34 +96,6 @@ public class GameoftheropeT1 {
         return sdf.format(hora);
     }
     
-    public static void shuffleArray(int[] ar){
-        Random rnd = ThreadLocalRandom.current();
-        
-        for (int i = ar.length - 1; i > 0; i--){
-            int index = rnd.nextInt(i + 1);
-            int a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
-        }
-    }
     
-    
-    public static int[] contestantInTrial(){
-        int[] arrayIdContestant = new int[3]; 
-        String s = "";
-        
-        for (int i =0; i<arrayIdContestant.length; i++)
-            arrayIdContestant[i] = i+1; 
-         
-        shuffleArray(arrayIdContestant);
-        for (int i = 0; i < 2; i++)
-            s += arrayIdContestant[i]+",";
-        
-        return Arrays.stream(s.split(",")).filter(word -> !word.isEmpty()).mapToInt(Integer::parseInt).toArray();
-        
-                
-                
-               
-    }
      
 }
