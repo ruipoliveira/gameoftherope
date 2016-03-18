@@ -31,7 +31,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private boolean sentados;
     private int nrContestantsInPull; 
     private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
-    private int numTrial; 
+    private int numTrial, cenas; 
     
     private int numIds;
     private int nrEquipas; 
@@ -46,6 +46,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
     
     Map<Integer, List<Integer>> coachAndTeamInBench; 
+    
+    Map<Integer, List<Integer>> coachAndTeamInPull; 
 
     
     public MBench(MRepository rep){
@@ -61,8 +63,12 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         readyA = 0;
         readyB = 0;
         coachAndTeamInBench = new HashMap<>();
+        coachAndTeamInPull = new HashMap<>();
+
         for (int i =1; i<= 2; i++){
             coachAndTeamInBench.put(i, new ArrayList<Integer>());
+            coachAndTeamInPull.put(i, new ArrayList<Integer>());
+
         }
 
 
@@ -73,7 +79,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         numTrial = 0; 
         
-        
+        cenas = 0; 
         playerA = 0;
         playerB = 0;
     }
@@ -126,6 +132,30 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         // depois de todos estarem prontos
         Collections.shuffle(coachAndTeamInBench.get(coachId));
+        
+        
+        
+        List<Integer> constestantInPullID  = new ArrayList<Integer>(); 
+
+        System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
+
+
+
+        for (int i =1; i<=3; i++){
+            constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
+        }
+        
+        
+        System.out.println(coachId+"---->"+constestantInPullID.toString()); 
+        
+        
+        coachAndTeamInPull.get(coachId).addAll(constestantInPullID);
+        
+        
+        
+        System.out.println("************** "+coachAndTeamInPull.toString());
+        
+        
         if(coachId == 1)
             readyA = 5;
         
@@ -135,7 +165,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         notifyAll();  // equipas prontas
         
         teamAssemble = false; 
-        System.out.println("Em espera da equipa"); 
+        System.out.println("Em espera da equipa #"+coachId); 
         //wait até que os jogadores fiquem posicionados 
         while(teamAssemble == false){
             try {
@@ -147,8 +177,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
          
         System.out.println("Equipa #"+coachId+" formada"); 
-        teamAssemble = false; 
-        
+
+     
     }
     
         
@@ -159,7 +189,14 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         System.out.println("Trial" + numTrial);
         newComand = true; 
         notifyAll();
-                
+        
+        
+    }
+    
+    
+    public boolean jogadorEEscolhido(int coachId, int contestId){
+        
+        return coachAndTeamInPull.get(coachId).contains(contestId); 
     }
     
     
@@ -167,7 +204,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     public synchronized void reviewNotes(int coachId) {
         
     
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
     
 
@@ -245,24 +282,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         
-        List<Integer> constestantInPullID = new ArrayList<Integer>(); 
-
-        System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
-
-
-
-        for (int i =1; i<=3; i++){
-            constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
-        }
-
-
-        System.out.println("Equipa #"+coachId+" vão jogar: "+ constestantInPullID.toString());
-
-        for(int j = 0; j < constestantInPullID.size(); j++)
-        {
-            if(contestId == constestantInPullID.get(j))
-                System.out.println("#"+contestId+" estou no campo   --> #team"+coachId);
-        }
         teamAssemble = true;
         notifyAll();                        
         

@@ -7,7 +7,10 @@ package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
 import static gameoftheropeT1.monitors.MBench.generateStrength;
+import gameoftheropeT1.monitors.MPlayground;
 import gameoftheropeT1.state.EContestantsState;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,17 +52,25 @@ public class Contestant extends Thread{
             {                             
                 case SEAT_AT_THE_BENCH:
                     followCoachAdvice (coachId, contId); /* the contestant complies to coach decision */
-                    state = EContestantsState.STAND_IN_POSITION;
+                    
+                    if (bench.jogadorEEscolhido(coachId,contId) ){
+                        state = EContestantsState.STAND_IN_POSITION;
+
+                    }else{
+                        state = EContestantsState.SEAT_AT_THE_BENCH;
+
+                    }
 
                 break;
                 
                 case STAND_IN_POSITION:
-                    getReady(contId,coachId); /* the contestant takes place at his end of the rope */
+
+                    getReady(coachId, contId); /* the contestant takes place at his end of the rope */
                     state = EContestantsState.DO_YOUR_BEST;
                 break;
                 
                 case DO_YOUR_BEST:
-                    amDone (contId, coachId, contestStrength); /* the contestant ends his effort */                    
+                    amDone (coachId, contId, contestStrength); /* the contestant ends his effort */                    
                     if (seatDown (contId,coachId)) break; /* the contestant goes to the bench to rest a little bit */
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                 break;    

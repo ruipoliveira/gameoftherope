@@ -14,4 +14,5 @@ public interface IContestantsBench {
     public boolean seatDown(int coachId, int contId);
     
     public void followCoachAdvice(int coachId, int contId);
+    public boolean jogadorEEscolhido(int coachId, int contestId); 
 }

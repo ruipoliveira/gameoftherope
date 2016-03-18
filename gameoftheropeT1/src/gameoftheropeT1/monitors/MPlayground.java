@@ -20,12 +20,15 @@ import java.util.logging.Logger;
  */
 public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
 
-    private boolean newTrial;
+    private int newTrial;
     private boolean newComand;
     private double strength;
 
     private Map<Integer, List<Integer>> coachAndTeam;
     
+    private Map<Integer, List<Integer>> strengthTeam;
+
+        
     private boolean startTrial; 
     private int numTrial; 
     private int nCoaches; // para  informReferee  os 2 treinadores tem de informar o arbtiro 
@@ -36,13 +39,19 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean ultimoPuxou;
     
     public MPlayground(MRepository rep){
-        newTrial = false; 
+        newTrial = 0; 
         newComand = false;
         numTrial = 0; 
         strength = 0;
         startTrial = false;
         
         coachAndTeam = new HashMap<Integer, List<Integer>>(); 
+        
+        strengthTeam = new HashMap<>(); 
+        for(int i =1; i< 3; i++ ){
+            strengthTeam.put(i, new ArrayList<Integer>()); 
+        }
+        
         ultimoPuxou = false;
         pulls = 0;
         
@@ -58,7 +67,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void startTrial() {
         
-        while(newTrial == false){
+        
+        while(newTrial != 2){
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -76,7 +86,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         
         char decision;
         
-        strength = generateStrength();
+        
         
         if(strength <= 0){
             decision = Constant.GAME_END;
@@ -94,16 +104,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     ///////////       ////////////////////////////////
     /////////// COACH ///////////////////////////////
     @Override
-    public synchronized void informReferee(int coachId, boolean teamAssemble) {
+    public synchronized void informReferee(int coachId) {
         
-        
-        
-        nCoaches++;
-        if(nCoaches == Constant.NUM_OF_COACHES){           
-            newTrial = true; 
-            nCoaches = 0;
-            notifyAll(); 
-        }       
+        System.out.println("Coach#" +coachId+ " informa arbitro.."); 
+        newTrial++; 
+        if (newTrial == 2)
+            notifyAll();
+            
     }
 
     
@@ -111,6 +118,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     /////////// CONTESTANTS ///////////////////////////////
     @Override
     public synchronized void getReady(int coachId, int contId) {
+        
         
         while(startTrial == false){
             try {
@@ -126,12 +134,19 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
+        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO!"); 
+        
+        
+        strengthTeam.get(coachId).add(contestStrength);
+
+        System.out.println("Força Equipa: "+strengthTeam.toString()); 
+        /*
         try {
             Thread.sleep(4000);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
         //flag
         pulls++;
         if(pulls == 6){          

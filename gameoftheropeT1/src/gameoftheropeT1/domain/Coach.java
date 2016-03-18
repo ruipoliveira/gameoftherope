@@ -46,16 +46,14 @@ public class Coach extends Thread{
         System.out.println("Run coach #"+idCoach); 
         do {
             switch(this.state){
-                case WAIT_FOR_REFEREE_COMMAND: 
+                case WAIT_FOR_REFEREE_COMMAND:
                     callContestants(idCoach);  /* the coach calls contestants to a trial */
-                    state = ECoachesState.ASSEMBLE_TEAM;
-
-                    break; 
                     
- 
+                    state = ECoachesState.ASSEMBLE_TEAM;
+                    break; 
 
-                case ASSEMBLE_TEAM:                   
-                    informReferee(idCoach, teamAssemble);    /* the coach informs the referee the team is ready */
+                case ASSEMBLE_TEAM:          
+                    informReferee(idCoach);    /* the coach informs the referee the team is ready */
                     state = ECoachesState.WATCH_TRIAL;
                     break; 
                     
@@ -64,17 +62,18 @@ public class Coach extends Thread{
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND;                    
                     break;
                     
+                    
             }
-        }while (endOperCoach(idCoach));
-        
+        }while (true);
+        // cond endOperCoach(idCoach)
     }
     
     private void callContestants(int idCoach){
         bench.callContestants(idCoach);
     }
     
-    private void informReferee(int idCoach, boolean teamAssemble){
-        playground.informReferee(idCoach, teamAssemble);
+    private void informReferee(int idCoach){
+        playground.informReferee(idCoach);
     }
     
     private void reviewNotes(int idCoach){
