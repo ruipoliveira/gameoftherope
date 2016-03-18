@@ -33,11 +33,17 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
     private int numTrial; 
     
-    
+    private int numIds;
     private int nrEquipas; 
     
     private int lastPlayer;
     private int strength;
+    
+    private int playerA;
+    private int playerB;
+    private int readyA;
+    private int readyB;
+
     
     Map<Integer, List<Integer>> coachAndTeamInBench; 
 
@@ -52,6 +58,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         endOfGame = false;
         sentados = false;
         
+        readyA = 0;
+        readyB = 0;
         coachAndTeamInBench = new HashMap<>();
         for (int i =1; i<= 2; i++){
             coachAndTeamInBench.put(i, new ArrayList<Integer>());
@@ -59,11 +67,15 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
 
         strength = 0; 
-        
+        numIds = 0;
         nrEquipas = 0; 
         
         
         numTrial = 0; 
+        
+        
+        playerA = 0;
+        playerB = 0;
     }
     
     
@@ -84,18 +96,45 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
        
-
         
-       // List<Integer> 
-        
-        //for(coachAndTeamInBench)
-            
+       
             
         callContestant = true; 
-        notifyAll();  
+        notifyAll();
+        
+        if(coachId == 1){
+            while(playerA != 5)
+            {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        else if(coachId == 2){
+            while(playerB != 5)
+            {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        // depois de todos estarem prontos
+        Collections.shuffle(coachAndTeamInBench.get(coachId));
+        if(coachId == 1)
+            readyA = 5;
+        
+        else if(coachId == 2)
+            readyB = 5;
+        
+        notifyAll();  // equipas prontas
+        
         teamAssemble = false; 
-        
-        
         System.out.println("Em espera da equipa"); 
         //wait até que os jogadores fiquem posicionados 
         while(teamAssemble == false){
@@ -106,6 +145,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
+         
         System.out.println("Equipa #"+coachId+" formada"); 
         teamAssemble = false; 
         
@@ -169,36 +209,62 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         System.out.println("chamar jogadores.."); 
-
-        coachAndTeamInBench.get(coachId).add(contestId); 
-    
-        /*apenas o ultimo jogador avisa o treinador que a equipa está */
+        coachAndTeamInBench.get(coachId).add(contestId);
+        if(coachId == 1)
+            playerA++;// junta os jogadores nas equipas
         
-        //nrContestantsInPull++;  
-        //System.out.println(nrContestantsInPull +" -->" + coachAndTeamInBench.toString()); 
+        else if(coachId == 2)
+            playerB++;
         
+        notifyAll();
         
-        
-        if (coachAndTeamInBench.get(coachId).size() == 5){
-            
-            List<Integer> constestantInPullID = new ArrayList<Integer>(); 
-
-            System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
-
-            Collections.shuffle(coachAndTeamInBench.get(coachId)); 
-                
-            for (int i =1; i<=3; i++){
-                constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
-            }
-            
-            
-            System.out.println("Equipa #"+coachId+" vão jogar: "+ constestantInPullID.toString());
-            
-            teamAssemble = true; 
-            notifyAll();
-            
-            
+        /// espera que o coach faça shuffle ///////////////////
+        if(coachId == 1)
+        {
+           while(readyA == 0){
+               try {
+                   wait();
+               } catch (InterruptedException ex) {
+                   Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+           readyA--;
         }
+              
+        else if(coachId == 2)
+        {
+           while(readyB == 0){
+               try {
+                   wait();
+               } catch (InterruptedException ex) {
+                   Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+           
+           readyB--;
+        }
+        
+        
+        List<Integer> constestantInPullID = new ArrayList<Integer>(); 
+
+        System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
+
+
+
+        for (int i =1; i<=3; i++){
+            constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
+        }
+
+
+        System.out.println("Equipa #"+coachId+" vão jogar: "+ constestantInPullID.toString());
+
+        for(int j = 0; j < constestantInPullID.size(); j++)
+        {
+            if(contestId == constestantInPullID.get(j))
+                System.out.println("#"+contestId+" estou no campo   --> #team"+coachId);
+        }
+        teamAssemble = true;
+        notifyAll();                        
         
     }
 
