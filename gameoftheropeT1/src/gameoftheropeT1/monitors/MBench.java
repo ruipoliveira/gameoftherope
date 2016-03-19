@@ -39,8 +39,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int lastPlayer;
     private int strength;
     
-    private int playerA;
-    private int playerB;
+    private int nrPlayer;
     private int readyA;
     private int readyB;
 
@@ -78,10 +77,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         numTrial = 0; 
-        
-        cenas = 0; 
-        playerA = 0;
-        playerB = 0;
+
+        nrPlayer = 0;
+
     }
     
     
@@ -92,7 +90,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
    
     @Override
     public synchronized void callContestants(int coachId ) {
-        System.out.println("Treinador #"+coachId+" espera por um novo jogo"); 
+        System.out.println("***********************Treinador #"+coachId+" espera por um novo jogo***********************"); 
         
         while(newComand == false){
             try { 
@@ -102,14 +100,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
        
-        
-       
-            
+
         callContestant = true; 
         notifyAll();
         
-        if(coachId == 1){
-            while(playerA != 5)
+        while(nrPlayer != 10)
             {
                 try {
                     wait();
@@ -117,24 +112,12 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                     Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
         
-        else if(coachId == 2){
-            while(playerB != 5)
-            {
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
+
         // depois de todos estarem prontos
         Collections.shuffle(coachAndTeamInBench.get(coachId));
         
-        
-        
+
         List<Integer> constestantInPullID  = new ArrayList<Integer>(); 
 
         System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
@@ -151,8 +134,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         coachAndTeamInPull.get(coachId).addAll(constestantInPullID);
         
-        
-        
+
         System.out.println("************** "+coachAndTeamInPull.toString());
         
         
@@ -174,9 +156,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
          
-        System.out.println("Equipa #"+coachId+" formada"); 
+        System.out.println("***********************Equipa #"+coachId+" formada***********************"); 
 
      
     }
@@ -245,13 +226,12 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         
-        System.out.println("chamar jogadores.."); 
+        System.out.println("chamar jogadores.. "+coachId+"-"+contestId); 
         coachAndTeamInBench.get(coachId).add(contestId);
-        if(coachId == 1)
-            playerA++;// junta os jogadores nas equipas
+
+        nrPlayer++;// junta os jogadores nas equipas
+    
         
-        else if(coachId == 2)
-            playerB++;
         
         notifyAll();
         
@@ -284,7 +264,10 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         teamAssemble = true;
         notifyAll();                        
+        newComand = false; 
         
+
+        callContestant = false; 
     }
 
 

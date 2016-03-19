@@ -52,21 +52,23 @@ public class Contestant extends Thread{
             {                             
                 case SEAT_AT_THE_BENCH:
                     followCoachAdvice (coachId, contId); /* the contestant complies to coach decision */
-                    
-                    if (bench.jogadorEEscolhido(coachId,contId) ){
-                        state = EContestantsState.STAND_IN_POSITION;
-
-                    }else{
-                        state = EContestantsState.SEAT_AT_THE_BENCH;
-
-                    }
+                    state = EContestantsState.STAND_IN_POSITION;
 
                 break;
                 
                 case STAND_IN_POSITION:
+                    
+                    if (!bench.jogadorEEscolhido(coachId,contId) ){
+                        state = EContestantsState.SEAT_AT_THE_BENCH;
+                       // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
+                    }
 
-                    getReady(coachId, contId); /* the contestant takes place at his end of the rope */
-                    state = EContestantsState.DO_YOUR_BEST;
+                    else{
+                       // System.out.println(coachId+"-"+contId+" -> JOGA!");                             
+                        getReady(coachId, contId); /* the contestant takes place at his end of the rope */
+                        state = EContestantsState.DO_YOUR_BEST;
+                    }
+
                 break;
                 
                 case DO_YOUR_BEST:
