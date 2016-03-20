@@ -61,11 +61,12 @@ public class Contestant extends Thread{
                     if (!bench.jogadorEEscolhido(coachId,contId) ){
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                        // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
+                       contestStrength++;
                     }
-
                     else{
                        // System.out.println(coachId+"-"+contId+" -> JOGA!");                             
                         getReady(coachId, contId); /* the contestant takes place at his end of the rope */
+                        
                         state = EContestantsState.DO_YOUR_BEST;
                     }
 
@@ -73,8 +74,13 @@ public class Contestant extends Thread{
                 
                 case DO_YOUR_BEST:
                     amDone (coachId, contId, contestStrength); /* the contestant ends his effort */                    
-                    if (seatDown (contId,coachId)) break; /* the contestant goes to the bench to rest a little bit */
-                        state = EContestantsState.SEAT_AT_THE_BENCH;
+
+                    //seatDown (contId,coachId); /* the contestant goes to the bench to rest a little bit */
+                    
+                    contestStrength--;
+                    
+                    state = EContestantsState.SEAT_AT_THE_BENCH;
+                
                 break;    
             }         
         } while (true); // acaba o jogo.... 
@@ -89,8 +95,8 @@ public class Contestant extends Thread{
         return state;
     }
     
-    private boolean seatDown(int coachId, int contestId){
-        return bench.seatDown(coachId, contestId); 
+    private void seatDown(int coachId, int contestId){
+        bench.seatDown(coachId, contestId); 
     }
     
     private void followCoachAdvice(int coachId, int contestId){

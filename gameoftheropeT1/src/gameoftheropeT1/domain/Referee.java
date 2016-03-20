@@ -32,58 +32,63 @@ public class Referee extends Thread{
     @Override
     /*This function represents the life cycle of Referee.*/
     public void run() {
-        int g, t = 0;           /* trial number */ 
+        int g, t = 1;           /* trial number */ 
         char decision;      /* trial decision */
 
         System.out.println("Run referee..."); 
 
         for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
-            switch(state)
-            {
-                case START_OF_THE_MATCH:
-                     t = 0;
-                     
-                     announceNewGame(g);
-                     state = ERefereeState.START_OF_A_GAME;
-                    break; 
-                
-                case START_OF_A_GAME:
-                     callTrial(t);
-                     state = ERefereeState.TEAMS_READY;
-                    break;
-                
-                case TEAMS_READY:
-                     startTrial();
-                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
-                    break;
-                
-                case WAIT_FOR_TRIAL_CONCLUSION:
-                    decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
-                    t += 1;
-                    if(decision == Constant.GAME_CONTINUATION){ // se receber continuacao do jogo, faz calltrial
-                        callTrial(t);
-                        state = ERefereeState.TEAMS_READY;
-                    }
-                    else if(decision == Constant.GAME_END){
-                        declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
-                        state = ERefereeState.END_OF_A_GAME;
-                    }
-                    
-                    else
-                        state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    break; 
-                 
-                case END_OF_A_GAME:
-                    if(g < Constant.GAMES_PER_MATCH)
-                        state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
-                    
-                    else{
-                        declareMatchWinner();
-                        state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                    } 
-                    break;    
+            
+            while(true){ // verificar se o jogo acabo... 
+
+                switch(state)
+                {
+                    case START_OF_THE_MATCH:
+                         
+                        t = 1; 
+                        announceNewGame(g);
+                        state = ERefereeState.START_OF_A_GAME;
+                        break; 
+
+                    case START_OF_A_GAME:
+                        
+                         callTrial(t);
+                         state = ERefereeState.TEAMS_READY;
+                        break;
+
+                    case TEAMS_READY:
+                         startTrial();
+                         state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
+                        break; 
+
+                    case WAIT_FOR_TRIAL_CONCLUSION:
+
+                        decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
+                        t += 1;
+                        if(decision == Constant.GAME_CONTINUATION){ // se receber continuacao do jogo, faz calltrial
+                            callTrial(t);
+                            state = ERefereeState.TEAMS_READY;
+                        }
+                        else if(decision == Constant.GAME_END){
+                            declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
+                            state = ERefereeState.END_OF_A_GAME;
+                        }
+
+                        else
+                            state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
+                        break; 
+
+                    case END_OF_A_GAME:
+                        if(g < Constant.GAMES_PER_MATCH)
+                            state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
+
+                        else{
+                            declareMatchWinner();
+                            state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
+                        } 
+                        break;    
+                }
             }
-       
         }
       
         

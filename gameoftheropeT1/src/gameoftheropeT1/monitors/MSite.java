@@ -37,14 +37,12 @@ public class MSite implements IRefereeSite, ICoachSite{
     public synchronized void declareGameWinner(char winner) {
         endOfGame = true; 
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
     public synchronized void declareMatchWinner() {
         
         endOfMatch = true;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

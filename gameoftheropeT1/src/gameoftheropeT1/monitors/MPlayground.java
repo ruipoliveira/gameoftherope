@@ -36,13 +36,23 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
     private int lastPlayer;
     private int pulls;
+    
+    private int posPull; 
+    
+    //private int seguidosA, seguidosB; 
+    
+    
     private boolean ultimoPuxou;
+    
+    private int resultTeamA, resultTeamB;  
+    
     
     public MPlayground(MRepository rep){
         newTrial = 0; 
         newComand = false;
         numTrial = 0; 
         strength = 0;
+        resultTeamA = resultTeamB = 0; 
         startTrial = false;
         
         coachAndTeam = new HashMap<Integer, List<Integer>>(); 
@@ -56,6 +66,11 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         pulls = 0;
         
         nCoaches = 0;
+        
+        posPull = 0; 
+        
+        
+       // seguidosA = seguidosB =0; 
     }
     
       ///////////       ////////////////////////////////
@@ -84,19 +99,51 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
         
-        char decision;
         
-        
-        
-        if(strength <= 0){
-            decision = Constant.GAME_END;
-            return decision;
+        System.out.println("esperar que trial acabe.."); 
+        while(ultimoPuxou == false){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
-        else{
-            decision = Constant.GAME_CONTINUATION;
-            return decision;
+
+        for (int i =0; i<3; i++ ){
+            resultTeamA += strengthTeam.get(1).get(i) ;
+            resultTeamB += strengthTeam.get(2).get(i);
         }
+        
+        System.out.println("ResultA = "+resultTeamA+"; ResultB = " + resultTeamB); 
+
+        if (resultTeamA > resultTeamB){
+            posPull--;
+          //  seguidosA++; 
+           // seguidosB =0; 
+        }
+        
+        else if (resultTeamA < resultTeamB){        
+            posPull++;
+          //  seguidosB++; 
+           // seguidosA=0; 
+                
+        }
+        
+       // System.out.println(seguidosA +" ->"+seguidosB);
+        
+        System.out.println("Posição da corda: " + posPull); 
+        
+        
+        resultTeamA = resultTeamB = 0; 
+        ultimoPuxou = false; 
+        
+        if (numTrial == 6 )  // knock out 
+            return Constant.GAME_END; 
+        else 
+            return Constant.GAME_CONTINUATION;
+
+        
             
         
     }
@@ -147,18 +194,20 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
         */
-        //flag
+
         pulls++;
         if(pulls == 6){          
             ultimoPuxou = true;
             notifyAll();
         }
-    }
-
-
-    
-    private int generateStrength(){
-        return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
 

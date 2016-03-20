@@ -23,21 +23,16 @@ import java.util.logging.Logger;
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
-    private int totalContestantsBench; // numero total de jogadores no banco 
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble; 
     private boolean endOfGame;  // para os jogadores se sentarem
     private boolean sentados;
-    private int nrContestantsInPull; 
-    private int nrContestantsInTrial; // para verificar se todos jogadores estão no banco
-    private int numTrial, cenas; 
+    private int numTrial; 
     
-    private int numIds;
     private int nrEquipas; 
     
     private int lastPlayer;
-    private int strength;
     
     private int nrPlayer;
     private int readyA;
@@ -53,8 +48,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         callContestant = false; 
         newComand = false; 
         teamAssemble = false;
-        nrContestantsInPull = 0; 
-        nrContestantsInTrial = Constant.CONTESTANTS_IN_TRIAL; 
         
         endOfGame = false;
         sentados = false;
@@ -71,8 +64,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
 
 
-        strength = 0; 
-        numIds = 0;
         nrEquipas = 0; 
         
         
@@ -194,24 +185,31 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     /*****************/
     
     @Override
-    public synchronized boolean seatDown(int coachId, int contestId) {
+    public synchronized void seatDown(int coachId, int contestId) {
+
         
-        while(endOfGame == false){
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+       
+        coachAndTeamInBench.clear();
+        coachAndTeamInPull.clear();
         
+        
+        System.out.println("Total: "+coachAndTeamInBench.toString()); 
+        System.out.println("In pull: "+coachAndTeamInPull.toString()); 
+
+        
+        teamAssemble = false; 
+        
+        readyB = readyA = 0; 
+        
+        /*
         nrContestantsInTrial--;  // vao saindo do campo
         if(nrContestantsInTrial == 0) {
             sentados = true;
             notifyAll();
             nrContestantsInTrial = Constant.CONTESTANTS_IN_TRIAL; 
         }
-        
-        return sentados;
+        */
+       
     }
 
     @Override
