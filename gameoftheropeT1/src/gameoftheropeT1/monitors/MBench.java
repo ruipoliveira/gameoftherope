@@ -28,6 +28,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private boolean teamAssemble; 
     private boolean endOfGame;  // para os jogadores se sentarem
     private boolean sentados;
+   
     private int numTrial; 
     
     private int nrEquipas; 
@@ -37,6 +38,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int nrPlayer;
     private int readyA;
     private int readyB;
+   
+   
+    private int terminados;
 
     
     Map<Integer, List<Integer>> coachAndTeamInBench; 
@@ -50,7 +54,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         teamAssemble = false;
         
         endOfGame = false;
-        sentados = false;
         
         readyA = 0;
         readyB = 0;
@@ -70,6 +73,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         numTrial = 0; 
 
         nrPlayer = 0;
+        sentados = false;
+        terminados = 0;
 
     }
     
@@ -157,8 +162,21 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     @Override
     public synchronized void callTrial(int numTrial) {
         this.numTrial = numTrial; 
-        
         System.out.println("Trial" + numTrial);
+        
+        if(numTrial > 1){
+            while(sentados == false){
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            sentados = false;
+            newComand = true;
+            notifyAll();
+        }
+        
         newComand = true; 
         notifyAll();
         
@@ -174,9 +192,16 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public synchronized void reviewNotes(int coachId) {
+        while(sentados == false){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
-    
-    
+        System.out.print("Estão todos sentados, bom jogo equipa!");
+        notifyAll();
     }
     
 
@@ -186,30 +211,28 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-
-        
-       
-        coachAndTeamInBench.clear();
-        coachAndTeamInPull.clear();
-        
-        
-        System.out.println("Total: "+coachAndTeamInBench.toString()); 
+      
+        terminados++; // espera por todos
+        System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down");
+        coachAndTeamInPull.get(coachId).clear(); // ir retirando do campo os jogadores
+        while(terminados != 6){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+   
+        System.out.println("Total in bench: "+coachAndTeamInBench.toString()); 
         System.out.println("In pull: "+coachAndTeamInPull.toString()); 
-
-        
-        teamAssemble = false; 
         
         readyB = readyA = 0; 
-        
-        /*
-        nrContestantsInTrial--;  // vao saindo do campo
-        if(nrContestantsInTrial == 0) {
-            sentados = true;
-            notifyAll();
-            nrContestantsInTrial = Constant.CONTESTANTS_IN_TRIAL; 
-        }
-        */
-       
+        terminados = 0;
+        sentados = true;
+        notifyAll();
+  
     }
 
     @Override

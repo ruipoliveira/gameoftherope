@@ -185,7 +185,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         
         
         strengthTeam.get(coachId).add(contestStrength);
-
+        
         System.out.println("Força Equipa: "+strengthTeam.toString()); 
         /*
         try {
@@ -196,17 +196,17 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         */
 
         pulls++;
-        if(pulls == 6){          
-            ultimoPuxou = true;
-            notifyAll();
+        while(pulls != 6){
+            try {
+                wait();
+                        } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
         }
         
-        
-        
-        
-        
-        
-        
+        ultimoPuxou = true;
+        notifyAll();
         
     }
 

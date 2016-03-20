@@ -73,11 +73,12 @@ public class Contestant extends Thread{
                 break;
                 
                 case DO_YOUR_BEST:
-                    amDone (coachId, contId, contestStrength); /* the contestant ends his effort */                    
-
-                    //seatDown (contId,coachId); /* the contestant goes to the bench to rest a little bit */
+                    amDone(coachId, contId, contestStrength);  /* the contestant ends his effort */  
+                    
+                    seatDown (coachId,contId); /* the contestant goes to the bench to rest a little bit */
                     
                     contestStrength--;
+                    //System.out.print("contest: #"+contId+" strength: #"+contestStrength);
                     
                     state = EContestantsState.SEAT_AT_THE_BENCH;
                 
