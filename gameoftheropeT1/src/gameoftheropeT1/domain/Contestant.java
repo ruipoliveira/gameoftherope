@@ -6,7 +6,6 @@
 package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
-import static gameoftheropeT1.monitors.MBench.generateStrength;
 import gameoftheropeT1.monitors.MPlayground;
 import gameoftheropeT1.state.EContestantsState;
 import java.util.logging.Level;
@@ -117,7 +116,7 @@ public class Contestant extends Thread{
     }
     
     
-    public static int generateStrength(){
+    private static int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
     

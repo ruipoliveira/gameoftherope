@@ -27,7 +27,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private boolean newComand; 
     private boolean teamAssemble; 
     private boolean endOfGame;  // para os jogadores se sentarem
-    private boolean sentados;
+    private int sentados;
    
     private int numTrial; 
     
@@ -39,6 +39,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int readyA;
     private int readyB;
    
+    private int feito; 
    
     private int terminados;
 
@@ -61,19 +62,18 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull = new HashMap<>();
 
         for (int i =1; i<= 2; i++){
-            coachAndTeamInBench.put(i, new ArrayList<Integer>());
-            coachAndTeamInPull.put(i, new ArrayList<Integer>());
+            coachAndTeamInBench.put(i, new ArrayList<Integer>(5));
+            coachAndTeamInPull.put(i, new ArrayList<Integer>(3));
 
         }
 
 
         nrEquipas = 0; 
         
-        
         numTrial = 0; 
-
+        feito =6; 
         nrPlayer = 0;
-        sentados = false;
+        sentados = 0;
         terminados = 0;
 
     }
@@ -86,7 +86,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
    
     @Override
     public synchronized void callContestants(int coachId ) {
-        System.out.println("***********************Treinador #"+coachId+" espera por um novo jogo***********************"); 
+
+        
         
         while(newComand == false){
             try { 
@@ -96,23 +97,27 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
        
+        
+        
+        System.out.println("***********Treinador #"+coachId+" vamos jogar novo trial!***********"); 
 
+        
         callContestant = true; 
         notifyAll();
         
-        while(nrPlayer != 10)
-            {
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        
+        System.out.println("-------------------"+coachId); 
+        while(nrPlayer != 10) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         
 
         // depois de todos estarem prontos
         Collections.shuffle(coachAndTeamInBench.get(coachId));
-        
 
         List<Integer> constestantInPullID  = new ArrayList<Integer>(); 
 
@@ -125,13 +130,14 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         
-        System.out.println(coachId+"---->"+constestantInPullID.toString()); 
+        System.out.println(coachId+" escolheu "+constestantInPullID.toString()); 
         
         
         coachAndTeamInPull.get(coachId).addAll(constestantInPullID);
         
 
-        System.out.println("************** "+coachAndTeamInPull.toString());
+        System.out.println(" In pull: "+coachAndTeamInPull.toString());
+        
         
         
         if(coachId == 1)
@@ -140,19 +146,26 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         else if(coachId == 2)
             readyB = 5;
         
+        
         notifyAll();  // equipas prontas
         
-        teamAssemble = false; 
+      
         System.out.println("Em espera da equipa #"+coachId); 
         //wait até que os jogadores fiquem posicionados 
-        while(teamAssemble == false){
+       // teamAssemble = false; 
+        teamAssemble = false;
+        
+        while(teamAssemble == false ){
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-         
+
+
+        
+        
         System.out.println("***********************Equipa #"+coachId+" formada***********************"); 
 
      
@@ -161,10 +174,31 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
     @Override
     public synchronized void callTrial(int numTrial) {
-        this.numTrial = numTrial; 
-        System.out.println("Trial" + numTrial);
         
-        if(numTrial > 1){
+        while(feito != 6){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        feito = 0; 
+        
+        this.numTrial = numTrial; 
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Trial #" + numTrial+" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        
+        
+
+        System.out.println("In bench: "+coachAndTeamInBench.toString());
+        System.out.println("In pull: "+coachAndTeamInPull.toString());
+        
+        
+        
+        
+        
+        
+       /** if(numTrial > 1){
             while(sentados == false){
                 try {
                     wait();
@@ -175,7 +209,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             sentados = false;
             newComand = true;
             notifyAll();
-        }
+        }*/
         
         newComand = true; 
         notifyAll();
@@ -192,7 +226,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public synchronized void reviewNotes(int coachId) {
-        while(sentados == false){
+        while(sentados != 6){
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -200,7 +234,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
-        System.out.print("Estão todos sentados, bom jogo equipa!");
+        
+        sentados =0; 
+        System.out.println("Estão todos sentados, bom jogo equipa!");
         notifyAll();
     }
     
@@ -212,9 +248,12 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
       
+        /*
         terminados++; // espera por todos
         System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down");
-        coachAndTeamInPull.get(coachId).clear(); // ir retirando do campo os jogadores
+        
+
+        
         while(terminados != 6){
             try {
                 wait();
@@ -224,19 +263,31 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             
             
         }
-   
-        System.out.println("Total in bench: "+coachAndTeamInBench.toString()); 
-        System.out.println("In pull: "+coachAndTeamInPull.toString()); 
+
+   */
+        //System.out.println("Total in bench: "+coachAndTeamInBench.toString()); 
+       // System.out.println("In pull: "+coachAndTeamInPull.toString()); 
         
-        readyB = readyA = 0; 
+        
+        //System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down");
+        coachAndTeamInPull.get(1).clear(); // ir retirando do campo os jogadores
+        coachAndTeamInPull.get(2).clear(); // ir retirando do campo os jogadores
+
+        
+        nrPlayer = 0 ;
+        readyB = 0;
+        readyA = 0; 
         terminados = 0;
-        sentados = true;
+        sentados++;
+        teamAssemble = false; 
+        feito++; 
         notifyAll();
   
     }
 
     @Override
     public synchronized void followCoachAdvice(int coachId, int contestId) {
+
         
         while (callContestant ==false){
             try { 
@@ -247,18 +298,25 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         
-        System.out.println("chamar jogadores.. "+coachId+"-"+contestId); 
-        coachAndTeamInBench.get(coachId).add(contestId);
+        if (numTrial ==1){
+            
+                System.out.println("chamar jogadores.. "+coachId+"-"+contestId); 
+                coachAndTeamInBench.get(coachId).add(contestId);
+                nrPlayer++;// junta os jogadores nas equipas 
+        }else{
+            
+                //System.out.println(">>>>>>>>><<"+nrPlayer);
+                nrPlayer++; 
+        }
 
-        nrPlayer++;// junta os jogadores nas equipas
-    
-        
-        
         notifyAll();
+        
+  
         
         /// espera que o coach faça shuffle ///////////////////
         if(coachId == 1)
         {
+
            while(readyA == 0){
                try {
                    wait();
@@ -266,11 +324,13 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
+           
            readyA--;
         }
               
         else if(coachId == 2)
         {
+
            while(readyB == 0){
                try {
                    wait();
@@ -279,50 +339,20 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                }
            }
            
+
            readyB--;
         }
         
         
+ 
+                 
         teamAssemble = true;
-        notifyAll();                        
+
         newComand = false; 
-        
 
         callContestant = false; 
-    }
-
-
-    public static int generateStrength(){
-        return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
-    }
-
-
-    
-    private void shuffleArray(int[] ar){
-        Random rnd = ThreadLocalRandom.current();
-        
-        for (int i = ar.length - 1; i > 0; i--){
-            int index = rnd.nextInt(i + 1);
-            int a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
-        }
-    }
-    
-    private int[] contestantInTrial(int[] arrayIdContestant){
-        String s = "";
-        
-        for (int i =0; i<arrayIdContestant.length; i++)
-            arrayIdContestant[i] = i+1; 
-         
-        shuffleArray(arrayIdContestant);
-        for (int i = 0; i < 2; i++)
-            s += arrayIdContestant[i]+",";
-        
-        return Arrays.stream(s.split(",")).filter(word -> !word.isEmpty()).mapToInt(Integer::parseInt).toArray();
-
+        notifyAll();             
         
     }
-
 
 }

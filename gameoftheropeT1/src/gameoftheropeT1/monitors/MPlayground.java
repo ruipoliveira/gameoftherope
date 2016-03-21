@@ -81,8 +81,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
     @Override
     public synchronized void startTrial() {
-        
-        
+        pulls = 0; 
+
         while(newTrial != 2){
             try {
                 wait();
@@ -90,6 +90,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         
         startTrial = true; 
         notifyAll(); 
@@ -100,7 +101,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
         
         
-        System.out.println("esperar que trial acabe.."); 
         while(ultimoPuxou == false){
             try {
                 wait();
@@ -109,7 +109,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
         
+        System.out.println("Trial acabou!!"); 
 
+        
         for (int i =0; i<3; i++ ){
             resultTeamA += strengthTeam.get(1).get(i) ;
             resultTeamB += strengthTeam.get(2).get(i);
@@ -128,6 +130,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
           //  seguidosB++; 
            // seguidosA=0; 
                 
+        }else{
+            System.out.println("Jogo Empatado!!"); 
         }
         
        // System.out.println(seguidosA +" ->"+seguidosB);
@@ -135,17 +139,20 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         System.out.println("Posição da corda: " + posPull); 
         
         
+        
         resultTeamA = resultTeamB = 0; 
         ultimoPuxou = false; 
+        
+        strengthTeam.get(1).clear();
+        strengthTeam.get(2).clear();
+        
+        System.out.println("Força da Equipa!!: "+strengthTeam.toString()); 
         
         if (numTrial == 6 )  // knock out 
             return Constant.GAME_END; 
         else 
             return Constant.GAME_CONTINUATION;
 
-        
-            
-        
     }
 
     ///////////       ////////////////////////////////
@@ -158,6 +165,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         if (newTrial == 2)
             notifyAll();
             
+  
+        
     }
 
     
@@ -181,7 +190,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
-        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO!"); 
+        System.out.println("["+coachId+"] #"+contId + " PUXA !"); 
         
         
         strengthTeam.get(coachId).add(contestStrength);
@@ -205,8 +214,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
            
         }
         
+        startTrial = false; 
+
         ultimoPuxou = true;
+        newTrial = 0;
         notifyAll();
+        
+
         
     }
 

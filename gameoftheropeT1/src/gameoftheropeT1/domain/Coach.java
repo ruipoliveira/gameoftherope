@@ -45,6 +45,7 @@ public class Coach extends Thread{
     public void run(){
         System.out.println("Run coach #"+idCoach); 
         do {
+
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
                     callContestants(idCoach);  /* the coach calls contestants to a trial */
@@ -61,8 +62,7 @@ public class Coach extends Thread{
                     reviewNotes(idCoach);     /* the coach reviews his notes */
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND;                    
                     break;
-                    
-                    
+
             }
         }while (true);
         // cond endOperCoach(idCoach)
