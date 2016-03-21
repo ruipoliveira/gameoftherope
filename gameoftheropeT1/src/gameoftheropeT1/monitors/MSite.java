@@ -35,13 +35,13 @@ public class MSite implements IRefereeSite, ICoachSite{
 
     @Override
     public synchronized void declareGameWinner(char winner) {
+        System.out.println("GAME WINNER: "); 
         endOfGame = true; 
         
     }
     
     @Override
     public synchronized void declareMatchWinner() {
-        
         endOfMatch = true;
     }
 

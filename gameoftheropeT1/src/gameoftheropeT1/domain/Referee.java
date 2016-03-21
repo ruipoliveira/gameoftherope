@@ -38,37 +38,41 @@ public class Referee extends Thread{
         System.out.println("Run referee..."); 
 
         for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
-            
+            t = 0;
             while(true){ // verificar se o jogo acabo... 
 
                 switch(state)
                 {
                     case START_OF_THE_MATCH:
                          
-                        t = 1; 
+                         
                         announceNewGame(g);
                         state = ERefereeState.START_OF_A_GAME;
                         break; 
 
                     case START_OF_A_GAME:
-                         callTrial(t);
+                        t++; 
+                        callTrial(t);
+                         
                          state = ERefereeState.TEAMS_READY;
                         break;
 
                     case TEAMS_READY:
-                         startTrial();
+                         startTrial(t);
                          state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
                         break; 
 
                     case WAIT_FOR_TRIAL_CONCLUSION:
 
                         decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
-                        t++;
+                        
                         if(decision == Constant.GAME_CONTINUATION){ // se receber continuacao do jogo, faz calltrial
                             //callTrial(t);
+                            System.out.println("-----------------------JOGO nãoACABOU "+t+"!!!!-------------------");
                             state = ERefereeState.START_OF_A_GAME;
                         }
                         else if(decision == Constant.GAME_END){
+                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4JOGO ACABOU "+t+" !!!!$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"); 
                             declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
                             state = ERefereeState.END_OF_A_GAME;
                         }
@@ -108,8 +112,8 @@ public class Referee extends Thread{
         bench.callTrial(numTrial);
     }
     
-    private void startTrial(){
-        playground.startTrial();
+    private void startTrial(int numTrial){
+        playground.startTrial(numTrial);
     }
     
     private char assertTrialDecision(){

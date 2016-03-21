@@ -80,7 +80,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
 
     @Override
-    public synchronized void startTrial() {
+    public synchronized void startTrial(int nrTrial) {
+        numTrial = nrTrial; 
+                
         pulls = 0; 
 
         while(newTrial != 2){
@@ -147,9 +149,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(2).clear();
         
         System.out.println("Força da Equipa!!: "+strengthTeam.toString()); 
-        
-        if (numTrial == 6 )  // knock out 
-            return Constant.GAME_END; 
+        System.out.println("NUM TRIAL: "+numTrial);
+        if (numTrial == 4 ){  // knock out
+            return Constant.GAME_END;} 
         else 
             return Constant.GAME_CONTINUATION;
 
@@ -190,7 +192,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
-        System.out.println("["+coachId+"] #"+contId + " PUXA !"); 
+        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO!"); 
         
         
         strengthTeam.get(coachId).add(contestStrength);
