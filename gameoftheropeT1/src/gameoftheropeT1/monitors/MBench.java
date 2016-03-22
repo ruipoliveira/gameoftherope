@@ -48,6 +48,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     Map<Integer, List<Integer>> coachAndTeamInPull; 
 
+    List<Integer> constestantInPullID;
     
     public MBench(MRepository rep){
         callContestant = false; 
@@ -66,8 +67,10 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             coachAndTeamInPull.put(i, new ArrayList<Integer>(3));
 
         }
-
-
+        
+        constestantInPullID = new ArrayList<Integer>(3);
+        
+        
         nrEquipas = 0; 
         
         numTrial = 0; 
@@ -176,7 +179,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
         
     @Override
-    public synchronized void callTrial(int numTrial) {
+    public synchronized void callTrial(int numTrial, int numGame) {
         
         while(feito != 6){
             try { 
@@ -191,7 +194,10 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         this.numTrial = numTrial; 
         System.out.println("\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Trial #" + numTrial+" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
         
-        
+        if(numGame > 1){
+            coachAndTeamInBench.get(1).clear();
+            coachAndTeamInBench.get(2).clear();
+        }
 
         System.out.println("In bench: "+coachAndTeamInBench.toString());
         System.out.println("In pull: "+coachAndTeamInPull.toString());
@@ -251,11 +257,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             
         }
 
-        
-        
-   
-       
-        System.out.println("Estão todos sentados, bom jogo equipa! #"+coachId);
+
         
         if (coachId ==1)
             sentadosA =0; 
@@ -298,10 +300,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down");
         
-        
+       
+      
         coachAndTeamInPull.get(1).clear(); // ir retirando do campo os jogadores
         coachAndTeamInPull.get(2).clear(); // ir retirando do campo os jogadores
-
+        
         
         nrPlayer = 0 ;
         readyB = 0;

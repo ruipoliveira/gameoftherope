@@ -39,7 +39,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
     private int posPull; 
     
-    //private int seguidosA, seguidosB; 
+    private int seguidosA, seguidosB; 
     
     
     private boolean ultimoPuxou;
@@ -70,7 +70,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         posPull = 0; 
         
         
-       // seguidosA = seguidosB =0; 
+        seguidosA = seguidosB =0; 
     }
     
       ///////////       ////////////////////////////////
@@ -110,7 +110,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+         ultimoPuxou = false; 
         System.out.println("Trial acabou!!"); 
 
         
@@ -123,38 +123,42 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
         if (resultTeamA > resultTeamB){
             posPull--;
-          //  seguidosA++; 
-           // seguidosB =0; 
+            //seguidosA++; 
+            //seguidosB =0; 
         }
         
         else if (resultTeamA < resultTeamB){        
             posPull++;
-          //  seguidosB++; 
-           // seguidosA=0; 
+            //seguidosB++; 
+            //seguidosA=0; 
                 
         }else{
             System.out.println("Jogo Empatado!!"); 
         }
         
-       // System.out.println(seguidosA +" ->"+seguidosB);
+        //System.out.println(seguidosA +" ->"+seguidosB);
         
         System.out.println("Posição da corda: " + posPull); 
+        resultTeamA = resultTeamB = 0;          
         
-        
-        
-        resultTeamA = resultTeamB = 0; 
-        ultimoPuxou = false; 
-        
-        strengthTeam.get(1).clear();
-        strengthTeam.get(2).clear();
         
         System.out.println("Força da Equipa!!: "+strengthTeam.toString()); 
         System.out.println("NUM TRIAL: "+numTrial);
-        if (numTrial == 4 ){  // knock out
-            return Constant.GAME_END;} 
-        else 
+        
+        
+        if (numTrial == 2 ){  // knock out
+            //seguidosA = seguidosB = 0;      
+            strengthTeam.get(1).clear();
+            strengthTeam.get(2).clear();
+            return Constant.GAME_END;
+        } 
+        else{
+            resultTeamA = resultTeamB = 0; 
+            strengthTeam.get(1).clear();
+            strengthTeam.get(2).clear();
+           
             return Constant.GAME_CONTINUATION;
-
+        }
     }
 
     ///////////       ////////////////////////////////
@@ -217,7 +221,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
         
         startTrial = false; 
-
         ultimoPuxou = true;
         newTrial = 0;
         notifyAll();

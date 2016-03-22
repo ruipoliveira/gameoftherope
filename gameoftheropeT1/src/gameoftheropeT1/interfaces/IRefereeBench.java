@@ -11,7 +11,5 @@ package gameoftheropeT1.interfaces;
  */
 public interface IRefereeBench {
     
-        public void callTrial(int nrTrial);
-
-    
+        public void callTrial(int nrTrial, int numGame);   
 }

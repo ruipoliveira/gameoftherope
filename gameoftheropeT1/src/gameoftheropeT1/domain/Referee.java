@@ -32,34 +32,35 @@ public class Referee extends Thread{
     @Override
     /*This function represents the life cycle of Referee.*/
     public void run() {
-        int g, t = 1;           /* trial number */ 
+        int g = 1;           /* trial number */ 
         char decision;      /* trial decision */
 
         System.out.println("Run referee..."); 
 
-        for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
-            t = 0;
+        //for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
+            int t = 0;
             while(true){ // verificar se o jogo acabo... 
 
                 switch(state)
                 {
                     case START_OF_THE_MATCH:
-                         
-                         
                         announceNewGame(g);
                         state = ERefereeState.START_OF_A_GAME;
+                        repository.UpdateRefState(state); // actualiza no repositorio
                         break; 
 
                     case START_OF_A_GAME:
                         t++; 
-                        callTrial(t);
+                        callTrial(t,g);
                          
                          state = ERefereeState.TEAMS_READY;
+                         //repository.UpdateRefState(state);  // actualiza no repositorio
                         break;
 
                     case TEAMS_READY:
                          startTrial(t);
-                         state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
+                         state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
+                         //repository.UpdateRefState(state); // actualiza no repositorio
                         break; 
 
                     case WAIT_FOR_TRIAL_CONCLUSION:
@@ -70,28 +71,40 @@ public class Referee extends Thread{
                             //callTrial(t);
                             System.out.println("-----------------------JOGO nãoACABOU "+t+"!!!!-------------------");
                             state = ERefereeState.START_OF_A_GAME;
+                            //repository.UpdateRefState(state);  // actualiza no repositorio
                         }
                         else if(decision == Constant.GAME_END){
                             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4JOGO ACABOU "+t+" !!!!$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"); 
                             declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
                             state = ERefereeState.END_OF_A_GAME;
+                            //repository.UpdateRefState(state);  // actualiza no repositorio
                         }
 
-                        else
+                        else{
                             state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
+                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                        }
                         break; 
 
                     case END_OF_A_GAME:
-                        if(g < Constant.GAMES_PER_MATCH)
+                        if(g <= Constant.GAMES_PER_MATCH){
+                            t = 0; // mete trial a 0
+                            g++;      // incrementa numero do jogo                      
                             state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
-
+                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                        }            
                         else{
                             declareMatchWinner();
                             state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
+                            //repository.UpdateRefState(state);   // actualiza no repositorio
                         } 
-                        break;    
+                        break;
+                    
+                    case END_OF_THE_MATCH:
+                        //repository.UpdateRefState(state);  // actualiza no repositorio
+                        break;
                 }
-            }
+            //}
         }
       
         
@@ -108,8 +121,8 @@ public class Referee extends Thread{
     
     
     
-    private void callTrial(int numTrial){
-        bench.callTrial(numTrial);
+    private void callTrial(int numTrial, int numGame){
+        bench.callTrial(numTrial, numGame);
     }
     
     private void startTrial(int numTrial){

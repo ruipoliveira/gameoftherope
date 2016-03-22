@@ -11,24 +11,24 @@ package gameoftheropeT1.state;
  */
 public enum ERefereeState {
     /*initial state (transition)*/
-    START_OF_THE_MATCH("SOTM"),
+    START_OF_THE_MATCH("SOM"),
     
     /* transition state */
-    START_OF_A_GAME("SOAG"),
+    START_OF_A_GAME("SOG"),
     
     /* blocking state the referee is waken up by the last of the 
     coaches in operation informReferee when the teams are ready to proceed*/    
-    TEAMS_READY("TE"), 
+    TEAMS_READY("TR"), 
     
     /*blocking state the referee is waken up by the last of the contestants
     in operation amDone when the trial has come to an end */
-    WAIT_FOR_TRIAL_CONCLUSION("WFTC"), 
+    WAIT_FOR_TRIAL_CONCLUSION("WTC"), 
     
     /*transition state*/
     END_OF_A_GAME("EOF"), 
     
     /*final state */   
-    END_OF_THE_MATCH("EOTM"); 
+    END_OF_THE_MATCH("EOM"); 
     
    
     private final String acronym;

@@ -5,10 +5,12 @@
  */
 package gameoftheropeT1.interfaces;
 
+import gameoftheropeT1.state.ECoachesState;
+
 /**
  *
  * @author roliveira
  */
 public interface ICoachRepository {
-    
+     public void UpdateCoachState(int coachId, ECoachesState state);
 }

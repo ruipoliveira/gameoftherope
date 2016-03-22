@@ -5,10 +5,14 @@
  */
 package gameoftheropeT1.interfaces;
 
+
+import gameoftheropeT1.state.ERefereeState;
+
 /**
  *
  * @author roliveira
  */
 public interface IRefereeRepository {
     
+      public void UpdateRefState(ERefereeState state);                
 }

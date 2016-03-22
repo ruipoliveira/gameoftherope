@@ -13,7 +13,7 @@ public enum ECoachesState {
     
     /*blocking state the coaches are waken up by the referee in 
     operation callTrial to start selecting next team*/
-    WAIT_FOR_REFEREE_COMMAND("WFRC"),
+    WAIT_FOR_REFEREE_COMMAND("WRC"),
     
     /*blocking state*/
     ASSEMBLE_TEAM("AT"),

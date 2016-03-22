@@ -13,7 +13,7 @@ public enum EContestantsState {
     /*blocking state the contestants are waken up in operation 
     callContestants by their coaches if
     they are selected to join the next trial*/
-    SEAT_AT_THE_BENCH("SATB"),
+    SEAT_AT_THE_BENCH("SAB"),
 
     /*blocking state
     the contestants are waken up in operation startTrial by the referee*/

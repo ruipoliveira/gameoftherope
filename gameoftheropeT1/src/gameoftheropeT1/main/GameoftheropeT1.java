@@ -6,6 +6,7 @@ import gameoftheropeT1.monitors.MBench;
 import gameoftheropeT1.monitors.MPlayground;
 import gameoftheropeT1.monitors.MRepository;
 import gameoftheropeT1.monitors.MSite;
+import gameoftheropeT1.state.ERefereeState;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,12 +34,16 @@ public class GameoftheropeT1 {
      */
     public static void main(String[] args) throws IOException {
         
-        String logname = "logging"+hour()+".txt";
-        
+        //String logname = "logging"+hour()+".txt";
+        String logname = "cenas.txt";
         MRepository repository = new MRepository(logname, Constant.OPPOSING_TEAMS ,Constant.ELEMENTS_IN_TEAM );
- 
-   
-        MBench bench = new MBench(repository);
+        
+        //repository.initWriting();
+        //repository.UpdateRefState(ERefereeState.START_OF_A_GAME);
+        
+        
+        
+        /*MBench bench = new MBench(repository);
         
         MPlayground playground = new MPlayground(repository);
         
@@ -84,7 +89,7 @@ public class GameoftheropeT1 {
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameoftheropeT1.class.getName()).log(Level.SEVERE, null, ex);
             }         
-        }     
+        }  */   
         
 
     }
