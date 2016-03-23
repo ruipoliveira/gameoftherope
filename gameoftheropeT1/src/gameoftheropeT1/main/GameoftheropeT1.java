@@ -36,14 +36,18 @@ public class GameoftheropeT1 {
         
         //String logname = "logging"+hour()+".txt";
         String logname = "cenas.txt";
+        
+        
         MRepository repository = new MRepository(logname, Constant.OPPOSING_TEAMS ,Constant.ELEMENTS_IN_TEAM );
         
-        //repository.initWriting();
-        //repository.UpdateRefState(ERefereeState.START_OF_A_GAME);
+        
+        // This hook allows the simulation always close the logging file even 
+        // when the simulation is forced to close.
+        //ShutdownHook shutdownHook = new ShutdownHook(repository);
+        //Runtime.getRuntime().addShutdownHook(shutdownHook);
         
         
-        
-        /*MBench bench = new MBench(repository);
+        MBench bench = new MBench(repository);
         
         MPlayground playground = new MPlayground(repository);
         
@@ -68,13 +72,14 @@ public class GameoftheropeT1 {
         }
         
         
-        referee.start();
-        
+            referee.start();
+           
         for (Coach c : coach)
             c.start();
         for (Contestant c : contestant)
             c.start();
         
+         
         for(Coach c : coach){
             try {
                 c.join();
@@ -83,13 +88,16 @@ public class GameoftheropeT1 {
             }
         }
         
+        repository.endWriting();
         for (Contestant c : contestant){
             try {
                 c.join();
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameoftheropeT1.class.getName()).log(Level.SEVERE, null, ex);
-            }         
-        }  */   
+            }                         
+        } 
+        
+       
         
 
     }
@@ -103,4 +111,15 @@ public class GameoftheropeT1 {
     
     
      
+}
+// terminar com isto de uma vez!!!!!!!!!!!!
+class ShutdownHook extends Thread {
+    MRepository log;
+    ShutdownHook(MRepository log) {
+        this.log = log;
+    }
+    @Override
+    public void run() {
+        log.endWriting();
+    }
 }

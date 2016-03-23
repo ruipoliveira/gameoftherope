@@ -29,8 +29,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private PrintWriter pw;
     private File log;
     
-    private boolean done;
-    
+    private boolean doneRef;
+    private boolean doneCoach;
+    private boolean doneCont;
     //********************* ESTADOS *********************
     //private ECoachesState coachState;
     //private EContestantsState contState;
@@ -43,17 +44,20 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private Map<Integer, List<Integer>> coachAndTeamPull;
     private List<Integer> playersInPull;
     private int trialNumber;
+   
     
     /********************* PLAYGROUND ******************/
     private int positionPull;
-    private Map<Integer, List<Integer>> strengthTeam; // forca dos jogadores 
+    //private int teamPlayerStrength [][][];
+    
+    private Map<Integer, Integer> strengthTeam; // forca dos jogadores 
     
     /****************** 
      * @param fName
      * @param nrCoaches
      * @param nrContestants **********************/
     public MRepository(String fName, int nrCoaches, int nrContestants){
-        
+       
         this.fName = fName; 
         this.nrCoaches = nrCoaches; 
         this.nrContestants = nrContestants;
@@ -73,11 +77,13 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
         /********** PLAYGROUND **********/
         positionPull = 0;
-        done = false;
-        strengthTeam = new HashMap<>(); 
-        for(int i =1; i< 3; i++ ){
-            strengthTeam.put(i, new ArrayList<Integer>()); 
-        }
+        doneRef = false;
+        doneCoach = false;
+        doneCont = false;
+        
+        strengthTeam = new HashMap<>();
+        coachState = new HashMap<>();
+        contState = new HashMap<>();
         
         
         /**** inicializacoes dos respectivos estadps dos threads ****/
@@ -86,17 +92,19 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         //contState = EContestantsState.SEAT_AT_THE_BENCH;
         for(int t = 0; t < nrCoaches; t++){
             coachState.put(t, ECoachesState.WAIT_FOR_REFEREE_COMMAND);
+             
         }
         
         for(int c = 0; c < nrContestants; c++){
             contState.put(c, EContestantsState.SEAT_AT_THE_BENCH);
+            strengthTeam.put(c, 0);  // para cada jogador a forca e inicializada a zero
         }
         
-        
+     
         
         /*** begin of the process **/      
         initWriting();
-        endWriting();
+        //endWriting();
     }
     
    
@@ -125,6 +133,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             pw.println(sb.toString());
             pw.println(sb2.toString());
             
+            
+            
             writeLine();
             
             
@@ -137,13 +147,48 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     public synchronized void writeLine(){ 
                 
         pw.printf("%3s ", refState.getAcronym()); 
-        if(done){
-            pw.printf("%3s ", refState.getAcronym());
+        if(doneRef == true){
+            System.out.printf("%3s ", refState.getAcronym());
+            doneRef = false;
         }
-   
+        
+        
+        pw.printf("%4s", coachState.get(0).getAcronym());
+        if(doneCoach == true){
+            System.out.printf("%4s", coachState.get(0).getAcronym());
+            doneCoach = false;
+        }
+        
+        for(int c = 0; c < contState.size(); c++){                
+            pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c));
+            
+            if(doneCont == true){
+               System.out.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
+               doneCont = false;
+            }
+        }
+       
+        pw.printf("%4s ", coachState.get(1).getAcronym());        
+        if(doneCoach == true){
+            System.out.printf("%4s", coachState.get(1).getAcronym());
+            doneCoach = false;
+        }
+        
+        for(int c = 0; c < contState.size(); c++){                
+            pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c));
+            
+            if(doneCont == true){
+               System.out.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
+               doneCont = false;
+            }
+        }
+        
+        pw.println();
+       
     }
     
     public synchronized void endWriting(){
+        pw.println();
         pw.println("SIMULATION ENDED!");
         pw.flush();
         pw.close();
@@ -155,6 +200,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     public synchronized void UpdateRefState(ERefereeState state)
     {   
         this.refState = state; // faz apenas update do estado arbitro aqui e diferente porque so ha 1 arbitro
+        doneRef = true;
         writeLine();
     }
     
@@ -162,6 +208,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     public synchronized void UpdateCoachState(int idCoach, ECoachesState state)
     {
         coachState.put(idCoach, state); // update do estado do treinador
+        doneCoach = true;
         writeLine();
     }
     
@@ -169,13 +216,29 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     public synchronized void UpdateContestState(int idContest, EContestantsState state)
     {
         contState.put(idContest, state); // update do estado do jogador
+        doneCont = true;
         writeLine();
     }
     
-    public void setConsole() {
-        done = true;
+    public synchronized void UpdateStrength(int contestId, int contestStrength){ //  update da forca dos jogadores
+        strengthTeam.put(contestId, contestStrength);
+        //done = true;
+        writeLine();
     }
-
+    
+    // actualizacao da posicao da corda
+    public synchronized void UpdatePullPosition(int positionPull){
+        this.positionPull = positionPull;
+        //done = true;
+        writeLine();
+    }
+    
+    // actualizacao do trial
+    public synchronized void UpdateTrialNumber(int trialNumber){
+        this.trialNumber = trialNumber;
+        writeLine();
+    }
+   
 
     
         

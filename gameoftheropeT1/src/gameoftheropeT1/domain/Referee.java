@@ -54,13 +54,13 @@ public class Referee extends Thread{
                         callTrial(t,g);
                          
                          state = ERefereeState.TEAMS_READY;
-                         //repository.UpdateRefState(state);  // actualiza no repositorio
+                         repository.UpdateRefState(state);  // actualiza no repositorio
                         break;
 
                     case TEAMS_READY:
                          startTrial(t);
                          state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                         //repository.UpdateRefState(state); // actualiza no repositorio
+                         repository.UpdateRefState(state); // actualiza no repositorio
                         break; 
 
                     case WAIT_FOR_TRIAL_CONCLUSION:
@@ -71,18 +71,18 @@ public class Referee extends Thread{
                             //callTrial(t);
                             System.out.println("-----------------------JOGO nãoACABOU "+t+"!!!!-------------------");
                             state = ERefereeState.START_OF_A_GAME;
-                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }
                         else if(decision == Constant.GAME_END){
                             System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4JOGO ACABOU "+t+" !!!!$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"); 
                             declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
                             state = ERefereeState.END_OF_A_GAME;
-                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }
 
                         else{
                             state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }
                         break; 
 
@@ -91,17 +91,17 @@ public class Referee extends Thread{
                             t = 0; // mete trial a 0
                             g++;      // incrementa numero do jogo                      
                             state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
-                            //repository.UpdateRefState(state);  // actualiza no repositorio
+                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }            
                         else{
                             declareMatchWinner();
                             state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                            //repository.UpdateRefState(state);   // actualiza no repositorio
+                            repository.UpdateRefState(state);   // actualiza no repositorio
                         } 
                         break;
                     
                     case END_OF_THE_MATCH:
-                        //repository.UpdateRefState(state);  // actualiza no repositorio
+                        repository.UpdateRefState(state);  // actualiza no repositorio
                         break;
                 }
             //}
