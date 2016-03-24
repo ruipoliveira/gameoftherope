@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gameoftheropeT1.monitors;
 import com.sun.javafx.binding.Logging;
 import gameoftheropeT1.interfaces.*; // import all interfaces
-import gameoftheropeT1.main.Constant;
 import gameoftheropeT1.state.*;
 import java.io.FileNotFoundException;
 import java.io.*;
@@ -22,7 +17,7 @@ import java.util.logging.Logger;
  * @author roliveira
  */
 public class MRepository implements IContestantsRepository, IRefereeRepository, ICoachRepository{
-    
+        
     private String fName;
     private int nrCoaches; 
     private int nrContestants; 
@@ -30,8 +25,23 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private File log;
     
     private boolean doneRef;
-    private boolean doneCoach;
-    private boolean doneCont;
+    private boolean doneCoachA;
+    private boolean doneCoachB;
+    private boolean doneContTeamA;
+    private boolean doneContTeamB;
+    private boolean novoJogo;
+    private boolean novoTrial;
+    private boolean novaFormacao;
+    private boolean upStrengthTeamA;
+    private boolean upStrengthTeamB;
+    private boolean upPosPull;
+    private boolean readyA; // equipa A pronta
+    private boolean readyB; // equipa B pronta
+    
+    
+    /********************** REFEREE ********************/
+    private int trialNumber;
+    private int game;
     //********************* ESTADOS *********************
     //private ECoachesState coachState;
     //private EContestantsState contState;
@@ -42,20 +52,23 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     /********************** BENCH ************************/
     private Map<Integer, List<Integer>> coachAndTeamBench;
     private Map<Integer, List<Integer>> coachAndTeamPull;
-    private List<Integer> playersInPull;
-    private int trialNumber;
-   
+    private List<Integer> playersInPullTeamA; // equipa A na corda
+    private List<Integer> playersInPullTeamB;  // equipa B na corda
+    
     
     /********************* PLAYGROUND ******************/
     private int positionPull;
-    //private int teamPlayerStrength [][][];
-    
+    private int forca;
+   
     private Map<Integer, Integer> strengthTeam; // forca dos jogadores 
     
-    /****************** 
+    
+    private int vezes;
+    /**
      * @param fName
      * @param nrCoaches
-     * @param nrContestants **********************/
+     * @param nrContestants 
+     */
     public MRepository(String fName, int nrCoaches, int nrContestants){
        
         this.fName = fName; 
@@ -65,21 +78,33 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
         /********** BENCH ********/
         trialNumber = 0;
+        game = 1;
         coachAndTeamBench = new HashMap<>();
         coachAndTeamPull = new HashMap<>();
+        doneCoachA = false;
+        doneCoachB = false;
      
                
         for (int i =1; i<= 2; i++){
             coachAndTeamBench.put(i, new ArrayList<Integer>(5));
             coachAndTeamPull.put(i, new ArrayList<Integer>(3));
         }
-        playersInPull = new ArrayList<Integer>(3);
+        
         
         /********** PLAYGROUND **********/
         positionPull = 0;
         doneRef = false;
-        doneCoach = false;
-        doneCont = false;
+        doneContTeamA = false;
+        doneContTeamB = false;
+        novaFormacao = false;
+        upStrengthTeamA = false;
+        upStrengthTeamB = false;
+        upPosPull = false;
+        readyA = false; // equipas prontas
+        readyB = false;
+        
+        playersInPullTeamA = new ArrayList<Integer>(3);
+        playersInPullTeamB = new ArrayList<Integer>(3);
         
         strengthTeam = new HashMap<>();
         coachState = new HashMap<>();
@@ -88,20 +113,25 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
         /**** inicializacoes dos respectivos estadps dos threads ****/
         refState = ERefereeState.START_OF_THE_MATCH; 
-        //coachState = ECoachesState.WAIT_FOR_REFEREE_COMMAND;
-        //contState = EContestantsState.SEAT_AT_THE_BENCH;
-        for(int t = 0; t < nrCoaches; t++){
-            coachState.put(t, ECoachesState.WAIT_FOR_REFEREE_COMMAND);
-             
+  
+        for(int t = 1; t <= nrCoaches; t++){
+            coachState.put(t, ECoachesState.WAIT_FOR_REFEREE_COMMAND);  
+            
+            for(int c = 0; c < nrContestants; c++){
+                contState.put(c, EContestantsState.SEAT_AT_THE_BENCH);
+                forca = 10;
+                strengthTeam.put(c, forca);  // para cada jogador a forca e inicializada a zero
+            }
         }
         
-        for(int c = 0; c < nrContestants; c++){
-            contState.put(c, EContestantsState.SEAT_AT_THE_BENCH);
-            strengthTeam.put(c, 0);  // para cada jogador a forca e inicializada a zero
-        }
         
-     
         
+        /********* SITE ********************/
+        novoJogo = false;
+        novoTrial = false;
+        
+        
+        vezes = 0;
         /*** begin of the process **/      
         initWriting();
         //endWriting();
@@ -117,7 +147,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             StringBuilder sb2 = new StringBuilder("Sta    ");
             
             for(int i = 1; i <= nrCoaches; i++){
-                sb.append(" Coa ").append(i);
+                sb.append("    Coa ").append(i);
                 sb2.append("  Stat ");
                 
                 for (int j = 1; j<= nrContestants; j++){
@@ -127,9 +157,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             }
             
             sb.append("              Trial ");
-            sb2.append(" 3 2 1 . 1 2 3 NB PS ");
+            sb2.append("    3 2 1 . 1 2 3 NB PS ");
             
-            pw.println("Game of the Rope - Description of the internal state"); 
+            pw.println("            Game of the Rope - Description of the internal state"); 
             pw.println(sb.toString());
             pw.println(sb2.toString());
             
@@ -145,48 +175,76 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
     
     public synchronized void writeLine(){ 
-                
+                // ESTADO INICIAL
         pw.printf("%3s ", refState.getAcronym()); 
-        if(doneRef == true){
+       
+          for(int i = 1; i <= nrCoaches; i++){
+                pw.printf(" %4s ", coachState.get(i).getAcronym());
+                
+                
+                
+                for (int j = 0; j< nrContestants; j++){
+                    pw.printf(" %3s %2d", contState.get(j).getAcronym(), strengthTeam.get(j));
+                    
+                    // aqui era para actualizar para o jogador da equipa A
+                    /*if(upStrengthTeamA == true && i == 1){
+                        pw.printf(" %3s %2d", contState.get(j).getAcronym(), strengthTeam.get(i));
+                        upStrengthTeamA = false;
+                    }*/
+                }
+          }
+          
+        if(readyA == true || readyB == true){
+            pw.printf("     %s   .   %s",playersInPullTeamA.toString(), playersInPullTeamB.toString());
+            readyA = false;
+            readyB = false;
+        }
+  
+        
+        pw.printf("   %1d ", trialNumber);
+        pw.printf("   %1d ", positionPull); // posicao do centro da corda   
+        
+        vezes++;  // variavel usada para a cena do Game conforme o logging do prof -.-
+        if(game == 1 && vezes == 1){
+            pw.println();
+            pw.printf("Game %1d", game);
+        }
+        
+        if(novoJogo == true){
+            pw.println();
+            pw.printf("Game %1d", game);
+            novoJogo = false;
+        }
+        
+        pw.println();   
+        //escreverProcessoTodo();
+    }
+    
+    public synchronized void escreverProcessoTodo(){
+        
+        
+        /* if(doneRef == true){
             System.out.printf("%3s ", refState.getAcronym());
             doneRef = false;
         }
-        
-        
-        pw.printf("%4s", coachState.get(0).getAcronym());
-        if(doneCoach == true){
-            System.out.printf("%4s", coachState.get(0).getAcronym());
-            doneCoach = false;
+         
+          if(doneCoachA == true){
+           pw.printf("%4s", coachState.get(1).getAcronym());
+           doneCoachA = false;
         }
-        
-        for(int c = 0; c < contState.size(); c++){                
-            pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c));
-            
-            if(doneCont == true){
-               System.out.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
-               doneCont = false;
+          /*if(doneContTeamA == true){
+               pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
+               doneContTeamA = false;
             }
+         if(doneCoachB == true){
+            pw.printf("%4s", coachState.get(1).getAcronym());
+            doneCoachB = false;
         }
-       
-        pw.printf("%4s ", coachState.get(1).getAcronym());        
-        if(doneCoach == true){
-            System.out.printf("%4s", coachState.get(1).getAcronym());
-            doneCoach = false;
-        }
-        
-        for(int c = 0; c < contState.size(); c++){                
-            pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c));
-            
-            if(doneCont == true){
-               System.out.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
-               doneCont = false;
-            }
-        }
-        
-        pw.println();
-       
+            if(doneContTeamB == true){
+               pw.printf(" %3s %2s", contState.get(c).getAcronym(), strengthTeam.get(c)); 
+               doneContTeamB = false;
+            }*/
     }
-    
     public synchronized void endWriting(){
         pw.println();
         pw.println("SIMULATION ENDED!");
@@ -197,7 +255,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     }
     
     @Override
-    public synchronized void UpdateRefState(ERefereeState state)
+    public synchronized void updateRefState(ERefereeState state)
     {   
         this.refState = state; // faz apenas update do estado arbitro aqui e diferente porque so ha 1 arbitro
         doneRef = true;
@@ -205,42 +263,88 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     }
     
     @Override
-    public synchronized void UpdateCoachState(int idCoach, ECoachesState state)
+    public synchronized void updateCoachState(int idCoach, ECoachesState state)
     {
         coachState.put(idCoach, state); // update do estado do treinador
-        doneCoach = true;
+        if(idCoach == 1)
+            doneCoachA = true;
+        
+        else if(idCoach == 2)
+            doneCoachB = true;
+        
         writeLine();
     }
     
     @Override
-    public synchronized void UpdateContestState(int idContest, EContestantsState state)
+    public synchronized void updateTeamAContestState(int idContest, EContestantsState state)
     {
         contState.put(idContest, state); // update do estado do jogador
-        doneCont = true;
+        doneContTeamA = true;
         writeLine();
     }
     
-    public synchronized void UpdateStrength(int contestId, int contestStrength){ //  update da forca dos jogadores
+    @Override
+    public synchronized void updateTeamBContestState(int idContest, EContestantsState state)
+    {
+        contState.put(idContest, state); // update do estado do jogador
+        doneContTeamB = true;
+        writeLine();
+    }
+    
+    @Override
+    public synchronized void updateStrengthTeamA(int contestId, int contestStrength){ //  update da forca dos jogadores
         strengthTeam.put(contestId, contestStrength);
-        //done = true;
+        upStrengthTeamA = true;
         writeLine();
     }
     
-    // actualizacao da posicao da corda
-    public synchronized void UpdatePullPosition(int positionPull){
+    @Override
+    public synchronized void updateStrengthTeamB(int contestId, int contestStrength){ //  update da forca dos jogadores
+        strengthTeam.put(contestId, contestStrength);
+        upStrengthTeamB = true;
+        writeLine();
+    }
+    
+    
+    // actualizacao da posicao da corda -> IrefereeRepository
+    @Override
+    public synchronized void updatePullPosition(int positionPull){
         this.positionPull = positionPull;
-        //done = true;
+        upPosPull = true;
         writeLine();
     }
     
     // actualizacao do trial
-    public synchronized void UpdateTrialNumber(int trialNumber){
+    @Override
+    public synchronized void updateTrialNumber(int trialNumber){
         this.trialNumber = trialNumber;
+        novoTrial = true;
         writeLine();
     }
-   
-
     
+    // actualizacao do numero do jogo
+    @Override
+    public synchronized void updateGameNumber(int game){
+        this.game = game;
+        novoJogo = true;
+        writeLine();
+    }
+    
+    
+    @Override
+    public synchronized void contestantsInPullTeamA(int coachId, int contestId){
+        playersInPullTeamA.add(contestId);
+        coachAndTeamPull.put(coachId, playersInPullTeamA);
+        readyA = true;
+        writeLine();
         
+    } 
     
+    @Override
+    public synchronized void contestantsInPullTeamB(int coachId, int contestId){
+        playersInPullTeamB.add(contestId);
+        coachAndTeamPull.put(coachId, playersInPullTeamB);
+        readyB = true;
+        writeLine();
+    }
 }

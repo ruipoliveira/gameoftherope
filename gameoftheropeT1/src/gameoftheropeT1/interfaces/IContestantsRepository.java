@@ -1,16 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gameoftheropeT1.interfaces;
 
 import gameoftheropeT1.state.EContestantsState;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 public interface IContestantsRepository {
-    public void UpdateContestState(int contestId, EContestantsState state);
+    public void updateTeamAContestState(int contestId, EContestantsState state);
+    public void updateTeamBContestState(int contestId, EContestantsState state);
+    
+    public void updateStrengthTeamA(int contestId, int strength);
+    public void updateStrengthTeamB(int contestId, int strength);
+    
+    public void contestantsInPullTeamA(int coachId, int contestId);
+    public void contestantsInPullTeamB(int coachId, int contestId);
+    
 }

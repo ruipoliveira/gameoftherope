@@ -24,21 +24,35 @@ import java.util.logging.Logger;
 
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 public class GameoftheropeT1 {
 
+    public final static int OPPOSING_TEAMS = 2; 
+    public final static int GAMES_PER_MATCH = 3; 
+    public final static char GAME_CONTINUATION = 'C';
+    public final static char GAME_END = 'E'; // constant created
+    public final static int CONTESTANTS_IN_TRIAL = 3; 
+    public final static int MAX_TRAILS_PER_GAME = 6; 
+    public final static int KNOCK_OUT = 4;  
+    public final static int ELEMENTS_IN_TEAM = 5; 
+    
+    public final static int NUM_OF_COACHES = 2;  // num de treinadores
+    
+    
+    
     /**
+     * Ficheiro main!
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
         
         //String logname = "logging"+hour()+".txt";
-        String logname = "cenas.txt";
-        
-        
-        MRepository repository = new MRepository(logname, Constant.OPPOSING_TEAMS ,Constant.ELEMENTS_IN_TEAM );
+        String logname = "cenas.log";
+
+        MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
         
         // This hook allows the simulation always close the logging file even 
@@ -56,9 +70,9 @@ public class GameoftheropeT1 {
         Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, (IRefereeBench) bench, (IRefereeRepository) repository);
 
         
-        ArrayList<Coach> coach = new ArrayList<>(Constant.OPPOSING_TEAMS);
+        ArrayList<Coach> coach = new ArrayList<>(OPPOSING_TEAMS);
 
-        ArrayList<Contestant> contestant = new ArrayList<>(Constant.ELEMENTS_IN_TEAM);
+        ArrayList<Contestant> contestant = new ArrayList<>(ELEMENTS_IN_TEAM);
         
         for (int idc = 1; idc <= 2 ; idc++){
             coach.add(new Coach(idc, (ICoachBench) bench, (ICoachPlayground) playground,
@@ -76,6 +90,7 @@ public class GameoftheropeT1 {
            
         for (Coach c : coach)
             c.start();
+        
         for (Contestant c : contestant)
             c.start();
         
@@ -89,6 +104,7 @@ public class GameoftheropeT1 {
         }
         
         repository.endWriting();
+        
         for (Contestant c : contestant){
             try {
                 c.join();
@@ -101,11 +117,14 @@ public class GameoftheropeT1 {
         
 
     }
-    
-    
+
+    /**
+     * 
+     * @return Hora atual em formato HH:mm:ss
+     */
     public static String hour(){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date hora = Calendar.getInstance().getTime(); // Ou qualquer outra forma que tem
+        Date hora = Calendar.getInstance().getTime();
         return sdf.format(hora);
     }
     

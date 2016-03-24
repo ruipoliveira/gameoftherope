@@ -38,33 +38,36 @@ public class Coach extends Thread{
     
     @Override
     public void run(){
-        System.out.println("Run coach #"+idCoach); 
         do {
 
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
                     
-                    if (!bench.endOfTheGame()) break; 
+                    //if (!bench.endOfTheGame(idCoach)) break; 
                     
                     callContestants(idCoach);  /* the coach calls contestants to a trial */
-                    
-                    
                     state = ECoachesState.ASSEMBLE_TEAM;
+                    repository.updateCoachState(idCoach, state);
+                    
                     break; 
 
                 case ASSEMBLE_TEAM:      
                     
                    informReferee(idCoach);    /* the coach informs the referee the team is ready */
                     state = ECoachesState.WATCH_TRIAL;
+                    repository.updateCoachState(idCoach, state);
+
                     break; 
                     
                 case WATCH_TRIAL:
                     reviewNotes(idCoach);     /* the coach reviews his notes */
-                    state = ECoachesState.WAIT_FOR_REFEREE_COMMAND;                    
+                    state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
+                    repository.updateCoachState(idCoach, state);
+
                     break;
 
             }
-        }while (bench.endOfTheGame());
+        }while (bench.endOfTheGame(idCoach));
         
         System.out.println("Fim do treinador "+idCoach); 
     

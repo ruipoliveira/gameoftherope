@@ -1,6 +1,5 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
-import gameoftheropeT1.main.Constant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -207,8 +206,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         this.numGame = numGame; 
         this.numTrial = numTrial; 
-        
- 
+
         if (numTrial > 1 || numGame > 1){
             
             while(olaTa == false){
@@ -218,9 +216,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                     Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        
 
-        
             while(feito % 6 != 0){
             try { 
                 wait();
@@ -228,10 +224,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
             }
-            
-            
-            
-            
+
         
         }
         
@@ -241,30 +234,16 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      
         // System.out.println("In bench: "+coachAndTeamInBench.toString());
         //System.out.println("In pull: "+coachAndTeamInPull.toString());
-        
-        
-        
-        
-       
+
         newComand = true; 
         notifyAll();
-       
-        
-        
-       
-       
-
-        
-        
-        
-        
-        
+ 
         
     }
     
     
-    public boolean jogadorEEscolhido(int coachId, int contestId){
-        
+    @Override
+    public boolean isPlayerSelected(int coachId, int contestId){
         return coachAndTeamInPull.get(coachId).contains(contestId); 
     }
     
@@ -281,16 +260,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-            
-       
-
-
+ 
         //System.out.println(coachId +" retirou notas!!!"); 
-        
-
-        
-        
-              
+ 
         coachAndTeamInPull.get(1).clear(); // ir retirando do campo os jogadores
         coachAndTeamInPull.get(2).clear(); // ir retirando do campo os jogadores
         
@@ -318,11 +290,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-      
-       
+
         terminados++; // espera por todos
-        
-        
+
         while(terminados % 6 != 0){
             try {
                 wait();
@@ -352,7 +322,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     }
 
     
-    public boolean estatudosentado(){
+    @Override
+    public boolean allSittingTeams(){
         return sentadosA + sentadosB == 6; 
     }
     
@@ -427,20 +398,12 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         olaTa = false; 
         
         callContestant = false; 
-        notifyAll();             
-        
-        
-        
-                
-       
-        
+        notifyAll();
     }
 
 
-    
-    
     @Override
-    public boolean endOfTheGame(){
+    public boolean endOfTheGame(int c ){
 
         if (numGame <= 3){
             return true; 

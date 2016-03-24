@@ -6,7 +6,6 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.domain.Contestant;
 import gameoftheropeT1.interfaces.*;
-import gameoftheropeT1.main.Constant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,15 +178,16 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
        // System.out.println("****************************"+numTrial); 
         
-        if (numTrial == 6 ){  // knock out
+        if (numTrial == 6){  // knock out
             //seguidosA = seguidosB = 0;      
-            return Constant.GAME_END;
+            return 'E';
         } 
+        else if (posPull >= 4 || posPull <= -4){
+            return 'K'; 
+        }
         else{
             resultTeamA = resultTeamB = 0; 
-
-           
-            return Constant.GAME_CONTINUATION;
+            return 'C';
         }
     }
 
@@ -217,6 +217,15 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
          
     }
 
+    
+    public int getPositionPull(){
+        return posPull; 
+    }
+    
+    public void setPositionPull(int posPull){
+        this.posPull = posPull; 
+    }
+    
     
       ///////////           ////////////////////////////////
     /////////// CONTESTANTS ///////////////////////////////
@@ -252,22 +261,19 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
                 
-        
-        
-        
-        
+
         strengthTeam.get(coachId).add(contestStrength);
         
         System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO! | Força da Equipa: "+strengthTeam.toString()); 
 
         
-        /*
+        
         try {
-            Thread.sleep(4000);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+
 
         pulls++;
         while(pulls % 6 != 0){
@@ -280,17 +286,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
         
         ultimoPuxou = true; 
-        
-        
+
         startTrial = false; 
 
-        
         cenas++; 
         
         notifyAll();
         
- 
-
     }
 
 

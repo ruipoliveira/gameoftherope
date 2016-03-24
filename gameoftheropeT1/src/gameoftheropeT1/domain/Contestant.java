@@ -61,26 +61,57 @@ public class Contestant extends Thread{
                         cenas = false; 
                         break;
                     } 
-                                        
-                    
+
                     state = EContestantsState.STAND_IN_POSITION;
+                    
+                    if(coachId == 1)
+                        repository.updateTeamAContestState(contId, state);
+                    
+                    else if(coachId == 2){
+                        repository.updateTeamBContestState(contId, state);
+                    }
 
                 break;
                 
                 case STAND_IN_POSITION:
                     
                     
-                    if (bench.jogadorEEscolhido(coachId,contId) ){
+                    if (isPlayerSelected(coachId,contId) ){
                         getReady(coachId, contId); /* the contestant takes place at his end of the rope */
                         
                         state = EContestantsState.DO_YOUR_BEST;
+                        
+                        if(coachId == 1){
+                            repository.updateTeamAContestState(contId, state);
+                            repository.contestantsInPullTeamA(coachId, contId);
+                         }
+                        else if(coachId == 2){
+                            repository.updateTeamBContestState(contId, state); 
+                            repository.contestantsInPullTeamB(coachId, contId);
+                    }
+                        
+                        
                     }
                     else{
                         
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                       // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
+                       
+                        if(coachId == 1)
+                            repository.updateTeamAContestState(contId, state);
+                        
+                        else if(coachId == 2)
+                            repository.updateTeamBContestState(contId, state);
+
+ 
+                        // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
                        contestStrength++;
                        
+                        if(coachId == 1)
+                            repository.updateStrengthTeamA(contId, contestStrength);
+                       else if(coachId == 2)
+                            repository.updateStrengthTeamB(contId, contestStrength);
+
+                        
 
                     }
 
@@ -94,7 +125,26 @@ public class Contestant extends Thread{
                     contestStrength--;
                     //System.out.print("contest: #"+contId+" strength: #"+contestStrength);
                     
+                    if(coachId == 1)
+                        repository.updateStrengthTeamA(contId, contestStrength);
+                    
+                    else if(coachId == 2)
+                        repository.updateStrengthTeamB(contId, contestStrength);
+
+                    
+                    
+                    
+                    
+                    
                     state = EContestantsState.SEAT_AT_THE_BENCH;
+                
+                    if(coachId == 1)
+                            repository.updateTeamAContestState(contId, state);
+                        
+                    else if(coachId == 2)
+                            repository.updateTeamBContestState(contId, state);
+
+                
                 
                 break;    
             }
@@ -117,6 +167,10 @@ public class Contestant extends Thread{
     
     private void seatDown(int coachId, int contestId){
         bench.seatDown(coachId, contestId); 
+    }
+    
+    private boolean isPlayerSelected(int coachId, int contestId){
+        return bench.isPlayerSelected(coachId,contId); 
     }
     
     private void followCoachAdvice(int coachId, int contestId){

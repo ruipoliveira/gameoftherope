@@ -13,6 +13,8 @@ public class MSite implements IRefereeSite, ICoachSite{
     private boolean endOfGame; 
     private boolean endOfMatch;
     private int posPull;
+    private int winnerTeamA;
+    private int winnerTeamB; 
     private int nrTrial, numGame; 
     private boolean cenas; 
     
@@ -35,19 +37,42 @@ public class MSite implements IRefereeSite, ICoachSite{
     
     
     @Override
-    public synchronized void declareGameWinner(char winner) {
+    public synchronized void declareGameWinner(int posPull) {
 
-        System.out.println("E o vencedor deste jogo foi...."); 
+        if (posPull < 0 ){
+            System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
+            winnerTeamA++; 
+
+        }
+        else if (posPull > 0){
+            System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
+            winnerTeamB++; 
+        }
+        else{
+            System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
+
+        }
+
+        
+        
     }
     
     @Override
     public synchronized void declareMatchWinner() {
-        cenas = true; 
-        System.out.println("Jogador do match foi...."); 
+
+        System.out.println("***********************************************************");
+        if (winnerTeamA > winnerTeamB)
+            System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
+        else if (winnerTeamA < winnerTeamB) 
+            System.out.println("A Equipa B venceu o match com #" +winnerTeamB +" vitórias!");
+        else
+            System.out.println("O match ficou empatado! :(  A#" +winnerTeamA +" - B#"+winnerTeamB);
+        System.out.println("***********************************************************");
+
     }
 
     @Override
-    public boolean endOperCoach(int idCoach) {
+    public boolean endOperCoach(int cia) {
         return cenas; 
     }
     
