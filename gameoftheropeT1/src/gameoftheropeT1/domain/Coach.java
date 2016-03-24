@@ -22,6 +22,8 @@ public class Coach extends Thread{
     
     private final int idCoach;
     
+    int cenas; 
+    
     private boolean newComand; 
     private boolean callContestants;
     private boolean teamAssemble; 
