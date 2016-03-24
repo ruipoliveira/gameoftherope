@@ -32,80 +32,77 @@ public class Referee extends Thread{
     @Override
     /*This function represents the life cycle of Referee.*/
     public void run() {
-        int g = 1;           /* trial number */ 
-        char decision;      /* trial decision */
+        int nrGame =0, nrTrial = 0;
+            boolean cenas = true; 
 
-        System.out.println("Run referee..."); 
-
-        //for (g = 1; g <= Constant.GAMES_PER_MATCH; g++) { // jogo 1, 2 e jogo 3
-            int t = 0;
-            while(true){ // verificar se o jogo acabo... 
-
+            do{
+                char decision = 'F'; 
+                
                 switch(state)
                 {
                     case START_OF_THE_MATCH:
-                        announceNewGame(g);
+                        nrTrial++; nrGame++; 
+                        announceNewGame(nrGame,nrTrial);
                         state = ERefereeState.START_OF_A_GAME;
-                        repository.UpdateRefState(state); // actualiza no repositorio
                         break; 
-
+                        
                     case START_OF_A_GAME:
-                        t++; 
-                        callTrial(t,g);
-                         
-                         state = ERefereeState.TEAMS_READY;
-                         repository.UpdateRefState(state);  // actualiza no repositorio
+                        callTrial(nrGame,nrTrial );
+                        state = ERefereeState.TEAMS_READY;
                         break;
 
                     case TEAMS_READY:
-                         startTrial(t);
-                         state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                         repository.UpdateRefState(state); // actualiza no repositorio
+                        startTrial(nrTrial);
+                        state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION; 
                         break; 
 
                     case WAIT_FOR_TRIAL_CONCLUSION:
-
-                        decision = assertTrialDecision(); // go to the correct state agreed by the char decisoin
                         
-                        if(decision == Constant.GAME_CONTINUATION){ // se receber continuacao do jogo, faz calltrial
-                            //callTrial(t);
-                            System.out.println("-----------------------JOGO nãoACABOU "+t+"!!!!-------------------");
+                        
+                        if (bench.estatudosentado()){
+                            decision = assertTrialDecision();
+                        }
+                        
+                        
+                        if(decision == Constant.GAME_CONTINUATION){ 
+                            System.out.println("Jogo vai continuar");
+                            nrTrial++; 
                             state = ERefereeState.START_OF_A_GAME;
-                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }
                         else if(decision == Constant.GAME_END){
-                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4JOGO ACABOU "+t+" !!!!$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"); 
-                            declareGameWinner(decision); // transitar no fim do metodo para o estado END_OF_A_GAME
+                            System.out.println("Jogo acaba!");
+                            
+                            declareGameWinner(decision);  
                             state = ERefereeState.END_OF_A_GAME;
-                            repository.UpdateRefState(state);  // actualiza no repositorio
                         }
 
-                        else{
-                            state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                            repository.UpdateRefState(state);  // actualiza no repositorio
-                        }
                         break; 
 
                     case END_OF_A_GAME:
-                        if(g <= Constant.GAMES_PER_MATCH){
-                            t = 0; // mete trial a 0
-                            g++;      // incrementa numero do jogo                      
-                            state = ERefereeState.START_OF_THE_MATCH; // comeca novamente o ciclo
-                            repository.UpdateRefState(state);  // actualiza no repositorio
-                        }            
+                        if(nrGame < 3){
+                            nrTrial=0;
+                            state = ERefereeState.START_OF_THE_MATCH;
+                        }
+
                         else{
                             declareMatchWinner();
                             state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                            repository.UpdateRefState(state);   // actualiza no repositorio
                         } 
                         break;
                     
-                    case END_OF_THE_MATCH:
-                        repository.UpdateRefState(state);  // actualiza no repositorio
-                        break;
+                    case END_OF_THE_MATCH: 
+                        
+                        System.out.println("FIM do match!"); 
+                        cenas = false; 
+                        break; 
+                        
                 }
-            //}
-        }
+               
+            }while(cenas); 
+            
+            System.out.println("Foi-se"); 
+
+                                       
       
         
     }
@@ -121,8 +118,8 @@ public class Referee extends Thread{
     
     
     
-    private void callTrial(int numTrial, int numGame){
-        bench.callTrial(numTrial, numGame);
+    private void callTrial(int nrGame, int nrTrial){
+        bench.callTrial(nrGame, nrTrial);
     }
     
     private void startTrial(int numTrial){
@@ -142,8 +139,8 @@ public class Referee extends Thread{
         site.declareMatchWinner();
     }
     
-    private void announceNewGame(int numGame){
-        site.announceNewGame(numGame);
+    private void announceNewGame(int numGame, int nrTria){
+        site.announceNewGame(numGame, nrTria);
     }
     
     

@@ -66,7 +66,7 @@ public class GameoftheropeT1 {
             
             for (int idct = 1; idct <= 5; idct++){
                 contestant.add(new Contestant(idct, idc, (IContestantsBench) bench,
-                    (IContestantsPlayground) playground, repository));
+                    (IContestantsPlayground) playground, repository, site));
             }
                           
         }

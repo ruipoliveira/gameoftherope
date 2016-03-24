@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
@@ -21,8 +16,6 @@ public class Coach extends Thread{
     private final ICoachRepository repository;
     
     private final int idCoach;
-    
-    int cenas; 
     
     private boolean newComand; 
     private boolean callContestants;
@@ -50,13 +43,18 @@ public class Coach extends Thread{
 
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
+                    
+                    if (!bench.endOfTheGame()) break; 
+                    
                     callContestants(idCoach);  /* the coach calls contestants to a trial */
+                    
                     
                     state = ECoachesState.ASSEMBLE_TEAM;
                     break; 
 
-                case ASSEMBLE_TEAM:          
-                    informReferee(idCoach);    /* the coach informs the referee the team is ready */
+                case ASSEMBLE_TEAM:      
+                    
+                   informReferee(idCoach);    /* the coach informs the referee the team is ready */
                     state = ECoachesState.WATCH_TRIAL;
                     break; 
                     
@@ -66,8 +64,10 @@ public class Coach extends Thread{
                     break;
 
             }
-        }while (true);
-        // cond endOperCoach(idCoach)
+        }while (bench.endOfTheGame());
+        
+        System.out.println("Fim do treinador "+idCoach); 
+    
     }
     
     private void callContestants(int idCoach){

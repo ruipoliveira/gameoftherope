@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  * @author gabriel
  */
 public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
-
     private int newTrial;
     private boolean newComand;
     private double strength;
@@ -35,25 +34,28 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     //que as suas equipas estao prontas
     
     private int lastPlayer;
-    private int pulls;
+    private int pulls, cenas;
     
-    private int posPull; 
+    private int posPull, contI; 
     
     private int seguidosA, seguidosB; 
     
     
-    private boolean ultimoPuxou;
+    private boolean ultimoPuxou, fim;
     
     private int resultTeamA, resultTeamB;  
     
     
-    public MPlayground(MRepository rep){
+      public MPlayground(MRepository rep){
         newTrial = 0; 
         newComand = false;
         numTrial = 0; 
         strength = 0;
+        contI=0;
         resultTeamA = resultTeamB = 0; 
         startTrial = false;
+        fim = false; 
+        
         
         coachAndTeam = new HashMap<Integer, List<Integer>>(); 
         
@@ -69,6 +71,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         
         posPull = 0; 
         
+        cenas=0; 
         
         seguidosA = seguidosB =0; 
     }
@@ -82,9 +85,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void startTrial(int nrTrial) {
         numTrial = nrTrial; 
-                
-        pulls = 0; 
 
+        
         while(newTrial != 2){
             try {
                 wait();
@@ -93,14 +95,23 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
         
+        newTrial =0; 
+      
         
         startTrial = true; 
+        
+        fim = false; 
         notifyAll(); 
+        
+        
+        
+        
         
     }
 
     @Override
     public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
+        
         
         
         while(ultimoPuxou == false){
@@ -110,52 +121,71 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-         ultimoPuxou = false; 
-        System.out.println("Trial acabou!!"); 
+        
+
+        //System.out.println("Trial acabou!!"); 
+
 
         
+        //System.out.println(strengthTeam.get(1));
+        //System.out.println(strengthTeam.get(2));
+
         for (int i =0; i<3; i++ ){
             resultTeamA += strengthTeam.get(1).get(i) ;
             resultTeamB += strengthTeam.get(2).get(i);
+            
+            contI++;
+            notifyAll();
         }
         
         System.out.println("ResultA = "+resultTeamA+"; ResultB = " + resultTeamB); 
 
         if (resultTeamA > resultTeamB){
             posPull--;
-            //seguidosA++; 
-            //seguidosB =0; 
         }
         
         else if (resultTeamA < resultTeamB){        
             posPull++;
-            //seguidosB++; 
-            //seguidosA=0; 
-                
+            
         }else{
             System.out.println("Jogo Empatado!!"); 
         }
         
         //System.out.println(seguidosA +" ->"+seguidosB);
         
-        System.out.println("Posição da corda: " + posPull); 
+        System.out.println("POSIÇÃO DA CORDA: " + posPull); 
         resultTeamA = resultTeamB = 0;          
         
         
-        System.out.println("Força da Equipa!!: "+strengthTeam.toString()); 
-        System.out.println("NUM TRIAL: "+numTrial);
+        
+        while( contI % 3 != 0){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+
+        strengthTeam.get(1).clear();
+        strengthTeam.get(2).clear();
         
         
-        if (numTrial == 2 ){  // knock out
+      //  System.out.println("Tudo limpo forças: "+strengthTeam.toString()); 
+        
+
+        fim = true; 
+      
+
+       // System.out.println("****************************"+numTrial); 
+        
+        if (numTrial == 6 ){  // knock out
             //seguidosA = seguidosB = 0;      
-            strengthTeam.get(1).clear();
-            strengthTeam.get(2).clear();
             return Constant.GAME_END;
         } 
         else{
             resultTeamA = resultTeamB = 0; 
-            strengthTeam.get(1).clear();
-            strengthTeam.get(2).clear();
+
            
             return Constant.GAME_CONTINUATION;
         }
@@ -166,13 +196,25 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void informReferee(int coachId) {
         
-        System.out.println("Coach#" +coachId+ " informa arbitro.."); 
-        newTrial++; 
-        if (newTrial == 2)
-            notifyAll();
+       // System.out.println("Coach#" +coachId+ " informa arbitro.."); 
+        newTrial++;
+        //System.out.println(newTrial); 
+        while(newTrial % 2 != 0){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        
+     //   System.out.println("Tudo informado!!"); 
+
+        notifyAll();
             
   
-        
+         
+         
     }
 
     
@@ -189,6 +231,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
+    
+        
+         
+         
          
     }
 
@@ -196,12 +244,23 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
-        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO!"); 
+        while( contI % 3 != 0){
+            try { 
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                
+        
+        
         
         
         strengthTeam.get(coachId).add(contestStrength);
         
-        System.out.println("Força Equipa: "+strengthTeam.toString()); 
+        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO! | Força da Equipa: "+strengthTeam.toString()); 
+
+        
         /*
         try {
             Thread.sleep(4000);
@@ -211,7 +270,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         */
 
         pulls++;
-        while(pulls != 6){
+        while(pulls % 6 != 0){
             try {
                 wait();
                         } catch (InterruptedException ex) {
@@ -220,13 +279,18 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
            
         }
         
-        startTrial = false; 
-        ultimoPuxou = true;
-        newTrial = 0;
-        notifyAll();
+        ultimoPuxou = true; 
         
+        
+        startTrial = false; 
 
         
+        cenas++; 
+        
+        notifyAll();
+        
+ 
+
     }
 
 

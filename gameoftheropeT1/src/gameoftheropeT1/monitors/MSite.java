@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,39 +12,43 @@ public class MSite implements IRefereeSite, ICoachSite{
     private boolean newGame;
     private boolean endOfGame; 
     private boolean endOfMatch;
-    private int posPull; 
-    
+    private int posPull;
+    private int nrTrial, numGame; 
+    private boolean cenas; 
     
     public MSite(MRepository rep ){
         newGame = false; 
         endOfGame = false; 
         endOfMatch = false;
+        cenas = false; 
     }
     
     
     @Override
-    public synchronized void announceNewGame(int numGame) {
-                
-        System.out.println("Game number: "+numGame); // apenas para ter a certeza que actualiza o numero do jogo
-        newGame = true;
-
+    public synchronized void announceNewGame(int numGame, int nrTrial) {
+        this.nrTrial = nrTrial; 
+        this.numGame = numGame; 
+        
     }
 
+ 
+    
+    
     @Override
     public synchronized void declareGameWinner(char winner) {
-        System.out.println("GAME WINNER: "); 
-        endOfGame = true; 
-        
+
+        System.out.println("E o vencedor deste jogo foi...."); 
     }
     
     @Override
     public synchronized void declareMatchWinner() {
-        endOfMatch = true;
+        cenas = true; 
+        System.out.println("Jogador do match foi...."); 
     }
 
     @Override
     public boolean endOperCoach(int idCoach) {
-        return endOfGame; 
+        return cenas; 
     }
     
 }

@@ -15,4 +15,5 @@ public interface ICoachBench {
     
     public void reviewNotes(int coachId);
     
+    public boolean endOfTheGame(); 
 }

@@ -7,6 +7,7 @@ package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
 import gameoftheropeT1.monitors.MPlayground;
+import gameoftheropeT1.monitors.MSite;
 import gameoftheropeT1.state.EContestantsState;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ public class Contestant extends Thread{
     private final IContestantsBench bench;
     private final IContestantsPlayground playground;
     private final IContestantsRepository repository;
+    private final MSite site; 
     
     private int coachId;
     private EContestantsState state; 
@@ -27,11 +29,12 @@ public class Contestant extends Thread{
     
     private int contestStrength;
     
-    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository)
+    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository, MSite site)
     {
         this.bench = bench;
         this.playground = playground;
         this.repository = repository;
+        this.site = site; 
         
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
@@ -44,29 +47,41 @@ public class Contestant extends Thread{
     @Override
     public void run() {
         
-  
-        System.out.println("Run Contestant #"+ this.contId); 
+        
+        boolean cenas = true; 
+      //  System.out.println("Run Contestant #"+ this.contId); 
         do {
             switch(this.state)
             {                             
-                case SEAT_AT_THE_BENCH:
+                case SEAT_AT_THE_BENCH:         
+                    
                     followCoachAdvice (coachId, contId); /* the contestant complies to coach decision */
+                    
+                    if (site.endOperCoach(coachId)){
+                        cenas = false; 
+                        break;
+                    } 
+                                        
+                    
                     state = EContestantsState.STAND_IN_POSITION;
 
                 break;
                 
                 case STAND_IN_POSITION:
                     
-                    if (!bench.jogadorEEscolhido(coachId,contId) ){
-                        state = EContestantsState.SEAT_AT_THE_BENCH;
-                       // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
-                       contestStrength++;
-                    }
-                    else{
-                       // System.out.println(coachId+"-"+contId+" -> JOGA!");                             
+                    
+                    if (bench.jogadorEEscolhido(coachId,contId) ){
                         getReady(coachId, contId); /* the contestant takes place at his end of the rope */
                         
                         state = EContestantsState.DO_YOUR_BEST;
+                    }
+                    else{
+                        
+                        state = EContestantsState.SEAT_AT_THE_BENCH;
+                       // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
+                       contestStrength++;
+                       
+
                     }
 
                 break;
@@ -82,8 +97,13 @@ public class Contestant extends Thread{
                     state = EContestantsState.SEAT_AT_THE_BENCH;
                 
                 break;    
-            }         
-        } while (true); // acaba o jogo.... 
+            }
+            
+            //System.out.println(">>>JOGO ACABOU!"+bench.endOfTheGame());
+        } while (cenas); // acaba o jogo.... 
+        
+        System.out.println("Fim jogador #"+coachId); 
+        
     }
     
     
