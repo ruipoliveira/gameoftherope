@@ -6,19 +6,11 @@ import gameoftheropeT1.monitors.MBench;
 import gameoftheropeT1.monitors.MPlayground;
 import gameoftheropeT1.monitors.MRepository;
 import gameoftheropeT1.monitors.MSite;
-import gameoftheropeT1.state.ERefereeState;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,13 +35,11 @@ public class GameoftheropeT1 {
     
     
     
-    /**
-     * Ficheiro main!
-     * @param args the command line arguments
-     */
+
+    
     public static void main(String[] args) throws IOException {
         
-        //String logname = "logging"+hour()+".txt";
+        //String logname = "gameoftherope_"+hour()+".log";
         String logname = "cenas.log";
 
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
@@ -57,8 +47,8 @@ public class GameoftheropeT1 {
         
         // This hook allows the simulation always close the logging file even 
         // when the simulation is forced to close.
-        //ShutdownHook shutdownHook = new ShutdownHook(repository);
-        //Runtime.getRuntime().addShutdownHook(shutdownHook);
+      //  ShutdownHook shutdownHook = new ShutdownHook(repository);
+       // Runtime.getRuntime().addShutdownHook(shutdownHook);
         
         
         MBench bench = new MBench(repository);
@@ -67,7 +57,8 @@ public class GameoftheropeT1 {
         
         MSite site = new MSite(repository);
         
-        Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, (IRefereeBench) bench, (IRefereeRepository) repository);
+        Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, 
+                (IRefereeBench) bench, (IRefereeRepository) repository, GAMES_PER_MATCH);
 
         
         ArrayList<Coach> coach = new ArrayList<>(OPPOSING_TEAMS);
@@ -82,11 +73,10 @@ public class GameoftheropeT1 {
                 contestant.add(new Contestant(idct, idc, (IContestantsBench) bench,
                     (IContestantsPlayground) playground, repository, site));
             }
-                          
         }
         
         
-            referee.start();
+        referee.start();
            
         for (Coach c : coach)
             c.start();
@@ -94,7 +84,6 @@ public class GameoftheropeT1 {
         for (Contestant c : contestant)
             c.start();
         
-         
         for(Coach c : coach){
             try {
                 c.join();
@@ -103,7 +92,7 @@ public class GameoftheropeT1 {
             }
         }
         
-        repository.endWriting();
+        
         
         for (Contestant c : contestant){
             try {
@@ -113,9 +102,16 @@ public class GameoftheropeT1 {
             }                         
         } 
         
-       
         
-
+   
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        repository.endWriting();
+        
     }
 
     /**

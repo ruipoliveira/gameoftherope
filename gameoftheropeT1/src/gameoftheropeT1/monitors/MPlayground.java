@@ -44,8 +44,10 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
     private int resultTeamA, resultTeamB;  
     
+    private MRepository repository; 
     
-      public MPlayground(MRepository rep){
+      public MPlayground(MRepository repository){
+        this.repository = repository; 
         newTrial = 0; 
         newComand = false;
         numTrial = 0; 
@@ -111,8 +113,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
         
-        
-        
         while(ultimoPuxou == false){
             try {
                 wait();
@@ -149,10 +149,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }else{
             System.out.println("Jogo Empatado!!"); 
         }
-        
+        repository.updatePullPosition(posPull);
+       
         //System.out.println(seguidosA +" ->"+seguidosB);
         
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
+
         resultTeamA = resultTeamB = 0;          
         
         
@@ -264,16 +266,16 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
         strengthTeam.get(coachId).add(contestStrength);
         
-        System.out.println("["+coachId+"] #"+contId + " PUXA CRLHHOOO! | Força da Equipa: "+strengthTeam.toString()); 
+        System.out.println("["+coachId+"] #"+contId + " PUXA A CORDA!! | Força da Equipa: "+strengthTeam.toString()); 
 
         
-        
+        /*
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+*/
 
         pulls++;
         while(pulls % 6 != 0){

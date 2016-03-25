@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gameoftheropeT1.domain;
 
 import gameoftheropeT1.interfaces.*;
-import gameoftheropeT1.monitors.MPlayground;
 import gameoftheropeT1.monitors.MSite;
 import gameoftheropeT1.state.EContestantsState;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -63,14 +55,14 @@ public class Contestant extends Thread{
                     } 
 
                     state = EContestantsState.STAND_IN_POSITION;
-                    
+                 /*   
                     if(coachId == 1)
                         repository.updateTeamAContestState(contId, state);
                     
                     else if(coachId == 2){
                         repository.updateTeamBContestState(contId, state);
                     }
-
+*/
                 break;
                 
                 case STAND_IN_POSITION:
@@ -81,36 +73,36 @@ public class Contestant extends Thread{
                         
                         state = EContestantsState.DO_YOUR_BEST;
                         
-                        if(coachId == 1){
+                    /*    if(coachId == 1){
                             repository.updateTeamAContestState(contId, state);
                             repository.contestantsInPullTeamA(coachId, contId);
                          }
                         else if(coachId == 2){
                             repository.updateTeamBContestState(contId, state); 
                             repository.contestantsInPullTeamB(coachId, contId);
-                    }
+                    }*/
                         
                         
                     }
                     else{
                         
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                       
+   /*                    
                         if(coachId == 1)
                             repository.updateTeamAContestState(contId, state);
                         
                         else if(coachId == 2)
                             repository.updateTeamBContestState(contId, state);
 
- 
+ */
                         // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
                        contestStrength++;
                        
-                        if(coachId == 1)
+                   /*     if(coachId == 1)
                             repository.updateStrengthTeamA(contId, contestStrength);
                        else if(coachId == 2)
                             repository.updateStrengthTeamB(contId, contestStrength);
-
+*/
                         
 
                     }
@@ -124,27 +116,27 @@ public class Contestant extends Thread{
                     
                     contestStrength--;
                     //System.out.print("contest: #"+contId+" strength: #"+contestStrength);
-                    
+                  /*  
                     if(coachId == 1)
                         repository.updateStrengthTeamA(contId, contestStrength);
                     
                     else if(coachId == 2)
                         repository.updateStrengthTeamB(contId, contestStrength);
-
+*/
                     
                     
                     
                     
                     
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                
+                /*
                     if(coachId == 1)
                             repository.updateTeamAContestState(contId, state);
                         
                     else if(coachId == 2)
                             repository.updateTeamBContestState(contId, state);
 
-                
+                */
                 
                 break;    
             }
@@ -156,11 +148,18 @@ public class Contestant extends Thread{
         
     }
     
-    
+    /**
+     * 
+     * @param state 
+     */
     public void setState(EContestantsState state) {
         this.state = state;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public EContestantsState getCurrentState() {
         return state;
     }
@@ -184,13 +183,20 @@ public class Contestant extends Thread{
     private void getReady(int coachId, int contestId){
         playground.getReady(coachId, contestId);
     }
-
-    private boolean endOperContestants(int contId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    /**
+     * Permite aceder à força do respectivo jogador. 
+     * @return contestStrength 
+     */
+    public int getStrength(){
+        return contestStrength; 
     }
     
-    
-    private static int generateStrength(){
+    /**
+     * Permite gerar de forma aleatoria a força associada a cada jogador.
+     * @return int - valor inteiro entre 10 e 20 
+     */
+    public int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
     

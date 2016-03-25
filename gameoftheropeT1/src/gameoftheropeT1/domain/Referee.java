@@ -1,136 +1,149 @@
 package gameoftheropeT1.domain; 
 
-/**
- *
- * @author roliveira
- */
-import gameoftheropeT1.interfaces.*;
+import gameoftheropeT1.interfaces.IRefereeBench;
+import gameoftheropeT1.interfaces.IRefereePlayground;
+import gameoftheropeT1.interfaces.IRefereeRepository;
+import gameoftheropeT1.interfaces.IRefereeSite;
 import gameoftheropeT1.state.ERefereeState;
 
+/**
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
+ */
 public class Referee extends Thread{
+    public final static int PULL_CENTER = 0;
     private final IRefereeSite site;
     private final IRefereePlayground playground;
     private final IRefereeRepository repository;
     private final IRefereeBench bench; 
     private ERefereeState state;
+    private int nrGamesMax; 
     
-    
-    public Referee(IRefereePlayground playground, IRefereeSite site, IRefereeBench bench, IRefereeRepository repository){
+    public Referee(IRefereePlayground playground, IRefereeSite site, 
+            IRefereeBench bench, IRefereeRepository repository, int nrGamesMax){
         this.playground = playground;
         this.site = site;
         this.bench = bench; 
         this.repository = repository;
+        this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
     }
     
+    /**
+     * Esta função representada o ciclo de vida do arbitro.
+    */
     @Override
-    /*This function represents the life cycle of Referee.*/
     public void run() {
         int nrGame =0, nrTrial = 0;
-            boolean cenas = true; 
+        boolean endOp = true; 
 
-            do{
-                char decision = 'F'; 
-                
-                switch(state)
-                {
-                    case START_OF_THE_MATCH:
-                        nrTrial++; nrGame++;
-                        repository.updateGameNumber(nrGame);// incrementa numero do jogo                      
-                        announceNewGame(nrGame,nrTrial);
-                        state = ERefereeState.START_OF_A_GAME;
-                        repository.updateRefState(state); // actualiza no repositorio
-                        break; 
-                        
-                    case START_OF_A_GAME:
-                        callTrial(nrGame,nrTrial );
-                        repository.updateTrialNumber(nrTrial);
-                        state = ERefereeState.TEAMS_READY;
-                        repository.updateRefState(state);  // actualiza no repositorio
-                        break;
+        do{
+            char decision = 0; 
 
-                    case TEAMS_READY:
-                        startTrial(nrTrial);
-                        repository.updatePullPosition(playground.getPositionPull());
-                        state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                        repository.updateRefState(state); // actualiza no repositorio
-                        break; 
+            switch(state){
+                case START_OF_THE_MATCH:
+                    nrTrial++;
+                    nrGame++;
+                    repository.updateGameNumber(nrGame);
+                    repository.updateTrialNumber(nrTrial);
+                    announceNewGame(nrGame,nrTrial);
+                    state = ERefereeState.START_OF_A_GAME;
+                   // repository.updateRefState(state); // actualiza no repositorio
+                    break; 
 
-                    case WAIT_FOR_TRIAL_CONCLUSION:
-                        
-                        
-                        if (bench.allSittingTeams()){
-                            decision = assertTrialDecision();
-                        }
-                        
-                        if(decision == 'C'){ 
-                            System.out.println("Jogo vai continuar");
-                            nrTrial++; 
-                            state = ERefereeState.START_OF_A_GAME;
-                            repository.updateRefState(state);  // actualiza no repositorio
-                        }
-                        else if(decision == 'E' || decision == 'K'){
-                            
-                            if (decision == 'E')
-                                System.out.println("Jogo acaba! - excedeu numero de trials! ");
-                            else if (decision == 'K')
-                                System.out.println("Jogo acaba! - knock out!");
-                            
-                            
-                            int posPull = playground.getPositionPull(); 
+                case START_OF_A_GAME:
+                    callTrial(nrGame,nrTrial);
+                 //   repository.updateTrialNumber(nrTrial);
+                    state = ERefereeState.TEAMS_READY;
+                   // repository.updateRefState(state);  // actualiza no repositorio
+                    break;
 
-                            declareGameWinner(posPull); 
-                            
-                            playground.setPositionPull(0);
-                            repository.updatePullPosition(playground.getPositionPull());
-                            
-                            state = ERefereeState.END_OF_A_GAME;
-                            repository.updateRefState(state);  // actualiza no repositorio
-                        }
+                case TEAMS_READY:
+                    startTrial(nrTrial);
+                //    repository.updatePullPosition(playground.getPositionPull());
+                    state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
+                  //  repository.updateRefState(state); // actualiza no repositorio
+                    break; 
 
-                        break; 
+                case WAIT_FOR_TRIAL_CONCLUSION:
 
-                    case END_OF_A_GAME:
-                        if(nrGame < 3){
-                            nrTrial=0;
-                            state = ERefereeState.START_OF_THE_MATCH;
-                            repository.updateRefState(state);
-                        }
+                    if (bench.allSittingTeams()){
+                        decision = assertTrialDecision();
+                    }
 
-                        else{
-                            declareMatchWinner();
-                            state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                            repository.updateRefState(state);
-                        } 
-                        break;
+                    //repository.updatePullPosition(playground.getPositionPull());
                     
-                    case END_OF_THE_MATCH: 
-                        
-                        System.out.println("FIM do match!");
-                        repository.updateRefState(state);
-                        cenas = false; 
-                        break; 
-                        
-                }
-               
-            }while(cenas); 
-            
-            System.out.println("Foi-se"); 
+                    if(decision == 'C'){ 
+                        System.out.println("Jogo vai continuar");
+                        nrTrial++; 
+                        repository.updateTrialNumber(nrTrial);
+                        state = ERefereeState.START_OF_A_GAME;
+                  //      repository.updateRefState(state);  // actualiza no repositorio
+                    }
+                    else if(decision == 'E' || decision == 'K'){
+
+                        if (decision == 'E')
+                            System.out.println("Jogo acaba! - excedeu numero de trials! ");
+                        else if (decision == 'K')
+                            System.out.println("Jogo acaba! - knock out!");
+
+                        int posPull = playground.getPositionPull(); 
+
+                        declareGameWinner(posPull); 
+
+                        setPositionPull(PULL_CENTER);
+                        //repository.updatePullPosition(posPull);
 
 
+                        state = ERefereeState.END_OF_A_GAME;
+                      //  repository.updateRefState(state);  // actualiza no repositorio
+                    }
+                    break; 
+
+                case END_OF_A_GAME:
+                    if(nrGame < nrGamesMax){
+                        nrTrial=0;
+                        state = ERefereeState.START_OF_THE_MATCH;
+                    //    repository.updateRefState(state);
+                    }
+
+                    else{
+                        declareMatchWinner();
+                        state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
+                      //  repository.updateRefState(state);
+                    } 
+                    break;
+
+                case END_OF_THE_MATCH: 
+
+                    System.out.println("Fim do match!");
+              //      repository.updateRefState(state);
+                    endOp = false; 
+                    break; 
+            }
+
+        }while(endOp);
     }
-    /* actualiza estado */
+    
+    
+    
+    /**
+     * Permite atualizar o estado actual do arbitro
+     * @param state estado do cenas
+     */
     public void setState(ERefereeState state) {
         this.state = state;
     }
     
-    /* retorna estado actual */
+    /**
+     * Permite aceder ao estado actual do arbitro
+     * @return ERefereeState retorna enumarado que representa o estado atual do arbitro.
+     */
     public ERefereeState getCurrentState() {
         return state;
     }
-    
-    
-    
+
     private void callTrial(int nrGame, int nrTrial){
         bench.callTrial(nrGame, nrTrial);
     }
@@ -142,7 +155,6 @@ public class Referee extends Thread{
     private char assertTrialDecision(){
         return playground.assertTrialDecision(); 
     }
-    
     
     private void declareGameWinner(int posPull){
         site.declareGameWinner(posPull);
@@ -156,6 +168,8 @@ public class Referee extends Thread{
         site.announceNewGame(numGame, nrTria);
     }
     
-    
+    private void setPositionPull(int pos){
+        playground.setPositionPull(pos); 
+    }
     
 }
