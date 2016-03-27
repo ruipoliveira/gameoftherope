@@ -79,7 +79,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
      * @return decision trial decision 
      */
     @Override
-    public synchronized char assertTrialDecision() { // isto nao e bem assim, temos que ver melhor
+    public synchronized char assertTrialDecision() { 
         
         while(lastPulled == false){
             try {
@@ -128,7 +128,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(1).clear();
         strengthTeam.get(2).clear();
 
-        if (numTrial == 6){  // knock out
+        if (numTrial == 6){  
             return 'E';
         } 
         else if (posPull >= 4 ){
@@ -199,12 +199,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         
         System.out.println("["+coachId+"] #"+contId + " PUXA A CORDA!! | Força da Equipa: "+strengthTeam.toString()); 
 
-/*        try {
+        try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-*/
+
         allPulled++;
         while(allPulled % 6 != 0){
             try {
