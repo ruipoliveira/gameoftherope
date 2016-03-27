@@ -16,7 +16,7 @@ public class Contestant extends Thread{
     private final IContestantsRepository repository;
     private final MSite site; 
     
-    private int coachId;
+    private final int coachId;
     private EContestantsState state; 
     private final int contId;
     
@@ -46,8 +46,6 @@ public class Contestant extends Thread{
         do {
             switch(this.state){                             
                 case SEAT_AT_THE_BENCH:         
-                    
-      //              repository.updateStrength(contId, contestStrength);
                     followCoachAdvice (coachId, contId);
                     
                     if (site.endOperCoach(coachId)){
@@ -56,6 +54,7 @@ public class Contestant extends Thread{
                     } 
                     
                     state = EContestantsState.STAND_IN_POSITION;
+                    repository.updateContestantState(coachId, contId, state);
                  
                 break;
                 
@@ -64,12 +63,13 @@ public class Contestant extends Thread{
                     if (isPlayerSelected(coachId,contId) ){
                         getReady(coachId, contId);  
                         state = EContestantsState.DO_YOUR_BEST;
+                        repository.updateContestantState(coachId, contId, state);
                     }
                     else{
                         state = EContestantsState.SEAT_AT_THE_BENCH;
+                        repository.updateContestantState(coachId, contId, state);
                         contestStrength++;
-                        repository.updateStrengthAndWrite(coachId,contId, contestStrength);
-
+                        repository.updateStrengthAndWrite(coachId, contId, contestStrength);
                     }
 
                 break;
@@ -81,6 +81,7 @@ public class Contestant extends Thread{
                     contestStrength--;
                     repository.updateStrengthAndWrite(coachId,contId, contestStrength);
                     state = EContestantsState.SEAT_AT_THE_BENCH;
+                    repository.updateContestantState(coachId, contId, state);
 
                 break;    
             }
@@ -88,7 +89,6 @@ public class Contestant extends Thread{
         } while (endOp); 
         
         System.out.println("Fim jogador #"+coachId); 
-        
     }
     
     /**
@@ -142,8 +142,5 @@ public class Contestant extends Thread{
     public int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
-    
-    
-        
-    
+
 }

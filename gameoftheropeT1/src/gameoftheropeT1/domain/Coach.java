@@ -40,21 +40,21 @@ public class Coach extends Thread{
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
                     if (!bench.endOfTheGame(idCoach)) break; 
-                    callContestants(idCoach);  /* the coach calls contestants to a trial */
+                    callContestants(idCoach);
                     state = ECoachesState.ASSEMBLE_TEAM;
-              //      repository.updateCoachState(idCoach, state);
+                    repository.updateCoachState(idCoach, state);
                     break; 
 
                 case ASSEMBLE_TEAM:      
-                    informReferee(idCoach);    /* the coach informs the referee the team is ready */
+                    informReferee(idCoach); 
                     state = ECoachesState.WATCH_TRIAL;
-                 //   repository.updateCoachState(idCoach, state);
+                    //repository.updateCoachState(idCoach, state); ??
                     break; 
                     
                 case WATCH_TRIAL:
-                    reviewNotes(idCoach);     /* the coach reviews his notes */
+                    reviewNotes(idCoach);
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-               //     repository.updateCoachState(idCoach, state);
+                    repository.updateCoachState(idCoach, state);
                     break;
             }
         }while (bench.endOfTheGame(idCoach));

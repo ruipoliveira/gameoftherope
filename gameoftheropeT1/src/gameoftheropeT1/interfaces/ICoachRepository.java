@@ -8,5 +8,7 @@ import gameoftheropeT1.state.ECoachesState;
  * @version 1.0
  */
 public interface ICoachRepository {
-     public void updateCoachState(int coachId, ECoachesState state);
+    
+    public void updateCoachState(int coachId, ECoachesState state);
+     
 }

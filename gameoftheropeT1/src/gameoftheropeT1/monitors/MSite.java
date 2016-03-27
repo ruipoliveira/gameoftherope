@@ -1,11 +1,10 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
- * @author gabriel
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 public class MSite implements IRefereeSite, ICoachSite{
     MRepository repository; 
@@ -16,27 +15,31 @@ public class MSite implements IRefereeSite, ICoachSite{
     private int winnerTeamA;
     private int winnerTeamB; 
     private int nrTrial, numGame; 
-    private boolean cenas; 
+    private boolean endOp; 
     
     public MSite(MRepository repository ){
         this.repository = repository; 
         newGame = false; 
         endOfGame = false; 
         endOfMatch = false;
-        cenas = false; 
+        endOp = false; 
     }
     
-    
+    /**
+     * The referee starts a game. The game number should be updated. Both game header and internal state should be saved.
+     * @param numGame
+     * @param nrTrial 
+     */
     @Override
     public synchronized void announceNewGame(int numGame, int nrTrial) {
         this.nrTrial = nrTrial; 
         this.numGame = numGame; 
-        
     }
-
- 
     
-    
+    /**
+     * The referee announces which teams has won the match. Both internal state and match result should be saved.
+     * @param posPull 
+     */
     @Override
     public synchronized void declareGameWinner(int posPull) {
 
@@ -44,7 +47,6 @@ public class MSite implements IRefereeSite, ICoachSite{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
             repository.isEnd(numGame, "A");
             winnerTeamA++; 
-
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
@@ -55,11 +57,11 @@ public class MSite implements IRefereeSite, ICoachSite{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
             repository.wasADraw(numGame);
         }
-
-        
-        
     }
     
+    /**
+     * The referee announces which teams has won the match. Both internal state and match result should be saved.
+     */
     @Override
     public synchronized void declareMatchWinner() {
 
@@ -80,10 +82,14 @@ public class MSite implements IRefereeSite, ICoachSite{
         System.out.println("***********************************************************");
 
     }
-
+    /**
+     * checks coach operation ended
+     * @param id
+     * @return 
+     */
     @Override
-    public boolean endOperCoach(int cia) {
-        return cenas; 
+    public boolean endOperCoach(int id) {
+        return endOp; 
     }
     
 }

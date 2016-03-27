@@ -12,9 +12,11 @@ public interface IContestantsRepository {
     public void updateContestantState(int idTeam, int contestId, EContestantsState state);
     
     public void updateStrength(int idTeam, int contestId, int contestStrength); 
+    
     public void updateStrengthAndWrite(int idTeam, int contestId, int strength);
     
     public void addContestantsInPull(int coachId, List<Integer> inPull);
-    public void removeContestantsInPull(int coachId, int contestId);
+    
+    public void removeContestantsInPull(int coachId);
     
 }

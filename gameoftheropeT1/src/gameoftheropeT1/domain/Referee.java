@@ -13,6 +13,11 @@ import gameoftheropeT1.state.ERefereeState;
  */
 public class Referee extends Thread{
     public final static int PULL_CENTER = 0;
+    public final static char GAME_CONTINUATION = 'C';
+    public final static char GAME_END = 'E';
+    public final static char KNOCK_OUT_A = 'A';
+    public final static char KNOCK_OUT_B = 'B';
+    
     private final IRefereeSite site;
     private final IRefereePlayground playground;
     private final IRefereeRepository repository;
@@ -46,49 +51,43 @@ public class Referee extends Thread{
                     nrTrial++;
                     nrGame++;
                     repository.updateGameNumber(nrGame);
+                    repository.updateTrialNumber(nrTrial);
                     announceNewGame(nrGame,nrTrial);
                     state = ERefereeState.START_OF_A_GAME;
                     break; 
 
                 case START_OF_A_GAME:
                     callTrial(nrGame,nrTrial);
-                   // repository.updateTrialNumber(nrTrial);
                     state = ERefereeState.TEAMS_READY;
                     repository.updateRefState(state);
                     break;
 
                 case TEAMS_READY:
                     startTrial(nrGame,nrTrial);
-                  //  repository.updatePullPosition(playground.getPositionPull());
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
                     repository.updateRefState(state); 
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
-
                     if (bench.allSittingTeams()){
                         decision = assertTrialDecision();
                     }
 
-                    
-                    if(decision == 'C'){ 
+                    if(decision == GAME_CONTINUATION ){ 
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
-                  //      repository.updateTrialNumber(nrTrial);
                         state = ERefereeState.START_OF_A_GAME;
                         repository.updateRefState(state);  // actualiza no repositorio
                     }
-                    else if(decision == 'E' || decision == 'A' || decision == 'B' ){
+                    else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
 
-                        if (decision == 'E')
+                        if (decision == GAME_END)
                             System.out.println("Jogo acaba! - excedeu numero de trials! ");
-                        else if (decision == 'A'){
+                        else if (decision == KNOCK_OUT_A){
                             System.out.println("Jogo acaba! - knock out! Ganha A");
                             repository.isKnockOut(nrGame, nrTrial, "A");
                         }
-                            
-                            
-                        else if (decision == 'B'){
+                        else if (decision == KNOCK_OUT_B){
                             System.out.println("Jogo acaba! - knock out! Ganha B");
                             repository.isKnockOut(nrGame, nrTrial, "B");
                         }
@@ -98,7 +97,6 @@ public class Referee extends Thread{
                         declareGameWinner(posPull); 
 
                         setPositionPull(PULL_CENTER);
-
 
                         state = ERefereeState.END_OF_A_GAME;
                         repository.updateRefState(state);  // actualiza no repositorio
@@ -116,8 +114,7 @@ public class Referee extends Thread{
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
                         repository.updateRefState(state);
                         declareMatchWinner();
-                        
-                        
+
                     } 
                     break;
 
@@ -127,12 +124,10 @@ public class Referee extends Thread{
                     endOp = false; 
                     break; 
             }
-
         }while(endOp);
     }
     
-    
-    
+
     /**
      * Permite atualizar o estado actual do arbitro
      * @param state estado do cenas

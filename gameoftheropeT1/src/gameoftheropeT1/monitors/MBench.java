@@ -1,42 +1,37 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private MRepository repository;
     private boolean callContestant; 
     private boolean newComand; 
-    private boolean teamAssemble, olaTa; 
-    private boolean endOfGame, acabou;  // para os jogadores se sentarem
-    private int sentadosA, sentadosB;
-   
+    private boolean teamAssemble, isEndReview; 
+    private boolean endOfGame;  // para os jogadores se sentarem
+    private int seatedA, seatedB;
+    private int opposingTeam; 
+    private int elementInTeam; 
+    private int constestantInTrial; 
     private int numTrial; 
     private int numGame; 
-    private int nrEquipas, acabouReview; 
-    
-    private int lastPlayer, nrJogadores;
-    
+    private int nrTeams, endReview; 
+    private int lastPlayer, nrContestant;
     private int nrPlayer;
     private int readyA;
     private int readyB;
-   
-    private int feito; 
-   
-    private int terminados;
-
+    private int allReady; 
+    private int finished;
     
     private Map<Integer, List<Integer>> coachAndTeamInBench; 
     
@@ -44,56 +39,51 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
     private List<Integer> constestantInPullID;
     
-    public MBench(MRepository repository){
-        
+    public MBench(MRepository repository, int constestantInTrial, int elementInTeam, int opposingTeam){
+        this.elementInTeam = elementInTeam;
         this.repository = repository; 
+        this.constestantInTrial = constestantInTrial; 
+        this.opposingTeam = opposingTeam; 
         callContestant = false; 
         newComand = false; 
         teamAssemble = false;
-        
         endOfGame = false;
         numGame = 0; 
         readyA = 0;
         readyB = 0;
         coachAndTeamInBench = new HashMap<>();
         coachAndTeamInPull = new HashMap<>();
-        acabouReview = 0; 
-        
-        
+        endReview = 0; 
+
         for (int i =1; i<= 2; i++){
             coachAndTeamInBench.put(i, new ArrayList<Integer>());
             coachAndTeamInPull.put(i, new ArrayList<Integer>());
         }
         
         constestantInPullID = new ArrayList<Integer>();
-        
-        
-        nrEquipas = 0; 
-        nrJogadores = 0; 
+
+        nrTeams = 0; 
+        nrContestant = 0; 
         numTrial = 0; 
-        feito =6; 
+        allReady =6; 
         nrPlayer = 0;
-        sentadosA = 0;
-        sentadosB = 0;
-        olaTa = false; 
-        terminados = 0;
-        acabou= false; 
+        seatedA = 0;
+        seatedB = 0;
+        isEndReview = false; 
+        finished = 0;
 
     }
     
     
-    /***********/
-    /** COACH **/
-    /***********/
-    
-   
+    /**
+     * The coach of the last team to become ready informs the referee. The coach waits for the trial to take place. The internal state should be saved.
+     * @param coachId 
+     */
     @Override
     public synchronized void callContestants(int coachId ) {
 
-        
         if (numTrial > 1 || numGame > 1){
- 
-            while(sentadosA != 3){
+            while(seatedA != constestantInTrial){
                 try { 
                     wait();
                 } catch (InterruptedException ex) {
@@ -101,18 +91,15 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 }
             }
             
-            while(sentadosB != 3){
+            while(seatedB != constestantInTrial){
                 try { 
                     wait();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         }
 
-        
-        
         while(newComand == false){
             try { 
                 wait();
@@ -120,19 +107,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       
-        
-        
-        
-        
-       // System.out.println("***********Treinador #"+coachId+" chama jogadores***********"); 
 
-        
         callContestant = true; 
         notifyAll();
-        
-        
-        while(nrPlayer != 10) {
+
+        while(nrPlayer != 2*elementInTeam) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -140,45 +119,36 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
-
-        // depois de todos estarem prontos
+        /*escolha de jogadores que irão jogar*/
         Collections.shuffle(coachAndTeamInBench.get(coachId));
 
         List<Integer> constestantInPullID  = new ArrayList<Integer>(); 
 
 
-        
         System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
         
         
-        for (int i =1; i<=3; i++){
+        for (int i =1; i<=constestantInTrial; i++){
             constestantInPullID.add(coachAndTeamInBench.get(coachId).get(i)); 
         }
-        
         
         System.out.println("Treinador ["+coachId+"] escolheu "+constestantInPullID.toString()); 
         
         
         coachAndTeamInPull.get(coachId).addAll(constestantInPullID);
-        
 
         System.out.println("Na corda estão: "+coachAndTeamInPull.toString());
         
         repository.addContestantsInPull(coachId, coachAndTeamInPull.get(coachId));
-
-        
+  
         if(coachId == 1)
-            readyA = 5;
+            readyA = elementInTeam;
         
         else if(coachId == 2)
-            readyB = 5;
-        
-        
-        notifyAll();  // equipas prontas
-        
-      
+            readyB = elementInTeam;
 
-        
+        notifyAll();
+
         teamAssemble = false;
         
         while(teamAssemble == false ){
@@ -189,30 +159,25 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
 
-            sentadosA =0; 
-            sentadosB = 0;
-        
-
-        
+        seatedA =0; 
+        seatedB = 0;
         
         System.out.println("***********************Equipa #"+coachId+" formada***********************"); 
-
-             
-       
-        
         
     }
-    
-        
+
+    /**
+     * The referee starts a trial and waits for its conclusion. The contestants at the ends of the rope have to be alerted for the fact. The internal state should be saved.
+     * @param numGame
+     * @param numTrial 
+     */
     @Override
     public synchronized void callTrial(int numGame, int numTrial) {
-        
         this.numGame = numGame; 
         this.numTrial = numTrial; 
 
         if (numTrial > 1 || numGame > 1){
-            
-            while(olaTa == false){
+            while(isEndReview == false){
                 try { 
                     wait();
                 } catch (InterruptedException ex) {
@@ -220,59 +185,56 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 }
             }
 
-            while(feito % 6 != 0){
-            try { 
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+            while(allReady % 2*constestantInTrial != 0){
+                try { 
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            }
-
-        
         }
-        
 
         System.out.println("\n**************************************************************\nGAME: "+numGame+"- TRIAL: "+numTrial +"\n**************************************************************\n"); 
-        
-     
-        // System.out.println("In bench: "+coachAndTeamInBench.toString());
-        //System.out.println("In pull: "+coachAndTeamInPull.toString());
 
         newComand = true; 
         notifyAll();
- 
-        
+         
     }
     
-    
+    /**
+     * verifies if the player has been chosen
+     * @param coachId
+     * @param contestId
+     * @return isSelected
+     */
     @Override
     public boolean isPlayerSelected(int coachId, int contestId){
         return coachAndTeamInPull.get(coachId).contains(contestId); 
     }
-    
-    
+
+    /**
+     * The coach asserts if the end of operations has arrived.
+     * @param coachId 
+     */
     @Override
     public synchronized void reviewNotes(int coachId) {
-        
-      
-        while(sentadosA % 3 != 0 || sentadosB % 3 != 0){
+
+        while(seatedA % constestantInTrial != 0 || seatedB % constestantInTrial != 0){
         }
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            wait();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
- 
-        //System.out.println(coachId +" retirou notas!!!"); 
- 
-        coachAndTeamInPull.get(1).clear(); // ir retirando do campo os jogadores
-        coachAndTeamInPull.get(2).clear(); // ir retirando do campo os jogadores
         
+        coachAndTeamInPull.get(1).clear(); 
+        coachAndTeamInPull.get(2).clear();
         
-        
-        acabouReview++; 
-        while(acabouReview % 2 != 0){
+        repository.removeContestantsInPull(1);
+        repository.removeContestantsInPull(2);
+
+        endReview++;
+        while(endReview % opposingTeam != 0){
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -280,43 +242,40 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
-        olaTa = true; 
+        isEndReview = true; 
         
         notifyAll();
 
     }
     
-
-    /*****************/
-    /** CONTESTANTS **/
-    /*****************/
-    
+    /**
+     * The contestant seats at the bench and waits to be called by the coach. The internal state should be saved.
+     * @param coachId
+     * @param contestId 
+     */
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
 
-        terminados++; // espera por todos
+        finished++;
 
-        while(terminados % 6 != 0){
+        while(finished % 2*constestantInTrial != 0){
             try {
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
+
         nrPlayer = 0 ;
         readyB = 0;
         readyA = 0; 
-
-        
+  
         if (coachId ==1)
-            sentadosA++; 
+            seatedA++; 
         else if (coachId == 2)
-            sentadosB++; 
+            seatedB++; 
         
-        System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down  | A:"+sentadosA+ "; B: "+sentadosB ); 
-
+        System.out.println("Player #"+contestId+" of team #"+coachId+" is seat down  | A:"+seatedA+ "; B: "+seatedB ); 
 
         teamAssemble = false; 
  
@@ -324,17 +283,23 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
     }
 
-    
+    /**
+     * checks all players sitting
+     * @return isSitting
+     */
     @Override
     public boolean allSittingTeams(){
-        return sentadosA + sentadosB == 6; 
+        return seatedA + seatedB == 2*constestantInTrial; 
     }
     
-    
+    /**
+     * The contestant join the trial team if requested by the coach and waits for the referee's command to start pulling. The last contestant to join his end of the rope should alert the coach. The internal state should be saved.
+     * @param coachId
+     * @param contestId 
+     */
     @Override
     public synchronized void followCoachAdvice(int coachId, int contestId) {
 
-        
         while (callContestant ==false){
             try { 
                 wait();
@@ -343,22 +308,17 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
         
-        
         if (numTrial ==1 && numGame ==1){
-            
-                coachAndTeamInBench.get(coachId).add(contestId);
-                nrPlayer++;
+            coachAndTeamInBench.get(coachId).add(contestId);
+            nrPlayer++;
         }else{
             
                 nrPlayer++; 
         }
 
         notifyAll();
-        
-  
-        
-        if(coachId == 1) {
 
+        if(coachId == 1) {
            while(readyA == 0){
                try {
                    wait();
@@ -366,7 +326,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
-           
            readyA--;
         }
               
@@ -379,13 +338,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                    Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
-           
            readyB--;
         }
         
-        
-        nrJogadores++; 
-        while(nrJogadores % 10 != 0){
+        nrContestant++; 
+        while(nrContestant % 10 != 0){
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -394,20 +351,15 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
                  
         teamAssemble = true;
-
         newComand = false; 
-
-        
-        olaTa = false; 
-        
+        isEndReview = false; 
         callContestant = false; 
         notifyAll();
     }
 
-
+    
     @Override
     public boolean endOfTheGame(int c ){
-
         if (numGame <= 3){
             return true; 
         }else{

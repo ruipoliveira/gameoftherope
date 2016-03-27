@@ -9,14 +9,14 @@ import gameoftheropeT1.state.ERefereeState;
  */
 public interface IRefereeRepository {
     
-      public void updateRefState(ERefereeState state);  
-      
-      public void updatePullPosition(int positionPull);
-      
-      public void updateTrialNumber(int trialNumber);
-      
-      public void updateGameNumber(int gameNumber);
-      
-      public void isKnockOut(int nrGame, int nrTrial, String team); 
+    public void updateRefState(ERefereeState state);  
+
+    public void updatePullPosition(int positionPull);
+
+    public void updateTrialNumber(int trialNumber);
+
+    public void updateGameNumber(int gameNumber);
+
+    public void isKnockOut(int nrGame, int nrTrial, String team); 
               
 }

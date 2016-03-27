@@ -24,28 +24,21 @@ public class GameoftheropeT1 {
 
     public final static int OPPOSING_TEAMS = 2; 
     public final static int GAMES_PER_MATCH = 3; 
-    public final static char GAME_CONTINUATION = 'C';
-    public final static char GAME_END = 'E'; // constant created
     public final static int CONTESTANTS_IN_TRIAL = 3; 
     public final static int MAX_TRAILS_PER_GAME = 6; 
     public final static int KNOCK_OUT = 4;  
     public final static int ELEMENTS_IN_TEAM = 5; 
     
-    public final static int NUM_OF_COACHES = 2;  // num de treinadores
-    
-    
-    
+    public final static int NUM_OF_COACHES = 2;
 
     
     public static void main(String[] args) throws IOException {
         
-        //String logname = "gameoftherope_"+hour()+".log";
-        String logname = "cenas.log";
+        String logname = "gameoftherope_"+hour()+".log";
 
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
-        
-        MBench bench = new MBench(repository);
+        MBench bench = new MBench(repository, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);
         
         MPlayground playground = new MPlayground(repository);
         
@@ -86,8 +79,6 @@ public class GameoftheropeT1 {
             }
         }
         
-        
-        
         for (Contestant c : contestant){
             try {
                 c.join();
@@ -95,17 +86,7 @@ public class GameoftheropeT1 {
                 Logger.getLogger(GameoftheropeT1.class.getName()).log(Level.SEVERE, null, ex);
             }                         
         } 
-        
-        
-   
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
 
-        
     }
 
     /**
@@ -117,8 +98,6 @@ public class GameoftheropeT1 {
         Date hora = Calendar.getInstance().getTime();
         return sdf.format(hora);
     }
-    
-    
-     
+
 }
 

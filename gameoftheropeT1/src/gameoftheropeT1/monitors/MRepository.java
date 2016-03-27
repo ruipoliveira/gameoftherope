@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 public class MRepository implements IContestantsRepository, IRefereeRepository, ICoachRepository{
         
@@ -21,24 +23,18 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private PrintWriter pw;
     private File log;
     
-    
     private Map<Integer, List<Player>> lst_player;
-    
-    private List<Coach> lst_coach = new ArrayList<Coach>();
-    
+    private List<Coach> lst_coach = new ArrayList<Coach>(2);
     private Refere ref;
     
     private int strength;
-    
     private boolean fistLine;
-    
     
     private Map<Integer, List<Integer>> playerInPull;  
     
     private int nrGame; 
     private int nrTrial; 
     private int posPull; 
-   
 
     public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException{
 
@@ -46,51 +42,35 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         log = new File(fName);
         this.nrCoaches = nrCoaches; 
         this.nrContestants = nrContestants;
-
         strength = 0; 
-        
         ref = new Refere(ERefereeState.START_OF_A_GAME); 
-
-        
-        lst_player = new HashMap<>(); 
-
+        lst_player = new HashMap<>(3); 
 
         for (int i =1; i<=nrCoaches; i++){
             lst_coach.add(new Coach(i, ECoachesState.WAIT_FOR_REFEREE_COMMAND)); 
             lst_player.put(i, new ArrayList<Player>()); 
         }
- 
 
         for(int j =1; j<=nrContestants; j++){
             lst_player.get(1).add(new Player(1,j,strength,EContestantsState.SEAT_AT_THE_BENCH));
             lst_player.get(2).add(new Player(2,j,strength,EContestantsState.SEAT_AT_THE_BENCH));
         }
-
-        
-        
-        /////////////////////////
         
         List<Integer> lst = new ArrayList<Integer>();
         for (int i =0; i<3; i++){
             lst.add(0); 
         }
         
-
-        
         playerInPull = new HashMap<>(); 
-        for(int i =1; i< 3; i++ ){
-            playerInPull.put(i, lst); 
-        }
+
+        playerInPull.put(1, lst); 
+        playerInPull.put(2, lst); 
         
         nrTrial = 0; 
         posPull =0; 
-        
         pw = new PrintWriter(log);
-        
         initWriting();
-
     }
-    
     
     
     public void initWriting(){
@@ -131,29 +111,25 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
                 pw.printf("%3s %2d ", lst_player.get(i+1).get(j).getState().getAcronym() , lst_player.get(i+1).get(j).getStrength()) ;
             }
         }
-        
-        pw.printf(playerInPull.toString());
-        
-        //for (int j = 1; j<3; j++ ){
-        //    for(int i =0; i<3; i++){
-                //if (playerInPull.get(j).get(i) == 0)
-                //    pw.printf("- "); 
-                //else 
-          //          pw.printf("%1d ",playerInPull.get(j).get(i));
-            //}
-           // if (j==1)
-             //   pw.printf(". "); 
-        //}
+
+        for (int j = 1; j<3; j++ ){
+            for(int i =0; i<3; i++){
+                if (playerInPull.get(j).get(i) == 0)
+                    pw.printf("- "); 
+                else 
+                    pw.printf("%1d ",playerInPull.get(j).get(i));
+            }
+            if (j==1)
+               pw.printf(". "); 
+        }
 
         pw.printf(" %1d ", nrTrial);
         pw.printf(" %1d ", posPull); 
-        
         
         pw.println();
 
     }
 
-    
     public void endWriting(){
         pw.println();
         pw.println("SIMULATION ENDED!");
@@ -167,7 +143,6 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     
     public void writeLineGame(){
-        pw.println();
         pw.println("Game "+nrGame);
         initWriting();
     }
@@ -257,20 +232,21 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     @Override
     public synchronized void addContestantsInPull(int idTeam, List<Integer>  inPull){
-        
-        
         playerInPull.get(idTeam).clear();
         playerInPull.get(idTeam).addAll(inPull); 
-        
-        System.out.println("DASDASDASDASDASDASDASDASDSAD\nFSADASDASDASD: "+playerInPull.get(idTeam).toString()); 
-
         writeLine();
     } 
     
     @Override
-    public synchronized void removeContestantsInPull(int idTeam, int contestId){
+    public synchronized void removeContestantsInPull(int idTeam){
+        List<Integer> lst = new ArrayList<Integer>();
+        for (int i =0; i<3; i++){
+            lst.add(0); 
+        }
+
         playerInPull.get(idTeam).clear();
-        playerInPull.get(idTeam).set(0, 0); 
+        playerInPull.get(idTeam).addAll(lst); 
+        
         writeLine();
     }
     
@@ -295,10 +271,8 @@ class Player{
             this.strength = strength; 
     }
 
-    
     public int getStrength(){
         return strength;
- 
     }
     
     public void setState(EContestantsState state){
@@ -307,7 +281,6 @@ class Player{
     
     public EContestantsState getState(){
         return state;
-
     }
     
     public int getId(){
@@ -350,7 +323,5 @@ class Coach{
     public ECoachesState getState(){
         return state;
 
-    }
-    
-        
+    }  
 }
