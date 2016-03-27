@@ -28,7 +28,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
         
     private boolean startTrial; 
-    private int numTrial; 
+    private int numTrial, nrGame; 
     private int nCoaches; // para  informReferee  os 2 treinadores tem de informar o arbtiro 
     //que as suas equipas estao prontas
     
@@ -71,7 +71,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         nCoaches = 0;
         
         posPull = 0; 
-        
+        nrGame = 0;
         cenas=0; 
         
         seguidosA = seguidosB =0; 
@@ -84,7 +84,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
 
     @Override
-    public synchronized void startTrial(int nrTrial) {
+    public synchronized void startTrial(int nrGame,int nrTrial) {
+        this.nrGame = nrGame; 
         numTrial = nrTrial; 
 
         
@@ -104,9 +105,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         fim = false; 
         notifyAll(); 
         
-        
-        
-        
+ 
         
     }
 
@@ -149,8 +148,11 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }else{
             System.out.println("Jogo Empatado!!"); 
         }
+        
+        repository.updateTrialNumber(numTrial);
         repository.updatePullPosition(posPull);
-       
+        
+        
         //System.out.println(seguidosA +" ->"+seguidosB);
         
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
@@ -184,8 +186,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             //seguidosA = seguidosB = 0;      
             return 'E';
         } 
-        else if (posPull >= 4 || posPull <= -4){
-            return 'K'; 
+        else if (posPull >= 4 ){
+          //  repository.isKnockOut(nrGame, numTrial, "B");
+            return 'B'; 
+        }
+        else if (posPull <= -4){
+           // repository.isKnockOut(nrGame, numTrial, "A");
+            return 'A'; 
         }
         else{
             resultTeamA = resultTeamB = 0; 

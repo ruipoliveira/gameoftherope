@@ -7,7 +7,7 @@ package gameoftheropeT1.interfaces;
  */
 public interface IRefereePlayground {
     
-    public void startTrial(int numTrial);
+    public void startTrial(int nrGame,int numTrial);
     
     public char assertTrialDecision();
     

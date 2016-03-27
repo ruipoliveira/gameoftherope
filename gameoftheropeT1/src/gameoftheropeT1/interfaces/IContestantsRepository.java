@@ -1,6 +1,7 @@
 package gameoftheropeT1.interfaces;
 
 import gameoftheropeT1.state.EContestantsState;
+import java.util.List;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -8,13 +9,12 @@ import gameoftheropeT1.state.EContestantsState;
  * @version 1.0
  */
 public interface IContestantsRepository {
-    public void updateTeamAContestState(int contestId, EContestantsState state);
-    public void updateTeamBContestState(int contestId, EContestantsState state);
+    public void updateContestantState(int idTeam, int contestId, EContestantsState state);
     
-    public void updateStrengthTeamA(int contestId, int strength);
-    public void updateStrengthTeamB(int contestId, int strength);
+    public void updateStrength(int idTeam, int contestId, int contestStrength); 
+    public void updateStrengthAndWrite(int idTeam, int contestId, int strength);
     
-    public void contestantsInPullTeamA(int coachId, int contestId);
-    public void contestantsInPullTeamB(int coachId, int contestId);
+    public void addContestantsInPull(int coachId, List<Integer> inPull);
+    public void removeContestantsInPull(int coachId, int contestId);
     
 }

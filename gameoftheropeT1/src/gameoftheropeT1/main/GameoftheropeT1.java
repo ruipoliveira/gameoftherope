@@ -45,12 +45,6 @@ public class GameoftheropeT1 {
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
         
-        // This hook allows the simulation always close the logging file even 
-        // when the simulation is forced to close.
-      //  ShutdownHook shutdownHook = new ShutdownHook(repository);
-       // Runtime.getRuntime().addShutdownHook(shutdownHook);
-        
-        
         MBench bench = new MBench(repository);
         
         MPlayground playground = new MPlayground(repository);
@@ -110,7 +104,7 @@ public class GameoftheropeT1 {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        repository.endWriting();
+
         
     }
 
@@ -127,14 +121,4 @@ public class GameoftheropeT1 {
     
      
 }
-// terminar com isto de uma vez!!!!!!!!!!!!
-class ShutdownHook extends Thread {
-    MRepository log;
-    ShutdownHook(MRepository log) {
-        this.log = log;
-    }
-    @Override
-    public void run() {
-        log.endWriting();
-    }
-}
+

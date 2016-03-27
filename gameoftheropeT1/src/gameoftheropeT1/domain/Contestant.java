@@ -5,8 +5,9 @@ import gameoftheropeT1.monitors.MSite;
 import gameoftheropeT1.state.EContestantsState;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 1.0
  */
 
 public class Contestant extends Thread{
@@ -21,135 +22,77 @@ public class Contestant extends Thread{
     
     private int contestStrength;
     
-    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground, IContestantsRepository repository, MSite site)
-    {
+    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground,
+            IContestantsRepository repository, MSite site){
         this.bench = bench;
         this.playground = playground;
         this.repository = repository;
-        this.site = site; 
-        
+        this.site = site;
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
-        
         contestStrength = generateStrength();
+        System.out.println("#"+contId +" ->"+contestStrength); 
+        repository.updateStrength(coachId,contId,contestStrength);
+        
         this.coachId = coachId;
         
     }
     
     @Override
     public void run() {
+       
+        boolean endOp = true; 
         
-        
-        boolean cenas = true; 
-      //  System.out.println("Run Contestant #"+ this.contId); 
         do {
-            switch(this.state)
-            {                             
+            switch(this.state){                             
                 case SEAT_AT_THE_BENCH:         
                     
-                    followCoachAdvice (coachId, contId); /* the contestant complies to coach decision */
+      //              repository.updateStrength(contId, contestStrength);
+                    followCoachAdvice (coachId, contId);
                     
                     if (site.endOperCoach(coachId)){
-                        cenas = false; 
+                        endOp = false; 
                         break;
                     } 
-
-                    state = EContestantsState.STAND_IN_POSITION;
-                 /*   
-                    if(coachId == 1)
-                        repository.updateTeamAContestState(contId, state);
                     
-                    else if(coachId == 2){
-                        repository.updateTeamBContestState(contId, state);
-                    }
-*/
+                    state = EContestantsState.STAND_IN_POSITION;
+                 
                 break;
                 
                 case STAND_IN_POSITION:
                     
-                    
                     if (isPlayerSelected(coachId,contId) ){
-                        getReady(coachId, contId); /* the contestant takes place at his end of the rope */
-                        
+                        getReady(coachId, contId);  
                         state = EContestantsState.DO_YOUR_BEST;
-                        
-                    /*    if(coachId == 1){
-                            repository.updateTeamAContestState(contId, state);
-                            repository.contestantsInPullTeamA(coachId, contId);
-                         }
-                        else if(coachId == 2){
-                            repository.updateTeamBContestState(contId, state); 
-                            repository.contestantsInPullTeamB(coachId, contId);
-                    }*/
-                        
-                        
                     }
                     else{
-                        
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-   /*                    
-                        if(coachId == 1)
-                            repository.updateTeamAContestState(contId, state);
-                        
-                        else if(coachId == 2)
-                            repository.updateTeamBContestState(contId, state);
-
- */
-                        // System.out.println(coachId+"-"+contId+" -> NÃO JOGA!"); 
-                       contestStrength++;
-                       
-                   /*     if(coachId == 1)
-                            repository.updateStrengthTeamA(contId, contestStrength);
-                       else if(coachId == 2)
-                            repository.updateStrengthTeamB(contId, contestStrength);
-*/
-                        
+                        contestStrength++;
+                        repository.updateStrengthAndWrite(coachId,contId, contestStrength);
 
                     }
 
                 break;
                 
                 case DO_YOUR_BEST:
-                    amDone(coachId, contId, contestStrength);  /* the contestant ends his effort */  
                     
-                    seatDown (coachId,contId); /* the contestant goes to the bench to rest a little bit */
-                    
+                    amDone(coachId, contId, contestStrength); 
+                    seatDown(coachId,contId); 
                     contestStrength--;
-                    //System.out.print("contest: #"+contId+" strength: #"+contestStrength);
-                  /*  
-                    if(coachId == 1)
-                        repository.updateStrengthTeamA(contId, contestStrength);
-                    
-                    else if(coachId == 2)
-                        repository.updateStrengthTeamB(contId, contestStrength);
-*/
-                    
-                    
-                    
-                    
-                    
+                    repository.updateStrengthAndWrite(coachId,contId, contestStrength);
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                /*
-                    if(coachId == 1)
-                            repository.updateTeamAContestState(contId, state);
-                        
-                    else if(coachId == 2)
-                            repository.updateTeamBContestState(contId, state);
 
-                */
-                
                 break;    
             }
             
-            //System.out.println(">>>JOGO ACABOU!"+bench.endOfTheGame());
-        } while (cenas); // acaba o jogo.... 
+        } while (endOp); 
         
         System.out.println("Fim jogador #"+coachId); 
         
     }
     
     /**
-     * 
+     * Permite atualizar o estado actual do jogador
      * @param state 
      */
     public void setState(EContestantsState state) {
@@ -157,8 +100,8 @@ public class Contestant extends Thread{
     }
     
     /**
-     * 
-     * @return 
+     * Permite aceder ao estado actual do jogador 
+     * @return state
      */
     public EContestantsState getCurrentState() {
         return state;

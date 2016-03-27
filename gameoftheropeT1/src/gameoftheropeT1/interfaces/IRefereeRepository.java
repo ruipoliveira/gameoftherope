@@ -17,4 +17,6 @@ public interface IRefereeRepository {
       
       public void updateGameNumber(int gameNumber);
       
+      public void isKnockOut(int nrGame, int nrTrial, String team); 
+              
 }

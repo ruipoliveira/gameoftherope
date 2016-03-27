@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * @author gabriel
  */
 public class MSite implements IRefereeSite, ICoachSite{
-
+    MRepository repository; 
     private boolean newGame;
     private boolean endOfGame; 
     private boolean endOfMatch;
@@ -18,7 +18,8 @@ public class MSite implements IRefereeSite, ICoachSite{
     private int nrTrial, numGame; 
     private boolean cenas; 
     
-    public MSite(MRepository rep ){
+    public MSite(MRepository repository ){
+        this.repository = repository; 
         newGame = false; 
         endOfGame = false; 
         endOfMatch = false;
@@ -41,16 +42,18 @@ public class MSite implements IRefereeSite, ICoachSite{
 
         if (posPull < 0 ){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
+            repository.isEnd(numGame, "A");
             winnerTeamA++; 
 
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
+            repository.isEnd(numGame, "B");
             winnerTeamB++; 
         }
         else{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
-
+            repository.wasADraw(numGame);
         }
 
         
@@ -61,12 +64,19 @@ public class MSite implements IRefereeSite, ICoachSite{
     public synchronized void declareMatchWinner() {
 
         System.out.println("***********************************************************");
-        if (winnerTeamA > winnerTeamB)
+        if (winnerTeamA > winnerTeamB){
             System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
-        else if (winnerTeamA < winnerTeamB) 
+            repository.endMatch("A", winnerTeamA, winnerTeamB);
+
+        }
+        else if (winnerTeamA < winnerTeamB){
             System.out.println("A Equipa B venceu o match com #" +winnerTeamB +" vitórias!");
-        else
+            repository.endMatch("B", winnerTeamB, winnerTeamA);
+        }
+        else{
             System.out.println("O match ficou empatado! :(  A#" +winnerTeamA +" - B#"+winnerTeamB);
+            repository.endMatch("", winnerTeamB, winnerTeamA);
+        }
         System.out.println("***********************************************************");
 
     }

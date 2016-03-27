@@ -46,24 +46,22 @@ public class Referee extends Thread{
                     nrTrial++;
                     nrGame++;
                     repository.updateGameNumber(nrGame);
-                    repository.updateTrialNumber(nrTrial);
                     announceNewGame(nrGame,nrTrial);
                     state = ERefereeState.START_OF_A_GAME;
-                   // repository.updateRefState(state); // actualiza no repositorio
                     break; 
 
                 case START_OF_A_GAME:
                     callTrial(nrGame,nrTrial);
-                 //   repository.updateTrialNumber(nrTrial);
+                   // repository.updateTrialNumber(nrTrial);
                     state = ERefereeState.TEAMS_READY;
-                   // repository.updateRefState(state);  // actualiza no repositorio
+                    repository.updateRefState(state);
                     break;
 
                 case TEAMS_READY:
-                    startTrial(nrTrial);
-                //    repository.updatePullPosition(playground.getPositionPull());
+                    startTrial(nrGame,nrTrial);
+                  //  repository.updatePullPosition(playground.getPositionPull());
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                  //  repository.updateRefState(state); // actualiza no repositorio
+                    repository.updateRefState(state); 
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
@@ -72,32 +70,38 @@ public class Referee extends Thread{
                         decision = assertTrialDecision();
                     }
 
-                    //repository.updatePullPosition(playground.getPositionPull());
                     
                     if(decision == 'C'){ 
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
-                        repository.updateTrialNumber(nrTrial);
+                  //      repository.updateTrialNumber(nrTrial);
                         state = ERefereeState.START_OF_A_GAME;
-                  //      repository.updateRefState(state);  // actualiza no repositorio
+                        repository.updateRefState(state);  // actualiza no repositorio
                     }
-                    else if(decision == 'E' || decision == 'K'){
+                    else if(decision == 'E' || decision == 'A' || decision == 'B' ){
 
                         if (decision == 'E')
                             System.out.println("Jogo acaba! - excedeu numero de trials! ");
-                        else if (decision == 'K')
-                            System.out.println("Jogo acaba! - knock out!");
-
+                        else if (decision == 'A'){
+                            System.out.println("Jogo acaba! - knock out! Ganha A");
+                            repository.isKnockOut(nrGame, nrTrial, "A");
+                        }
+                            
+                            
+                        else if (decision == 'B'){
+                            System.out.println("Jogo acaba! - knock out! Ganha B");
+                            repository.isKnockOut(nrGame, nrTrial, "B");
+                        }
+                        
                         int posPull = playground.getPositionPull(); 
 
                         declareGameWinner(posPull); 
 
                         setPositionPull(PULL_CENTER);
-                        //repository.updatePullPosition(posPull);
 
 
                         state = ERefereeState.END_OF_A_GAME;
-                      //  repository.updateRefState(state);  // actualiza no repositorio
+                        repository.updateRefState(state);  // actualiza no repositorio
                     }
                     break; 
 
@@ -105,20 +109,21 @@ public class Referee extends Thread{
                     if(nrGame < nrGamesMax){
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
-                    //    repository.updateRefState(state);
+                        repository.updateRefState(state);
                     }
 
                     else{
-                        declareMatchWinner();
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                      //  repository.updateRefState(state);
+                        repository.updateRefState(state);
+                        declareMatchWinner();
+                        
+                        
                     } 
                     break;
 
                 case END_OF_THE_MATCH: 
 
                     System.out.println("Fim do match!");
-              //      repository.updateRefState(state);
                     endOp = false; 
                     break; 
             }
@@ -148,8 +153,8 @@ public class Referee extends Thread{
         bench.callTrial(nrGame, nrTrial);
     }
     
-    private void startTrial(int numTrial){
-        playground.startTrial(numTrial);
+    private void startTrial(int nrGame,int numTrial){
+        playground.startTrial(nrGame,numTrial);
     }
     
     private char assertTrialDecision(){

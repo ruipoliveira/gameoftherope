@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author roliveira
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
- 
+    private MRepository repository;
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble, olaTa; 
@@ -44,7 +44,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
     private List<Integer> constestantInPullID;
     
-    public MBench(MRepository rep){
+    public MBench(MRepository repository){
+        
+        this.repository = repository; 
         callContestant = false; 
         newComand = false; 
         teamAssemble = false;
@@ -162,7 +164,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
         System.out.println("Na corda estão: "+coachAndTeamInPull.toString());
         
-        
+        repository.addContestantsInPull(coachId, coachAndTeamInPull.get(coachId));
+
         
         if(coachId == 1)
             readyA = 5;
