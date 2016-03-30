@@ -198,13 +198,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(coachId).add(contestStrength);
         
         System.out.println("["+coachId+"] #"+contId + " PUXA A CORDA!! | Força da Equipa: "+strengthTeam.toString()); 
-
+/*
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+*/
         allPulled++;
         while(allPulled % 6 != 0){
             try {

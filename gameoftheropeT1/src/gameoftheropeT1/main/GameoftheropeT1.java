@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class GameoftheropeT1 {
 
     public final static int OPPOSING_TEAMS = 2; 
-    public final static int GAMES_PER_MATCH = 3; 
+    public final static int GAMES_PER_MATCH = 100; 
     public final static int CONTESTANTS_IN_TRIAL = 3; 
     public final static int MAX_TRAILS_PER_GAME = 6; 
     public final static int KNOCK_OUT = 4;  
@@ -38,7 +38,7 @@ public class GameoftheropeT1 {
 
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
-        MBench bench = new MBench(repository, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);
+        MBench bench = new MBench(repository, GAMES_PER_MATCH, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);
         
         MPlayground playground = new MPlayground(repository);
         

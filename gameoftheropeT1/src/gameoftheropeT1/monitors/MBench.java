@@ -1,5 +1,6 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
+import static gameoftheropeT1.main.GameoftheropeT1.GAMES_PER_MATCH;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int readyB;
     private int allReady; 
     private int finished;
+    private int gamesPerMatch; 
     
     private Map<Integer, List<Integer>> coachAndTeamInBench; 
     
@@ -39,7 +41,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
     private List<Integer> constestantInPullID;
     
-    public MBench(MRepository repository, int constestantInTrial, int elementInTeam, int opposingTeam){
+    public MBench(MRepository repository, int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
+        this.gamesPerMatch = gamesPerMatch; 
         this.elementInTeam = elementInTeam;
         this.repository = repository; 
         this.constestantInTrial = constestantInTrial; 
@@ -360,7 +363,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public boolean endOfTheGame(int c ){
-        if (numGame <= 3){
+        if (numGame <= gamesPerMatch){
             return true; 
         }else{
             return false; 
