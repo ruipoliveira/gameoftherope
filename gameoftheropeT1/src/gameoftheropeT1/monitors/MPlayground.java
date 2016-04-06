@@ -128,7 +128,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(1).clear();
         strengthTeam.get(2).clear();
 
-        if (numTrial == 6){  
+        if (numTrial == 20){  
             return 'E';
         } 
         else if (posPull >= 4 ){

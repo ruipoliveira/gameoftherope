@@ -345,7 +345,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
         
         nrContestant++; 
-        while(nrContestant % 10 != 0){
+        while(nrContestant % 40 != 0){
             try {
                 wait();
             } catch (InterruptedException ex) {

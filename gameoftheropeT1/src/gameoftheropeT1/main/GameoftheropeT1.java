@@ -25,17 +25,17 @@ public class GameoftheropeT1 {
     public final static int OPPOSING_TEAMS = 2; 
     public final static int GAMES_PER_MATCH = 100; 
     public final static int CONTESTANTS_IN_TRIAL = 3; 
-    public final static int MAX_TRAILS_PER_GAME = 6; 
+    public final static int MAX_TRAILS_PER_GAME = 7; 
     public final static int KNOCK_OUT = 4;  
-    public final static int ELEMENTS_IN_TEAM = 5; 
+    public final static int ELEMENTS_IN_TEAM = 20; 
     
     public final static int NUM_OF_COACHES = 2;
 
     
     public static void main(String[] args) throws IOException {
         
-        String logname = "gameoftherope_"+hour()+".log";
-
+        //String logname = "gameoftherope_"+hour()+".log";
+        String logname = "cenas.txt";
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
         MBench bench = new MBench(repository, GAMES_PER_MATCH, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);
@@ -56,7 +56,7 @@ public class GameoftheropeT1 {
             coach.add(new Coach(idc, (ICoachBench) bench, (ICoachPlayground) playground,
                     (ICoachSite) site, repository));
             
-            for (int idct = 1; idct <= 5; idct++){
+            for (int idct = 1; idct <= 20; idct++){
                 contestant.add(new Contestant(idct, idc, (IContestantsBench) bench,
                     (IContestantsPlayground) playground, repository, site));
             }
