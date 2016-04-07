@@ -27,9 +27,11 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean lastPulled;
     private int resultTeamA, resultTeamB;  
     
+    private int maxTrials; 
+    
     private MRepository repository; 
     
-      public MPlayground(MRepository repository){
+      public MPlayground(MRepository repository, int maxTrials){
         this.repository = repository; 
         newTrial = 0; 
         newComand = false;
@@ -53,6 +55,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         nrGame = 0;
         followedA = 0;
         followedB =0; 
+        
+        this.maxTrials = maxTrials;
     }
 
 
@@ -128,7 +132,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(1).clear();
         strengthTeam.get(2).clear();
 
-        if (numTrial == 20){  
+        if (numTrial == maxTrials){  
             return 'E';
         } 
         else if (posPull >= 4 ){
