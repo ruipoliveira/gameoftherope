@@ -34,7 +34,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private int allReady; 
     private int finished;
     private int gamesPerMatch; 
-    
+    private int totalPlayer; 
     private Map<Integer, List<Integer>> coachAndTeamInBench; 
     
     private Map<Integer, List<Integer>> coachAndTeamInPull; 
@@ -58,6 +58,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull = new HashMap<>();
         endReview = 0; 
 
+        totalPlayer = 2*elementInTeam;
+        
+        
         for (int i =1; i<= 2; i++){
             coachAndTeamInBench.put(i, new ArrayList<Integer>());
             coachAndTeamInPull.put(i, new ArrayList<Integer>());
@@ -114,7 +117,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         callContestant = true; 
         notifyAll();
 
-        while(nrPlayer != 2*elementInTeam) {
+        while(nrPlayer != totalPlayer) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -344,8 +347,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
            readyB--;
         }
         
+         
         nrContestant++; 
-        while(nrContestant % 2*elementInTeam != 0){
+        while(nrContestant % totalPlayer != 0){
             try {
                 wait();
             } catch (InterruptedException ex) {

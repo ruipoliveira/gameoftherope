@@ -239,7 +239,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     @Override
     public synchronized void removeContestantsInPull(int idTeam){
-        List<Integer> lst = new ArrayList<Integer>();
+        List<Integer> lst = new ArrayList<>();
         for (int i =0; i<3; i++){
             lst.add(0); 
         }

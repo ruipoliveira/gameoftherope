@@ -25,7 +25,7 @@ public class GameoftheropeT1 {
     public final static int OPPOSING_TEAMS = 2; 
     public final static int GAMES_PER_MATCH = 100; 
     public final static int CONTESTANTS_IN_TRIAL = 3; 
-    public final static int MAX_TRAILS_PER_GAME = 2; 
+    public final static int MAX_TRAILS_PER_GAME = 20; 
     public final static int KNOCK_OUT = 4;  
     public final static int ELEMENTS_IN_TEAM = 20; 
     
