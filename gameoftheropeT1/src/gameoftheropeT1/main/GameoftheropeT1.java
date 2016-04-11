@@ -27,14 +27,14 @@ public class GameoftheropeT1 {
     public final static int KNOCK_OUT = 4;  
     public final static int NUM_OF_COACHES = 2;
     
-    public final static int MAX_TRAILS_PER_GAME = 20; 
-    public final static int ELEMENTS_IN_TEAM = 6; 
-    public final static int GAMES_PER_MATCH = 100; 
+    public final static int MAX_TRAILS_PER_GAME = 6; 
+    public final static int ELEMENTS_IN_TEAM = 5; 
+    public final static int GAMES_PER_MATCH = 3; 
 
 
     public static void main(String[] args) throws IOException {
         
-        String logname = "gameoftherope_"+hour()+".log";
+        String logname = "gameoftherope.log";
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
         MBench bench = new MBench(repository, GAMES_PER_MATCH, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);

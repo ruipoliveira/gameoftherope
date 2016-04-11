@@ -138,7 +138,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
         System.out.println("Na corda estão: "+coachAndTeamInPull.toString());
         
-        repository.addContestantsInPull(coachId, coachAndTeamInPull.get(coachId));
+       // repository.addContestantsInPull(coachId, coachAndTeamInPull.get(coachId));
   
         if(coachId == 1)
             readyA = elementInTeam;
@@ -229,8 +229,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull.get(1).clear(); 
         coachAndTeamInPull.get(2).clear();
         
-        repository.removeContestantsInPull(1);
-        repository.removeContestantsInPull(2);
+       // repository.removeContestantsInPull(1);
+       // repository.removeContestantsInPull(2);
 
         endReview++;
         while(endReview % opposingTeam != 0){
@@ -254,7 +254,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      */
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-
+        repository.removeContestantsInPull(coachId, contestId);
         finished++;
 
         while(finished % 2*constestantInTrial != 0){

@@ -15,8 +15,8 @@ public interface IContestantsRepository {
     
     public void updateStrengthAndWrite(int idTeam, int contestId, int strength);
     
-    public void addContestantsInPull(int coachId, List<Integer> inPull);
+    public void addContestantsInPull(int coachId, int idPlayer);
     
-    public void removeContestantsInPull(int coachId);
+    public void removeContestantsInPull(int coachId , int idPlayer);
     
 }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -30,11 +29,16 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private final int strength;
     private boolean fistLine;
     
-    private final Map<Integer, List<Integer>> playerInPull;  
+    //private final Map<Integer, List<Integer>> playerInPull;  
+    
+    private final List<Integer> lstInPullA; 
+    private final List<Integer> lstInPullB; 
+
     
     private int nrGame; 
     private int nrTrial; 
     private int posPull; 
+    
 
     public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException{
 
@@ -61,17 +65,14 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             lst.add(0); 
         }
         
-        playerInPull = new HashMap<>(); 
-
-        playerInPull.put(1, lst); 
-        playerInPull.put(2, lst); 
+        lstInPullA = new ArrayList<>();
+        lstInPullB = new ArrayList<>();
         
         nrTrial = 0; 
         posPull =0; 
         pw = new PrintWriter(log);
         initWriting();
     }
-    
     
     public void initWriting(){
         StringBuilder sb = new StringBuilder("Ref");
@@ -100,7 +101,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     }
         
     
-    public void writeLine(){ 
+    public synchronized void writeLine(){ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
 
@@ -114,10 +115,18 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
         for (int j = 1; j<3; j++ ){
             for(int i =0; i<3; i++){
-                if (playerInPull.get(j).get(i) == 0)
-                    pw.printf("- "); 
-                else 
-                    pw.printf("%1d ",playerInPull.get(j).get(i));
+                if (j ==1){
+                    if (!indexExists(lstInPullA,i))
+                        pw.printf("- ");
+                    else
+                       pw.printf("%1d ",lstInPullA.get(i)); 
+                }
+                else {
+                    if (!indexExists(lstInPullB,i))
+                        pw.printf("- ");
+                    else
+                       pw.printf("%1d ",lstInPullB.get(i)); 
+                }    
             }
             if (j==1)
                pw.printf(". "); 
@@ -209,7 +218,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     
     public synchronized  void isEnd(int nrGame, String team){
-        pw.println("Game "+nrGame+" was won by team "+team+" by points.");
+        if (posPull != 4 )
+            pw.println(posPull+"Game "+nrGame+" was won by team "+team+" by points.");
+        else if (posPull != -4)
+            pw.println(posPull+"Game "+nrGame+" was won by team "+team+" by points.");
+        
     }
     
 
@@ -231,29 +244,39 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     
     @Override
-    public synchronized void addContestantsInPull(int idTeam, List<Integer>  inPull){
-        playerInPull.get(idTeam).clear();
-        playerInPull.get(idTeam).addAll(inPull); 
+    public synchronized void addContestantsInPull(int idTeam, int idPlayer){
+        
+        if (idTeam ==1 ){
+            lstInPullA.add(idPlayer); 
+        }else{
+            lstInPullB.add(idPlayer); 
+        }
+        
         writeLine();
     } 
     
     @Override
-    public synchronized void removeContestantsInPull(int idTeam){
-        List<Integer> lst = new ArrayList<>();
-        for (int i =0; i<3; i++){
-            lst.add(0); 
+    public synchronized void removeContestantsInPull(int idTeam, int idPlayer){
+
+        if (idTeam ==1 ){
+            lstInPullA.removeIf(p -> p.equals(idPlayer));
+        }else{
+            lstInPullB.removeIf(p -> p.equals(idPlayer));
         }
 
-        playerInPull.get(idTeam).clear();
-        playerInPull.get(idTeam).addAll(lst); 
-        
         writeLine();
+    }
+
+    
+    private boolean indexExists(final List list, final int index) {
+        return index >= 0 && index < list.size();
     }
     
     
-    
-    
 }
+
+
+
 class Player{
     private final int idTeam; 
     private final int idPlayer;
