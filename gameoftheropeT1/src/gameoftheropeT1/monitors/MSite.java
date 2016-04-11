@@ -8,20 +8,13 @@ import gameoftheropeT1.interfaces.*;
  */
 public class MSite implements IRefereeSite, ICoachSite{
     MRepository repository; 
-    private boolean newGame;
-    private boolean endOfGame; 
-    private boolean endOfMatch;
-    private int posPull;
     private int winnerTeamA;
     private int winnerTeamB; 
     private int nrTrial, numGame; 
-    private boolean endOp; 
+    private final boolean endOp; 
     
     public MSite(MRepository repository ){
         this.repository = repository; 
-        newGame = false; 
-        endOfGame = false; 
-        endOfMatch = false;
         endOp = false; 
     }
     
@@ -90,6 +83,10 @@ public class MSite implements IRefereeSite, ICoachSite{
     @Override
     public boolean endOperCoach(int id) {
         return endOp; 
+    }
+    
+    public int getNrTrial(){
+        return nrTrial; 
     }
     
 }

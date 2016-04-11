@@ -14,47 +14,35 @@ import java.util.logging.Logger;
  */
 public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
     private int newTrial;
-    private boolean newComand;
-    private double strength;
-    private Map<Integer, List<Integer>> coachAndTeam; 
-    private Map<Integer, List<Integer>> strengthTeam;
+    private final Map<Integer, List<Integer>> strengthTeam;
     private boolean startTrial; 
-    private int numTrial, nrGame; 
-    private int nCoaches;
+    private int numTrial; 
     private int allPulled;
     private int posPull, playerInPull; 
-    private int followedA, followedB; 
     private boolean lastPulled;
     private int resultTeamA, resultTeamB;  
+    private int nrGame; 
+    private final int maxTrials; 
     
-    private int maxTrials; 
-    
-    private MRepository repository; 
+    private final MRepository repository; 
     
       public MPlayground(MRepository repository, int maxTrials){
         this.repository = repository; 
         newTrial = 0; 
-        newComand = false;
         numTrial = 0; 
-        strength = 0;
         playerInPull=0;
         resultTeamA = 0;
         resultTeamB = 0; 
         startTrial = false;
-        coachAndTeam = new HashMap<Integer, List<Integer>>(); 
-        
+        nrGame =0; 
         strengthTeam = new HashMap<>(); 
         for(int i =1; i< 3; i++ ){
-            strengthTeam.put(i, new ArrayList<Integer>()); 
+            strengthTeam.put(i, new ArrayList<>()); 
         }
         
         lastPulled = false;
         allPulled = 0;
-        nCoaches = 0;
         posPull = 0; 
-        nrGame = 0;
-        followedA = 0;
-        followedB =0; 
         
         this.maxTrials = maxTrials;
     }
@@ -162,10 +150,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     }
 
     
+    @Override
     public int getPositionPull(){
         return posPull; 
     }
     
+    @Override
     public void setPositionPull(int posPull){
         this.posPull = posPull; 
     }
@@ -202,13 +192,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         strengthTeam.get(coachId).add(contestStrength);
         
         System.out.println("["+coachId+"] #"+contId + " PUXA A CORDA!! | Força da Equipa: "+strengthTeam.toString()); 
-/*
+
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-*/
+
         allPulled++;
         while(allPulled % 6 != 0){
             try {
@@ -224,6 +214,9 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         notifyAll();
         
     }
-
+    
+    public int getNrGame(){
+        return nrGame; 
+    }
 
 }

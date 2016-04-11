@@ -17,20 +17,20 @@ import java.util.logging.Level;
  */
 public class MRepository implements IContestantsRepository, IRefereeRepository, ICoachRepository{
         
-    private String fName;
-    private int nrCoaches; 
-    private int nrContestants; 
-    private PrintWriter pw;
-    private File log;
+    private final String fName;
+    private final int nrCoaches; 
+    private final int nrContestants; 
+    private final PrintWriter pw;
+    private final File log;
     
-    private Map<Integer, List<Player>> lst_player;
-    private List<Coach> lst_coach = new ArrayList<Coach>(2);
-    private Refere ref;
+    private final Map<Integer, List<Player>> lst_player;
+    private List<Coach> lst_coach = new ArrayList<>(2);
+    private final Refere ref;
     
-    private int strength;
+    private final int strength;
     private boolean fistLine;
     
-    private Map<Integer, List<Integer>> playerInPull;  
+    private final Map<Integer, List<Integer>> playerInPull;  
     
     private int nrGame; 
     private int nrTrial; 
@@ -48,7 +48,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
         for (int i =1; i<=nrCoaches; i++){
             lst_coach.add(new Coach(i, ECoachesState.WAIT_FOR_REFEREE_COMMAND)); 
-            lst_player.put(i, new ArrayList<Player>()); 
+            lst_player.put(i, new ArrayList<>()); 
         }
 
         for(int j =1; j<=nrContestants; j++){
@@ -56,7 +56,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             lst_player.get(2).add(new Player(2,j,strength,EContestantsState.SEAT_AT_THE_BENCH));
         }
         
-        List<Integer> lst = new ArrayList<Integer>();
+        List<Integer> lst = new ArrayList<>();
         for (int i =0; i<3; i++){
             lst.add(0); 
         }
@@ -255,8 +255,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
 }
 class Player{
-    private int idTeam; 
-    private int idPlayer;
+    private final int idTeam; 
+    private final int idPlayer;
     private int strength;
     private EContestantsState state; 
     
@@ -306,9 +306,7 @@ class Refere{
 }
 
 class Coach{
-    private int idTeam; 
-    private int idPlayer;
-    private int strength;
+    private final int idTeam; 
     private ECoachesState state; 
     
     public Coach(int idTeam,ECoachesState state){
@@ -322,6 +320,9 @@ class Coach{
     
     public ECoachesState getState(){
         return state;
-
     }  
+    
+    public int getId(){
+        return idTeam; 
+    }
 }

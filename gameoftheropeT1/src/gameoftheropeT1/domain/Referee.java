@@ -23,7 +23,7 @@ public class Referee extends Thread{
     private final IRefereeRepository repository;
     private final IRefereeBench bench; 
     private ERefereeState state;
-    private int nrGamesMax; 
+    private final int nrGamesMax; 
     
     public Referee(IRefereePlayground playground, IRefereeSite site, 
             IRefereeBench bench, IRefereeRepository repository, int nrGamesMax){

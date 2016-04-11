@@ -1,6 +1,5 @@
 package gameoftheropeT1.monitors;
 import gameoftheropeT1.interfaces.*;
-import static gameoftheropeT1.main.GameoftheropeT1.GAMES_PER_MATCH;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,31 +14,28 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
-    private MRepository repository;
+    private final MRepository repository;
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble, isEndReview; 
-    private boolean endOfGame;  // para os jogadores se sentarem
     private int seatedA, seatedB;
-    private int opposingTeam; 
-    private int elementInTeam; 
-    private int constestantInTrial; 
+    private final int opposingTeam; 
+    private final int elementInTeam; 
+    private final int constestantInTrial; 
     private int numTrial; 
     private int numGame; 
-    private int nrTeams, endReview; 
-    private int lastPlayer, nrContestant;
+    private int endReview; 
+    private int nrContestant;
     private int nrPlayer;
     private int readyA;
     private int readyB;
-    private int allReady; 
+    private final int allReady; 
     private int finished;
-    private int gamesPerMatch; 
-    private int totalPlayer; 
-    private Map<Integer, List<Integer>> coachAndTeamInBench; 
+    private final int gamesPerMatch; 
+    private final int totalPlayer; 
+    private final Map<Integer, List<Integer>> coachAndTeamInBench; 
+    private final Map<Integer, List<Integer>> coachAndTeamInPull; 
     
-    private Map<Integer, List<Integer>> coachAndTeamInPull; 
-
-    private List<Integer> constestantInPullID;
     
     public MBench(MRepository repository, int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
         this.gamesPerMatch = gamesPerMatch; 
@@ -50,7 +46,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         callContestant = false; 
         newComand = false; 
         teamAssemble = false;
-        endOfGame = false;
         numGame = 0; 
         readyA = 0;
         readyB = 0;
@@ -62,13 +57,11 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         for (int i =1; i<= 2; i++){
-            coachAndTeamInBench.put(i, new ArrayList<Integer>());
-            coachAndTeamInPull.put(i, new ArrayList<Integer>());
+            coachAndTeamInBench.put(i, new ArrayList<>());
+            coachAndTeamInPull.put(i, new ArrayList<>());
         }
         
-        constestantInPullID = new ArrayList<Integer>();
 
-        nrTeams = 0; 
         nrContestant = 0; 
         numTrial = 0; 
         allReady =6; 
@@ -128,7 +121,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         /*escolha de jogadores que irão jogar*/
         Collections.shuffle(coachAndTeamInBench.get(coachId));
 
-        List<Integer> constestantInPullID  = new ArrayList<Integer>(); 
+        List<Integer> constestantInPullID  = new ArrayList<>(); 
 
 
         System.out.println("Lista de equipas + jogadores: "+coachAndTeamInBench.toString());
@@ -367,12 +360,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     
     @Override
     public boolean endOfTheGame(int c ){
-        if (numGame <= gamesPerMatch){
-            return true; 
-        }else{
-            return false; 
-        }
-        
+        return numGame <= gamesPerMatch;
     }
     
     

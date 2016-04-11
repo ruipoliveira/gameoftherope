@@ -23,19 +23,18 @@ import java.util.logging.Logger;
 public class GameoftheropeT1 {
 
     public final static int OPPOSING_TEAMS = 2; 
-    public final static int GAMES_PER_MATCH = 100; 
     public final static int CONTESTANTS_IN_TRIAL = 3; 
-    public final static int MAX_TRAILS_PER_GAME = 20; 
     public final static int KNOCK_OUT = 4;  
-    public final static int ELEMENTS_IN_TEAM = 20; 
-    
     public final static int NUM_OF_COACHES = 2;
-
     
+    public final static int MAX_TRAILS_PER_GAME = 20; 
+    public final static int ELEMENTS_IN_TEAM = 6; 
+    public final static int GAMES_PER_MATCH = 100; 
+
+
     public static void main(String[] args) throws IOException {
         
-        //String logname = "gameoftherope_"+hour()+".log";
-        String logname = "cenas.txt";
+        String logname = "gameoftherope_"+hour()+".log";
         MRepository repository = new MRepository(logname, OPPOSING_TEAMS ,ELEMENTS_IN_TEAM );
         
         MBench bench = new MBench(repository, GAMES_PER_MATCH, CONTESTANTS_IN_TRIAL, ELEMENTS_IN_TEAM, OPPOSING_TEAMS);
@@ -47,7 +46,6 @@ public class GameoftheropeT1 {
         Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, 
                 (IRefereeBench) bench, (IRefereeRepository) repository, GAMES_PER_MATCH);
 
-        
         ArrayList<Coach> coach = new ArrayList<>(OPPOSING_TEAMS);
 
         ArrayList<Contestant> contestant = new ArrayList<>(ELEMENTS_IN_TEAM);
