@@ -1,6 +1,5 @@
 package ClientSide.Referee;
 
-import ClientSide.Referee.ERefereeState;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt

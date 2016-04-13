@@ -1,9 +1,5 @@
 package ClientSide.Coach;
 
-import ServerSide.Bench.ICoachBench;
-import ServerSide.Playground.ICoachPlayground;
-import ServerSide.Repository.ICoachRepository;
-import ServerSide.Site.ICoachSite;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -47,7 +43,7 @@ public class Coach extends Thread{
                 case ASSEMBLE_TEAM:      
                     informReferee(idCoach); 
                     state = ECoachesState.WATCH_TRIAL;
-                    //repository.updateCoachState(idCoach, state); ??
+                    //repository.updateCoachState(idCoach, state);
                     break; 
                     
                 case WATCH_TRIAL:

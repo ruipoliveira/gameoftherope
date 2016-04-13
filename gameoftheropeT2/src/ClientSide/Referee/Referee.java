@@ -1,9 +1,5 @@
 package ClientSide.Referee; 
 
-import ServerSide.Bench.IRefereeBench;
-import ServerSide.Playground.IRefereePlayground;
-import ServerSide.Repository.IRefereeRepository;
-import ServerSide.Site.IRefereeSite;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -22,7 +18,7 @@ public class Referee extends Thread{
     private final IRefereeRepository repository;
     private final IRefereeBench bench; 
     private ERefereeState state;
-    private int nrGamesMax; 
+    private final int nrGamesMax; 
     
     public Referee(IRefereePlayground playground, IRefereeSite site, 
             IRefereeBench bench, IRefereeRepository repository, int nrGamesMax){

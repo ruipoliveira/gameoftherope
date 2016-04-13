@@ -2,6 +2,7 @@ package ClientSide.Contestant;
 
 import ServerSide.Site.MSite;
 
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -29,7 +30,7 @@ public class Contestant extends Thread{
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
-        System.out.println("#"+contId +" ->"+contestStrength); 
+        //System.out.println("#"+contId +" ->"+contestStrength); 
         repository.updateStrength(coachId,contId,contestStrength);
         
         this.coachId = coachId;
