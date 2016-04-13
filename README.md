@@ -1,5 +1,11 @@
-# gameoftherope
+# Game of the rope
 Sistemas Distribuídos
 
 --------------------------------------------------
-Trabalho 1: simulacao do ciclo de vida do arbitro, treinado e jogadores 
+
+gameoftheropeT1: Java concurrent rope game simulator.
+gameoftheropeT2: Implementation with messages. 
+
+
+This project was developed for a Distributed Systems course at the Universidade de Aveiro, Portugal.
+
