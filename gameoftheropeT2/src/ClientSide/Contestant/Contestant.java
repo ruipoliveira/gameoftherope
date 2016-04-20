@@ -30,7 +30,7 @@ public class Contestant extends Thread{
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
-        //System.out.println("#"+contId +" ->"+contestStrength); 
+ 
         repository.updateStrength(coachId,contId,contestStrength);
         
         this.coachId = coachId;

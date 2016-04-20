@@ -157,7 +157,7 @@ public enum MessageType {
     /**
      * Message used to know if a team wins a game by knock out 
      */
-    IS_KONCK_OUT,
+    IS_KNOCK_OUT,
     
     /**
      * Message used to notify that constestants must be ADDED to the pull
