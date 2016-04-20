@@ -12,7 +12,10 @@ package ClientSide.Referee;
 public class RefereeExec {
     
     public static void main(String [] args){
+        Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, 
+                (IRefereeBench) bench, (IRefereeRepository) repository, GAMES_PER_MATCH);
         
+        referee.start();
     }
     
 }

@@ -45,8 +45,7 @@ public class Contestant extends Thread{
         do {
             switch(this.state){                             
                 case SEAT_AT_THE_BENCH:         
-                    followCoachAdvice (coachId, contId);
-                    
+                    followCoachAdvice (coachId, contId);                    
                     if (site.endOperCoach(coachId)){
                         endOp = false; 
                         break;
@@ -116,6 +115,7 @@ public class Contestant extends Thread{
     
     private void followCoachAdvice(int coachId, int contestId){
         bench.followCoachAdvice(coachId, contestId);
+       
     }
     
     private void amDone(int coachId, int contId, int contestStrength){
