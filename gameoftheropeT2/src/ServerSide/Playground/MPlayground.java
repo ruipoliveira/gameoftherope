@@ -24,10 +24,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private int nrGame; 
     private final int maxTrials; 
     
-    private final MRepository repository; 
     
-      public MPlayground(MRepository repository, int maxTrials){
-        this.repository = repository; 
+      public MPlayground(int maxTrials){
         newTrial = 0; 
         numTrial = 0; 
         playerInPull=0;
@@ -102,8 +100,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             System.out.println("Jogo Empatado!!"); 
         }
         
-        repository.updateTrialNumber(numTrial);
-        repository.updatePullPosition(posPull);
+        updateTrialNumber(numTrial);
+        updatePullPosition(posPull);
 
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
 
@@ -151,12 +149,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
     
     @Override
-    public int getPositionPull(){
+    public synchronized int getPositionPull(){
         return posPull; 
     }
     
     @Override
-    public void setPositionPull(int posPull){
+    public synchronized void setPositionPull(int posPull){
         this.posPull = posPull; 
     }
     
@@ -189,7 +187,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
                 
-        repository.addContestantsInPull(coachId, contId);
+        addContestantsInPull(coachId, contId);
         
         strengthTeam.get(coachId).add(contestStrength);
         
@@ -219,6 +217,18 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     
     public int getNrGame(){
         return nrGame; 
+    }
+
+    private void updateTrialNumber(int numTrial) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updatePullPosition(int posPull) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void addContestantsInPull(int coachId, int contId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

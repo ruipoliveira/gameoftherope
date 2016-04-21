@@ -74,8 +74,9 @@ public enum MessageType {
      */ 
     END_OPER_COACH,
     
-    
-    
+    GET_POSITION_PULL,
+    SET_POSITION_PULL,
+
     
     // ### REFEREE ##### messages types ( I guess)
     
@@ -108,14 +109,6 @@ public enum MessageType {
      * Message used when the referee declares the winner of the match.
      */
     DECLARE_MATCH_WINNER,
-    
-    /**
-     * Message used when the referee updates the position of the pull.
-     */
-    SET_POSITION_PULL,
-    
-    
-    
     
     /*### REPOSITORY ###*/
     /**

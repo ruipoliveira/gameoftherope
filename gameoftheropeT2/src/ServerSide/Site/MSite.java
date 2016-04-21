@@ -15,8 +15,7 @@ public class MSite implements IRefereeSite, ICoachSite{
     private int nrTrial, numGame; 
     private final boolean endOp; 
     
-    public MSite(MRepository repository ){
-        this.repository = repository; 
+    public MSite(){
         endOp = false; 
     }
     

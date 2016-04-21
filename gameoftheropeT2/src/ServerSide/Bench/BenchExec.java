@@ -19,7 +19,7 @@ public class BenchExec {
         scon = new ServerComm(CommConst.benchServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
         
-        MBench bench = new MBench(repository, 0, 0, 0, 0); 
+        MBench bench = new MBench(0, 0, 0, 0); 
         BenchInterface shopInt = new BenchInterface(bench);
         System.out.println("Bench service has started!");
         System.out.println("Server is listening.");

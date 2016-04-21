@@ -20,8 +20,7 @@ public class ContestantExec {
         
         for (int idc = 1; idc <= OPPOSING_TEAMS ; idc++){
             for (int idct = 1; idct <= ELEMENTS_IN_TEAM; idct++){
-                contestant.add(new Contestant(idct, idc, (IContestantsBench) bench,
-                    (IContestantsPlayground) playground, repository, site));
+                contestant.add(new Contestant(idct, idc));
             }
         }
         

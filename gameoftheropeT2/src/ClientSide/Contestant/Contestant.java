@@ -10,10 +10,6 @@ import ServerSide.Site.MSite;
  */
 
 public class Contestant extends Thread{
-    private final IContestantsBench bench;
-    private final IContestantsPlayground playground;
-    private final IContestantsRepository repository;
-    private final MSite site; 
     
     private final int coachId;
     private EContestantsState state; 
@@ -21,17 +17,13 @@ public class Contestant extends Thread{
     
     private int contestStrength;
     
-    public Contestant(int contId, int coachId, IContestantsBench bench, IContestantsPlayground playground,
-            IContestantsRepository repository, MSite site){
-        this.bench = bench;
-        this.playground = playground;
-        this.repository = repository;
-        this.site = site;
+    public Contestant(int contId, int coachId){
+
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
  
-        repository.updateStrength(coachId,contId,contestStrength);
+        updateStrength(coachId,contId,contestStrength);
         
         this.coachId = coachId;
         
@@ -46,13 +38,13 @@ public class Contestant extends Thread{
             switch(this.state){                             
                 case SEAT_AT_THE_BENCH:         
                     followCoachAdvice (coachId, contId);                    
-                    if (site.endOperCoach(coachId)){
+                    if (endOperCoach(coachId)){
                         endOp = false; 
                         break;
                     } 
                     
                     state = EContestantsState.STAND_IN_POSITION;
-                    repository.updateContestantState(coachId, contId, state);
+                    updateContestantState(coachId, contId, state);
                  
                 break;
                 
@@ -61,13 +53,13 @@ public class Contestant extends Thread{
                     if (isPlayerSelected(coachId,contId) ){
                         getReady(coachId, contId);  
                         state = EContestantsState.DO_YOUR_BEST;
-                        repository.updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state);
                     }
                     else{
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                        repository.updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state);
                         contestStrength++;
-                        repository.updateStrengthAndWrite(coachId, contId, contestStrength);
+                        updateStrengthAndWrite(coachId, contId, contestStrength);
                     }
 
                 break;
@@ -77,9 +69,9 @@ public class Contestant extends Thread{
                     amDone(coachId, contId, contestStrength); 
                     seatDown(coachId,contId); 
                     contestStrength--;
-                    repository.updateStrengthAndWrite(coachId,contId, contestStrength);
+                    updateStrengthAndWrite(coachId,contId, contestStrength);
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                    repository.updateContestantState(coachId, contId, state);
+                    updateContestantState(coachId, contId, state);
 
                 break;    
             }
@@ -106,24 +98,24 @@ public class Contestant extends Thread{
     }
     
     private void seatDown(int coachId, int contestId){
-        bench.seatDown(coachId, contestId); 
+        //bench.seatDown(coachId, contestId); 
     }
     
     private boolean isPlayerSelected(int coachId, int contestId){
-        return bench.isPlayerSelected(coachId,contId); 
+        return true ;//bench.isPlayerSelected(coachId,contId); 
     }
     
     private void followCoachAdvice(int coachId, int contestId){
-        bench.followCoachAdvice(coachId, contestId);
+       // bench.followCoachAdvice(coachId, contestId);
        
     }
     
     private void amDone(int coachId, int contId, int contestStrength){
-        playground.amDone(coachId, contId, contestStrength);
+        //playground.amDone(coachId, contId, contestStrength);
     }
     
     private void getReady(int coachId, int contestId){
-        playground.getReady(coachId, contestId);
+        //playground.getReady(coachId, contestId);
     }
     
     /**
@@ -140,6 +132,22 @@ public class Contestant extends Thread{
      */
     public int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
+    }
+
+    private void updateStrength(int coachId, int contId, int contestStrength) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean endOperCoach(int coachId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updateContestantState(int coachId, int contId, EContestantsState state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updateStrengthAndWrite(int coachId, int contId, int contestStrength) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

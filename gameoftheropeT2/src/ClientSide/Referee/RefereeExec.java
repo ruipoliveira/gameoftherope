@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class RefereeExec {
     
+    public static int GAMES_PER_MATCH = 7; 
     public static void main(String [] args){
-        Referee referee = new Referee((IRefereePlayground) playground, (IRefereeSite) site, 
-                (IRefereeBench) bench, (IRefereeRepository) repository, GAMES_PER_MATCH);
+        Referee referee = new Referee(GAMES_PER_MATCH);
         
         referee.start();
        

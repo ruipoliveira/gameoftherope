@@ -89,7 +89,8 @@ public class Message implements Serializable {
      * Empty constructor for the message that initializes the default values for the previous variables.
      */
     private Message(){
-        id = ERROR_INT;
+        idCoach = ERROR_INT;
+        idContestant = ERROR_INT;
         
         refState = null;
         coachState = null;
@@ -119,17 +120,14 @@ public class Message implements Serializable {
         this();
         this.type = type;
         
-        switch(type){
+        switch(type){    // executa de igual modo para ambos
             case CALL_CONTESTANTS: 
-                this.idCoach = value; 
-                break; 
             case REVIEW_NOTES: 
-                this.idCoach = value; 
-                break; 
             case INFORM_REFEREE: 
                 this.idCoach = value;
                 break; 
-               
+            
+            case SET_POSITION_PULL: 
             case DECLARE_GAME_WINNER:
                 this.pullPosition = value; 
                 
@@ -145,16 +143,47 @@ public class Message implements Serializable {
     public Message(MessageType type, int value1, int value2) {
         this();
         this.type = type;
-        this.id1 = id1; 
-        this.id2 = id2; 
+
+        switch(type){
+            case START_TRIAL:
+            case CALL_TRIAL:
+            case ANNOUNCE_NEW_GAME: 
+                this.gameNumber = value1; 
+                this.trialNumber = value2; 
+                break;
+            case GET_READY: 
+            case IS_PLAYER_SELECTED: 
+            case REVIEW_NOTES: 
+            case SEAT_DOWN: 
+            case FOLLOW_COACH_ADVICE:
+                this.idCoach = value1; 
+                this.idContestant = value2;
+                break; 
+            default:
+                System.err.println(type + ", wrong message type!");
+                this.type = MessageType.ERROR;
+                break;
+                
+        }
+        
     }
     
     public Message(MessageType type, int value1, int value2, int contestStrength) {
         this();
         this.type = type;
-        this.id1 = id1; 
-        this.id2 = id2; 
-        this.contestStrength = contestStrength; 
+        
+        switch(type){
+            case AM_DONE : 
+                this.idCoach = value1; 
+                this.idContestant = value2; 
+                this.contestStrength = contestStrength; 
+                break; 
+            default:
+                System.err.println(type + ", wrong message type!");
+                this.type = MessageType.ERROR;
+                break; 
+        }
+
     }
     
     
@@ -182,10 +211,13 @@ public class Message implements Serializable {
         return type;
     }
 
-    public int getId() {
-        return id;
+    public int getIdCoach() {
+        return idCoach;
     }
 
+    public int getIdContest() {
+        return idContestant;
+    }
     public ERefereeState getRefState() {
         return refState;
     }

@@ -9,20 +9,11 @@ package ClientSide.Coach;
 public class Coach extends Thread{
     
     private ECoachesState state; 
-    private final ICoachBench bench; 
-    private final ICoachSite site; 
-    private final ICoachPlayground playground;
-    private final ICoachRepository repository;
     private final int idCoach;
 
-    public Coach(int idCoach, ICoachBench bench, ICoachPlayground playground, ICoachSite site, 
-            ICoachRepository repository ){
+    public Coach(int idCoach){
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach; 
-        this.bench = bench;
-        this.site = site; 
-        this.playground = playground;
-        this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
     }
     
@@ -34,10 +25,10 @@ public class Coach extends Thread{
         do {
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    if (!bench.endOfTheGame(idCoach)) break; 
+                    if (!endOfTheGame(idCoach)) break; 
                     callContestants(idCoach);
                     state = ECoachesState.ASSEMBLE_TEAM;
-                    repository.updateCoachState(idCoach, state);
+                    updateCoachState(idCoach, state);
                     break; 
 
                 case ASSEMBLE_TEAM:      
@@ -49,25 +40,25 @@ public class Coach extends Thread{
                 case WATCH_TRIAL:
                     reviewNotes(idCoach);
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-                    repository.updateCoachState(idCoach, state);
+                    updateCoachState(idCoach, state);
                     break;
             }
-        }while (bench.endOfTheGame(idCoach));
+        }while (endOfTheGame(idCoach));
         
         System.out.println("Fim do treinador "+idCoach); 
     
     }
     
     private void callContestants(int idCoach){
-        bench.callContestants(idCoach);
+        //bench.callContestants(idCoach);
     }
     
     private void informReferee(int idCoach){
-        playground.informReferee(idCoach);
+        //playground.informReferee(idCoach);
     }
     
     private void reviewNotes(int idCoach){
-        bench.reviewNotes(idCoach);
+        ///bench.reviewNotes(idCoach);
     }
     
     public void setState(ECoachesState state){
@@ -75,7 +66,7 @@ public class Coach extends Thread{
     }
     
     public boolean endOperCoach(int idCoach){
-        return site.endOperCoach(idCoach); 
+        return true ;//site.endOperCoach(idCoach); 
     }
     
     /**
@@ -92,6 +83,14 @@ public class Coach extends Thread{
      */
     public int getIdCoach(){
         return idCoach;
+    }
+
+    private boolean endOfTheGame(int idCoach) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updateCoachState(int idCoach, ECoachesState state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -15,7 +15,6 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
-    private final MRepository repository;
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble, isEndReview; 
@@ -38,10 +37,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private final Map<Integer, List<Integer>> coachAndTeamInPull; 
     
     
-    public MBench(MRepository repository, int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
+    public MBench( int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
         this.gamesPerMatch = gamesPerMatch; 
         this.elementInTeam = elementInTeam;
-        this.repository = repository; 
         this.constestantInTrial = constestantInTrial; 
         this.opposingTeam = opposingTeam; 
         callContestant = false; 
@@ -255,7 +253,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      */
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-        repository.removeContestantsInPull(coachId, contestId);
+        removeContestantsInPull(coachId, contestId);
         finished++;
 
         while(finished % 2*constestantInTrial != 0){
@@ -362,6 +360,10 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     @Override
     public boolean endOfTheGame(int c ){
         return numGame <= gamesPerMatch;
+    }
+
+    private void removeContestantsInPull(int coachId, int contestId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

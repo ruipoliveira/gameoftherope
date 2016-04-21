@@ -27,7 +27,7 @@ public class SiteExec {
         scon = new ServerComm(CommConst.siteServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
         
-        MSite site = new MSite(repository, 0, 0, 0, 0); 
+        MSite site = new MSite(); 
         SiteInterface siteInt = new SiteInterface(site);
         System.out.println("Playground service has started!");
         System.out.println("Server is listening.");

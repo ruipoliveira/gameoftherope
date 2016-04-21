@@ -12,22 +12,16 @@ public class Referee extends Thread{
     public final static char GAME_END = 'E';
     public final static char KNOCK_OUT_A = 'A';
     public final static char KNOCK_OUT_B = 'B';
-    
-    private final IRefereeSite site;
-    private final IRefereePlayground playground;
-    private final IRefereeRepository repository;
-    private final IRefereeBench bench; 
+
     private ERefereeState state;
     private final int nrGamesMax; 
     
-    public Referee(IRefereePlayground playground, IRefereeSite site, 
-            IRefereeBench bench, IRefereeRepository repository, int nrGamesMax){
-        this.playground = playground;
-        this.site = site;
-        this.bench = bench; 
-        this.repository = repository;
+    public Referee(int nrGamesMax){
+
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
+
+        
     }
     
     /**
@@ -45,8 +39,8 @@ public class Referee extends Thread{
                 case START_OF_THE_MATCH:
                     nrTrial++;
                     nrGame++;
-                    repository.updateGameNumber(nrGame);
-                    repository.updateTrialNumber(nrTrial);
+                    updateGameNumber(nrGame);
+                    updateTrialNumber(nrTrial);
                     announceNewGame(nrGame,nrTrial);
                     state = ERefereeState.START_OF_A_GAME;
                     break; 
@@ -54,17 +48,17 @@ public class Referee extends Thread{
                 case START_OF_A_GAME:
                     callTrial(nrGame,nrTrial);
                     state = ERefereeState.TEAMS_READY;
-                    repository.updateRefState(state);
+                    updateRefState(state);
                     break;
 
                 case TEAMS_READY:
                     startTrial(nrGame,nrTrial);
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    repository.updateRefState(state); 
+                    updateRefState(state); 
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
-                    if (bench.allSittingTeams()){
+                    if (allSittingTeams()){
                         decision = assertTrialDecision();
                     }
 
@@ -72,7 +66,7 @@ public class Referee extends Thread{
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
                         state = ERefereeState.START_OF_A_GAME;
-                        repository.updateRefState(state);  // actualiza no repositorio
+                        updateRefState(state);
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
 
@@ -80,21 +74,21 @@ public class Referee extends Thread{
                             System.out.println("Jogo acaba! - excedeu numero de trials! ");
                         else if (decision == KNOCK_OUT_A){
                             System.out.println("Jogo acaba! - knock out! Ganha A");
-                            repository.isKnockOut(nrGame, nrTrial, "A");
+                            isKnockOut(nrGame, nrTrial, "A");
                         }
                         else if (decision == KNOCK_OUT_B){
                             System.out.println("Jogo acaba! - knock out! Ganha B");
-                            repository.isKnockOut(nrGame, nrTrial, "B");
+                            isKnockOut(nrGame, nrTrial, "B");
                         }
                         
-                        int posPull = playground.getPositionPull(); 
+                        int posPull = getPositionPull(); 
 
                         declareGameWinner(posPull); 
 
                         setPositionPull(PULL_CENTER);
 
                         state = ERefereeState.END_OF_A_GAME;
-                        repository.updateRefState(state);  // actualiza no repositorio
+                        updateRefState(state);  // actualiza no repositorio
                     }
                     break; 
 
@@ -102,12 +96,12 @@ public class Referee extends Thread{
                     if(nrGame < nrGamesMax){
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
-                        repository.updateRefState(state);
+                        updateRefState(state);
                     }
 
                     else{
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                        repository.updateRefState(state);
+                        updateRefState(state);
                         declareMatchWinner();
 
                     } 
@@ -140,31 +134,55 @@ public class Referee extends Thread{
     }
 
     private void callTrial(int nrGame, int nrTrial){
-        bench.callTrial(nrGame, nrTrial);
+        //bench.callTrial(nrGame, nrTrial);
     }
     
     private void startTrial(int nrGame,int numTrial){
-        playground.startTrial(nrGame,numTrial);
+        //playground.startTrial(nrGame,numTrial);
     }
     
     private char assertTrialDecision(){
-        return playground.assertTrialDecision(); 
+        return '2'; //playground.assertTrialDecision(); 
     }
     
     private void declareGameWinner(int posPull){
-        site.declareGameWinner(posPull);
+        //site.declareGameWinner(posPull);
     }
     
     private void declareMatchWinner(){
-        site.declareMatchWinner();
+        //site.declareMatchWinner();
     }
     
     private void announceNewGame(int numGame, int nrTria){
-        site.announceNewGame(numGame, nrTria);
+        //site.announceNewGame(numGame, nrTria);
     }
     
     private void setPositionPull(int pos){
-        playground.setPositionPull(pos); 
+        //playground.setPositionPull(pos); 
+    }
+
+    private void updateRefState(ERefereeState state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private int getPositionPull() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void isKnockOut(int nrGame, int nrTrial, String b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean allSittingTeams() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updateGameNumber(int nrGame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void updateTrialNumber(int nrTrial) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
