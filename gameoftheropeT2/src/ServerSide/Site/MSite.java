@@ -9,7 +9,6 @@ import ServerSide.Repository.MRepository;
  * @version 1.0
  */
 public class MSite implements IRefereeSite, ICoachSite{
-    MRepository repository; 
     private int winnerTeamA;
     private int winnerTeamB; 
     private int nrTrial, numGame; 
@@ -39,17 +38,17 @@ public class MSite implements IRefereeSite, ICoachSite{
 
         if (posPull < 0 ){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
-            repository.isEnd(numGame, "A");
+            isEnd(numGame, "A");
             winnerTeamA++; 
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
-            repository.isEnd(numGame, "B");
+            isEnd(numGame, "B");
             winnerTeamB++; 
         }
         else{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
-            repository.wasADraw(numGame);
+            wasADraw(numGame);
         }
     }
     
@@ -62,16 +61,16 @@ public class MSite implements IRefereeSite, ICoachSite{
         System.out.println("***********************************************************");
         if (winnerTeamA > winnerTeamB){
             System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
-            repository.endMatch("A", winnerTeamA, winnerTeamB);
+            endMatch("A", winnerTeamA, winnerTeamB);
 
         }
         else if (winnerTeamA < winnerTeamB){
             System.out.println("A Equipa B venceu o match com #" +winnerTeamB +" vitórias!");
-            repository.endMatch("B", winnerTeamB, winnerTeamA);
+            endMatch("B", winnerTeamB, winnerTeamA);
         }
         else{
             System.out.println("O match ficou empatado! :(  A#" +winnerTeamA +" - B#"+winnerTeamB);
-            repository.endMatch("", winnerTeamB, winnerTeamA);
+            endMatch("", winnerTeamB, winnerTeamA);
         }
         System.out.println("***********************************************************");
 
@@ -88,6 +87,18 @@ public class MSite implements IRefereeSite, ICoachSite{
     
     public int getNrTrial(){
         return nrTrial; 
+    }
+
+    private void isEnd(int numGame, String a) {
+        
+    }
+
+    private void wasADraw(int numGame) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void endMatch(String a, int winnerTeamA, int winnerTeamB) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

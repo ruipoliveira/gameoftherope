@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.*;
+import static java.lang.Thread.sleep;
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -362,8 +366,28 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         return numGame <= gamesPerMatch;
     }
 
+            // enviar mensagem para o cliente
     private void removeContestantsInPull(int coachId, int contestId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.REMOVE_CONTESTANTS_IN_PULL, coachId, contestId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Tipo inválido!");
+            System.exit(1);
+        }
+        con.close();
     }
     
     

@@ -1,5 +1,10 @@
 package ServerSide.Playground;
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
 import ServerSide.Repository.MRepository;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private final int maxTrials; 
     
     
-      public MPlayground(int maxTrials){
+    public MPlayground(int maxTrials){
         newTrial = 0; 
         numTrial = 0; 
         playerInPull=0;
@@ -219,16 +224,74 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         return nrGame; 
     }
 
+            // communication messages
     private void updateTrialNumber(int numTrial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_TRIAL_NUMBER, numTrial);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Tipo inválido!");
+            System.exit(1);
+        }
+        con.close();
     }
 
     private void updatePullPosition(int posPull) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_PULL_POSITION, posPull);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Tipo inválido!");
+            System.exit(1);
+        }
+        con.close();
     }
 
     private void addContestantsInPull(int coachId, int contId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.ADD_CONTESTANTS_IN_PULL, coachId, contId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Tipo inválido!");
+            System.exit(1);
+        }
+        con.close();
     }
 
 }
