@@ -288,7 +288,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      * @return isSitting
      */
     @Override
-    public boolean allSittingTeams(){
+    public synchronized boolean allSittingTeams(){
         return seatedA + seatedB == 2*constestantInTrial; 
     }
     

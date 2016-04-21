@@ -1,7 +1,5 @@
 package ServerSide.Repository;
 
-import ClientSide.Coach.ECoachesState;
-
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt

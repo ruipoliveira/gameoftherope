@@ -17,7 +17,7 @@ public class CoachExec {
     public static void main(String [] args)  throws IOException{
 
         ArrayList<Coach> coach = new ArrayList<>(OPPOSING_TEAMS);
-        
+    
         for (int idc = 1; idc <= OPPOSING_TEAMS ; idc++){
             coach.add(new Coach(idc, (ICoachBench) bench, (ICoachPlayground) playground,
                     (ICoachSite) site, repository));

@@ -269,7 +269,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private boolean indexExists(final List list, final int index) {
         return index >= 0 && index < list.size();
     }
-    
+
+
     
 }
 

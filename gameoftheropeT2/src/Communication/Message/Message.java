@@ -8,52 +8,29 @@ package Communication.Message;
 import ClientSide.Coach.ECoachesState;
 import ClientSide.Contestant.EContestantsState;
 import ClientSide.Referee.ERefereeState;
+import java.io.Serializable;
 
 /**
  *
  * @author roliveira
  */
-public class Message {
+public class Message implements Serializable {
     public static final int ERROR_INT = Integer.MIN_VALUE;
-    
-    /**
-     * Variable that defines the character value for an error.
-     */
+   
     public static final char ERROR_CHAR = 0xFFFE;
     
-    /**
-     * Variable that defines the serial version identifier.
-     */
     private static final long serialVersionUID = 1001L;
-    
-    /**
-     * Variable that defines the type of the current message.
-     */
+
     private MessageType type;
-    
-    /**
-     * Variable that defines the identifier, if the message requires one.
-     */
+
     private int id;
-    
-     /**
-     * Variable that holds the Referee state, in case the message requires it.
-     */
+
     private ERefereeState refState;
     
-     /**
-     * Variable that holds the Coach state, in case the message requires it.
-     */
     private ECoachesState coachState;
     
-    /**
-     * Variable that holds the Contestant state, in case the message requires it.
-     */
     private EContestantsState contestState;
-        
-     /**
-     * Variable that holds the logging file name, in case the message requires it.
-     */
+
     private String filename;
     
     
@@ -65,9 +42,61 @@ public class Message {
      */
     private int contestStrength;
     
+    public MessageType getType() {
+        return type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ERefereeState getRefState() {
+        return refState;
+    }
+
+    public ECoachesState getCoachState() {
+        return coachState;
+    }
+
+    public EContestantsState getContestState() {
+        return contestState;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public int getContestStrength() {
+        return contestStrength;
+    }
+
+    public int getPullPosition() {
+        return pullPosition;
+    }
+
+    public int getTrialNumber() {
+        return trialNumber;
+    }
+
+    public int getGameNumber() {
+        return gameNumber;
+    }
+
+    public boolean isIsKnockOut() {
+        return isKnockOut;
+    }
+
+    public int getTotalPlayer() {
+        return totalPlayer;
+    }
+
     /**
      * Variable that holds the pull position (defined by referee), in case the message requires it.
      */
+    public boolean isLastPulled() {
+        return lastPulled;
+    }
+
     private int pullPosition;
     
     /**
@@ -123,49 +152,13 @@ public class Message {
         totalPlayer = ERROR_INT;
     }
     
-        // constructor used in all methods
+    // constructor used in all methods
     public Message(MessageType type) {
         this();
         this.type = type;
     }
-     
-     /** *  @param type Message type for the created message.
-     *
-     * @param value Possible value for the message.
-     */
-    /*public Message(MessageType type, int value) {
-        this();
-        this.type = type;
-        switch(type)
-        {
-            case ENTER_SHOP:
-            case EXIT_SHOP:
-            case GO_SHOPPING:
-            case TRY_AGAIN_LATER:
-            case PRIME_MATERIALS_NEEDED:
-            case BACK_TO_WORK:
-            case COLLECTING_MATERIALS:
-            case PREPARE_TO_PRODUCE:
-            case BATCH_READY_FOR_TRANSFER:
-            case GO_TO_STORE:
-            case SAY_GOODBYE_TO_CUSTOMER:
-                this.id = value;
-                break;
-                
-            case REPLENISH_STOCK:
-                this.nMaterials = value;
-                break;
-            case ACK:
-            case RETURN_TO_SHOP:
-            case GO_TO_WORKSHOP:
-                this.nProducts = value;
-                break;
-            default:
-                System.err.println(type + ", wrong message type!");
-                this.type = MessageType.ERROR;
-                break;
-        }
-    } */
+   
+    
     
     // mensagem com o tipo e o estado de cada cliente / entidade
     public Message(MessageType type, ERefereeState refState) {

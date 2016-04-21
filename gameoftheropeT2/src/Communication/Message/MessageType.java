@@ -45,6 +45,10 @@ public enum MessageType {
      */
     GET_READY,
     
+    /**
+     * 
+     */
+    ALL_SITTING_TEAMS,
  
     
     
