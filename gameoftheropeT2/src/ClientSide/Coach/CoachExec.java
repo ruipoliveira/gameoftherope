@@ -5,7 +5,13 @@
  */
 package ClientSide.Coach;
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
+import static java.lang.Thread.sleep;
 import java.io.IOException;
+import java.util.*; 
 import java.util.ArrayList;
 
 /**
@@ -31,5 +37,24 @@ public class CoachExec {
                 c.join();
             } catch (InterruptedException e){}
         }
+        /*
+        Message inMessage, outMessage;
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != MessageType.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        */
     }
 }

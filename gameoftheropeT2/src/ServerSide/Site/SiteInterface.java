@@ -10,7 +10,6 @@ import Communication.Message.MessageException;
 import Communication.Message.MessageType;
 import Communication.Proxy.ServerInterface;
 import Communication.ServerComm;
-import ServerSide.Playground.MPlayground;
 import java.net.SocketException;
 
 /**

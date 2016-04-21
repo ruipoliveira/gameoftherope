@@ -22,7 +22,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the logging server.
      */
-    public final static int repServerPort = 22440;
+    public final static int repServerPort = 22151;
     
     /**
      * Variable that holds the address for the playground server.
@@ -30,10 +30,10 @@ public class CommConst {
     //public final static String playServerName = "127.0.0.1";
     public final static String playServerName = "l040101-ws05.ua.pt";
     
-    /**
+    /** 
      * Variable that holds the port number for the shop server.
      */
-    public final static int playServerPort = 22441;
+    public final static int playServerPort = 22152;
         
     /**
      * Variable that holds the address for the site server.
@@ -44,7 +44,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the site server.
      */
-    public final static int siteServerPort = 22442;
+    public final static int siteServerPort = 22153;
     
     /**
      * Variable that holds the address for the bench server.
@@ -55,7 +55,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the bench server.
      */
-    public final static int benchServerPort = 22443;
+    public final static int benchServerPort = 22154;
     
     /**
      * Variable that holds the timeout value for the server sockets.

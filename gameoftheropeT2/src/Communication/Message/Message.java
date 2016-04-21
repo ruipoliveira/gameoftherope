@@ -23,7 +23,11 @@ public class Message implements Serializable {
 
     private MessageType type;
 
-    private int id;
+    private int idCoach;
+    
+    private int idContestant;
+    
+    private int contestStrength;
 
     private ERefereeState refState;
     
@@ -35,67 +39,20 @@ public class Message implements Serializable {
     
     
     
+    
     // duvida aqui.... achas que vale a pena ter 2 variaveis para aquele de uma ser no inicio e outra 
     // ser depois quando se desenrola o jogo???
     /**
      * Variable that holds the strength of players, in case the message requires it.
      */
-    private int contestStrength;
     
-    public MessageType getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public ERefereeState getRefState() {
-        return refState;
-    }
-
-    public ECoachesState getCoachState() {
-        return coachState;
-    }
-
-    public EContestantsState getContestState() {
-        return contestState;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public int getContestStrength() {
-        return contestStrength;
-    }
-
-    public int getPullPosition() {
-        return pullPosition;
-    }
-
-    public int getTrialNumber() {
-        return trialNumber;
-    }
-
-    public int getGameNumber() {
-        return gameNumber;
-    }
-
-    public boolean isIsKnockOut() {
-        return isKnockOut;
-    }
-
-    public int getTotalPlayer() {
-        return totalPlayer;
-    }
+    
+ 
 
     /**
      * Variable that holds the pull position (defined by referee), in case the message requires it.
      */
-    public boolean isLastPulled() {
-        return lastPulled;
-    }
+
 
     private int pullPosition;
     
@@ -158,6 +115,47 @@ public class Message implements Serializable {
         this.type = type;
     }
    
+    public Message(MessageType type, int value) {
+        this();
+        this.type = type;
+        
+        switch(type){
+            case CALL_CONTESTANTS: 
+                this.idCoach = value; 
+                break; 
+            case REVIEW_NOTES: 
+                this.idCoach = value; 
+                break; 
+            case INFORM_REFEREE: 
+                this.idCoach = value;
+                break; 
+               
+            case DECLARE_GAME_WINNER:
+                this.pullPosition = value; 
+                
+            default:
+                System.err.println(type + ", wrong message type!");
+                this.type = MessageType.ERROR;
+                break;
+        }
+
+
+    }
+   
+    public Message(MessageType type, int value1, int value2) {
+        this();
+        this.type = type;
+        this.id1 = id1; 
+        this.id2 = id2; 
+    }
+    
+    public Message(MessageType type, int value1, int value2, int contestStrength) {
+        this();
+        this.type = type;
+        this.id1 = id1; 
+        this.id2 = id2; 
+        this.contestStrength = contestStrength; 
+    }
     
     
     // mensagem com o tipo e o estado de cada cliente / entidade
@@ -180,6 +178,55 @@ public class Message implements Serializable {
     }
     
     
-    
-   
+    public MessageType getType() {
+        return type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ERefereeState getRefState() {
+        return refState;
+    }
+
+    public ECoachesState getCoachState() {
+        return coachState;
+    }
+
+    public EContestantsState getContestState() {
+        return contestState;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public int getContestStrength() {
+        return contestStrength;
+    }
+
+    public int getPullPosition() {
+        return pullPosition;
+    }
+
+    public int getTrialNumber() {
+        return trialNumber;
+    }
+
+    public int getGameNumber() {
+        return gameNumber;
+    }
+
+    public boolean isIsKnockOut() {
+        return isKnockOut;
+    }
+
+    public int getTotalPlayer() {
+        return totalPlayer;
+    }
+
+    public boolean isLastPulled() {
+        return lastPulled;
+    }
 }
