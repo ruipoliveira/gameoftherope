@@ -9,6 +9,7 @@ import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
 
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -190,10 +191,56 @@ public class Contestant extends Thread{
     }
     
     private void amDone(int coachId, int contId, int contestStrength){
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.AM_DONE, coachId, contId, contestStrength);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
         //playground.amDone(coachId, contId, contestStrength);
     }
     
     private void getReady(int coachId, int contestId){
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.GET_READY, coachId, contestId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
         //playground.getReady(coachId, contestId);
     }
     
@@ -218,6 +265,7 @@ public class Contestant extends Thread{
     }
 
     private boolean endOperCoach(int coachId) {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
