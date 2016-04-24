@@ -247,7 +247,7 @@ public class Referee extends Thread{
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(MessageType.CALL_TRIAL, posPull);
+        outMessage = new Message(MessageType.DECLARE_GAME_WINNER, posPull);
         con.writeObject(outMessage);
         
         inMessage = (Message) con.readObject();

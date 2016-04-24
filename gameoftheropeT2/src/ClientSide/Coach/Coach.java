@@ -1,5 +1,12 @@
 package ClientSide.Coach;
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
+import static java.lang.Thread.sleep;
+import java.util.Arrays;
+
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -50,14 +57,84 @@ public class Coach extends Thread{
     }
     
     private void callContestants(int idCoach){
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.CALL_CONTESTANTS, idCoach);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close(); 
         //bench.callContestants(idCoach);
+        
     }
     
     private void informReferee(int idCoach){
+         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.INFORM_REFEREE, idCoach);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
         //playground.informReferee(idCoach);
     }
     
     private void reviewNotes(int idCoach){
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.REVIEW_NOTES, idCoach);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
         ///bench.reviewNotes(idCoach);
     }
     
@@ -66,7 +143,38 @@ public class Coach extends Thread{
     }
     
     public boolean endOperCoach(int idCoach){
-        return true ;//site.endOperCoach(idCoach); 
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.END_OPER_COACH);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        
+        if (type != MessageType.POSITIVE && type != MessageType.NEGATIVE) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        
+        if(type == MessageType.POSITIVE) {
+            return true;                
+            
+        } else {
+            return false;
+        }
+        
+        //return true ;//site.endOperCoach(idCoach); 
     }
     
     /**
