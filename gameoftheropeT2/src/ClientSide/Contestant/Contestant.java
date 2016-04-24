@@ -1,6 +1,12 @@
 package ClientSide.Contestant;
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
 import ServerSide.Site.MSite;
+import static java.lang.Thread.sleep;
+import java.util.Arrays;
 
 
 /**
@@ -98,14 +104,87 @@ public class Contestant extends Thread{
     }
     
     private void seatDown(int coachId, int contestId){
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.SEAT_DOWN, coachId, contestId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
         //bench.seatDown(coachId, contestId); 
     }
     
     private boolean isPlayerSelected(int coachId, int contestId){
-        return true ;//bench.isPlayerSelected(coachId,contId); 
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.IS_PLAYER_SELECTED, coachId, contestId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject(); 
+        
+        MessageType type = inMessage.getType();
+        if (type == MessageType.POSITIVE)
+            return true;
+        else if(type == MessageType.NEGATIVE)
+            return false;
+        else{
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        return false ;//bench.isPlayerSelected(coachId,contId); 
     }
     
     private void followCoachAdvice(int coachId, int contestId){
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.FOLLOW_COACH_ADVICE, coachId, contestId);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
        // bench.followCoachAdvice(coachId, contestId);
        
     }

@@ -157,22 +157,21 @@ public class Coach extends Thread{
         con.writeObject(outMessage);
         
         inMessage = (Message) con.readObject();
-        MessageType type = inMessage.getType();
         
-        if (type != MessageType.POSITIVE && type != MessageType.NEGATIVE) {
+        MessageType type = inMessage.getType();        
+        if (type == MessageType.POSITIVE)
+            return true;
+        else if(type == MessageType.NEGATIVE)
+            return false;
+        else{
             System.out.println("Thread " + getName() + ": Tipo inválido!");
             System.out.println("Message:"+ inMessage.toString());
             System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
             System.exit(1);
         }
         con.close();
+        return false;
         
-        if(type == MessageType.POSITIVE) {
-            return true;                
-            
-        } else {
-            return false;
-        }
         
         //return true ;//site.endOperCoach(idCoach); 
     }
