@@ -7,6 +7,7 @@ import Communication.Message.MessageType;
 import ServerSide.Site.MSite;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
+import ClientSide.Coach.*;
 
 
 
@@ -23,17 +24,13 @@ public class Contestant extends Thread{
     private final int contId;
     
     private int contestStrength;
-    
+    Coach ch; //  usado para o endOperCoach
     public Contestant(int contId, int coachId){
-
+        this.coachId = coachId;
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
- 
-        updateStrength(coachId,contId,contestStrength);
-        
-        this.coachId = coachId;
-        
+        updateStrength(coachId,contId,contestStrength);      
     }
     
     @Override
@@ -263,10 +260,10 @@ public class Contestant extends Thread{
     private void updateStrength(int coachId, int contId, int contestStrength) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+        // muitas duvidas nisto... acho que nao ha necessidade de a repetir novamente, daí fazer so isto
     private boolean endOperCoach(int coachId) {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ch.endOperCoach(coachId);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void updateContestantState(int coachId, int contId, EContestantsState state) {
