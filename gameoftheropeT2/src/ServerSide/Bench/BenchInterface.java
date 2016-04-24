@@ -58,7 +58,14 @@ public class BenchInterface implements ServerInterface {
                 break; 
                
             case ALL_SITTING_TEAMS:
-                bench.allSittingTeams();
+                
+                boolean allSitting = bench.allSittingTeams();
+                
+                if (allSitting)
+                    outMessage = new Message(MessageType.POSITIVE);
+                else 
+                    outMessage = new Message(MessageType.NEGATIVE);
+                
                 break; 
 
             case FOLLOW_COACH_ADVICE:

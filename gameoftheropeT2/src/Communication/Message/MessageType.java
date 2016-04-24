@@ -99,6 +99,11 @@ public enum MessageType {
      * Message used when the referee waits for trial conclusion and make a decision.
      */
     ASSERT_TRIAL_DECISION,
+
+    DECISION_E,
+    DECISION_A,
+    DECISION_B,
+    DECISION_C,
     
     /**
      * Message used when the referee declares the winner of the game.
@@ -165,4 +170,8 @@ public enum MessageType {
      * Message used to notify that constestants must be moved out to the pull
      */
     REMOVE_CONTESTANTS_IN_PULL,  
+    
+    
+    
+    
 }

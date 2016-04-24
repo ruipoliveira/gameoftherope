@@ -1,5 +1,12 @@
 package ClientSide.Referee; 
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import static java.lang.Thread.sleep;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
+import java.util.Arrays;
+
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -21,7 +28,6 @@ public class Referee extends Thread{
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
 
-        
     }
     
     /**
@@ -134,30 +140,221 @@ public class Referee extends Thread{
     }
 
     private void callTrial(int nrGame, int nrTrial){
+
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.CALL_TRIAL, nrGame, nrTrial);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        
         //bench.callTrial(nrGame, nrTrial);
     }
     
     private void startTrial(int nrGame,int numTrial){
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.START_TRIAL, nrGame, numTrial);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
         //playground.startTrial(nrGame,numTrial);
     }
     
     private char assertTrialDecision(){
-        return '2'; //playground.assertTrialDecision(); 
+        
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.ASSERT_TRIAL_DECISION);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        
+        if (type == MessageType.DECISION_A)
+            return 'A';
+        else if(type == MessageType.DECISION_B)
+            return 'B';
+        else if(type == MessageType.DECISION_C)
+            return 'C';
+        else if(type == MessageType.DECISION_E)
+            return 'E';        
+        else {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        return ' '; 
+        //playground.assertTrialDecision(); 
     }
     
     private void declareGameWinner(int posPull){
+        
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.CALL_TRIAL, posPull);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
+        
         //site.declareGameWinner(posPull);
     }
     
     private void declareMatchWinner(){
+        
+        ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.DECLARE_MATCH_WINNER);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
         //site.declareMatchWinner();
     }
     
-    private void announceNewGame(int numGame, int nrTria){
+    private void announceNewGame(int nrGame, int nrTrial){
+        
+        ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.ANNOUNCE_NEW_GAME, nrGame, nrTrial);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
         //site.announceNewGame(numGame, nrTria);
     }
     
-    private void setPositionPull(int pos){
+    private void setPositionPull(int posPull){
+        
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.SET_POSITION_PULL, posPull);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
+        
+        
         //playground.setPositionPull(pos); 
     }
 
@@ -166,7 +363,34 @@ public class Referee extends Thread{
     }
 
     private int getPositionPull() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.GET_POSITION_PULL);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        int posPull = inMessage.getPullPosition(); 
+        
+        if (type != MessageType.ACK || posPull == Message.ERROR_INT ) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        return posPull; 
     }
 
     private void isKnockOut(int nrGame, int nrTrial, String b) {
@@ -174,7 +398,37 @@ public class Referee extends Thread{
     }
 
     private boolean allSittingTeams() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.ALL_SITTING_TEAMS);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        MessageType type = inMessage.getType();
+        
+        if (type == MessageType.POSITIVE)
+            return true;
+        else if(type == MessageType.NEGATIVE)
+            return false;
+        else
+        {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        return false;
+
     }
 
     private void updateGameNumber(int nrGame) {

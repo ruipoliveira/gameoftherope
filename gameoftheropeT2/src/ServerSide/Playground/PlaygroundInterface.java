@@ -38,11 +38,37 @@ public class PlaygroundInterface implements ServerInterface{
                 break;
                 
             case START_TRIAL:
-                playground.startTrial(0, 0);
+                
+                if (inMessage.getGameNumber() == Message.ERROR_INT ||
+                        inMessage.getTrialNumber() == Message.ERROR_INT)
+                    throw new MessageException("Id do cliente inválido,", inMessage);
+                
+                playground.startTrial(inMessage.getGameNumber(), inMessage.getTrialNumber());
+                
+                outMessage = new Message(MessageType.ACK); 
+                
                 break; 
             case ASSERT_TRIAL_DECISION: 
-                playground.assertTrialDecision(); 
-                break; 
+                char decision = playground.assertTrialDecision(); 
+                
+                switch (decision) {
+                    case 'A':
+                        outMessage = new Message(MessageType.DECISION_A);
+                        break;
+                    case 'B':
+                        outMessage = new Message(MessageType.DECISION_B);
+                        break;
+                    case 'C':
+                        outMessage = new Message(MessageType.DECISION_C);
+                        break;
+                    case 'E':
+                        outMessage = new Message(MessageType.DECISION_E);
+                        break;
+                    default:
+                        break;
+                }
+                
+                break;  
             case INFORM_REFEREE:
                 playground.informReferee(0);
                 break; 
@@ -52,7 +78,17 @@ public class PlaygroundInterface implements ServerInterface{
             case AM_DONE:
                 playground.amDone(0, 0, 0);
                 break; 
-        
+                
+            case SET_POSITION_PULL: 
+                playground.setPositionPull(inMessage.getPullPosition());
+                outMessage = new Message(MessageType.ACK);
+                break; 
+                
+                
+            case GET_POSITION_PULL: 
+                int posPull = playground.getPositionPull(); 
+                outMessage = new Message(MessageType.ACK,posPull); 
+                break; 
         }
         return outMessage;
     }

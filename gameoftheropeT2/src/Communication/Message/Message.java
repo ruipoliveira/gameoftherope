@@ -137,7 +137,6 @@ public class Message implements Serializable {
                 break;
         }
 
-
     }
    
     public Message(MessageType type, int value1, int value2) {

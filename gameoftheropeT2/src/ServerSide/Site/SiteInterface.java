@@ -36,14 +36,19 @@ public class SiteInterface implements ServerInterface {
                 break;
                 
             case ANNOUNCE_NEW_GAME:
-                site.announceNewGame(0, 0);
+                site.announceNewGame(inMessage.getGameNumber(), inMessage.getTrialNumber());
+                outMessage = new Message(MessageType.ACK); 
                 break; 
+                
             case DECLARE_GAME_WINNER: 
                 site.declareGameWinner(0);
-                break; 
+                break;
+                
             case DECLARE_MATCH_WINNER: 
                 site.declareMatchWinner();
+                outMessage = new Message(MessageType.ACK); 
                 break; 
+                
             case END_OPER_COACH:
                 site.endOperCoach(0); 
                 break; 
