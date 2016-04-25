@@ -50,7 +50,12 @@ public class SiteInterface implements ServerInterface {
                 break; 
                 
             case END_OPER_COACH:
-                site.endOperCoach(0); 
+                boolean endOper = site.endOperCoach(inMessage.getIdCoach()); 
+                if (endOper)
+                    outMessage = new Message(MessageType.POSITIVE); 
+                else
+                    outMessage = new Message(MessageType.NEGATIVE); 
+                
                 break; 
 
         }

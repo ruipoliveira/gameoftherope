@@ -38,23 +38,32 @@ public class BenchInterface implements ServerInterface {
                 break;
             
             case CALL_CONTESTANTS:
-                bench.callContestants(0);
+                bench.callContestants(inMessage.getIdCoach());
+                outMessage = new Message(MessageType.ACK);
                 break; 
 
             case CALL_TRIAL: 
                 bench.callTrial(0, 0);
                 break;
                 
-            case IS_PLAYER_SELECTED: 
-                bench.isPlayerSelected(0, 0); 
+            case IS_PLAYER_SELECTED:
+                
+                boolean isSelected = bench.isPlayerSelected(inMessage.getIdCoach(), inMessage.getIdContest()); 
+                if (isSelected)
+                    outMessage = new Message(MessageType.POSITIVE);
+                else
+                    outMessage = new Message(MessageType.NEGATIVE);
+                
                 break;
                 
             case REVIEW_NOTES:
-                bench.reviewNotes(0);
+                bench.reviewNotes(inMessage.getIdCoach());
+                outMessage = new Message(MessageType.ACK);
                 break;
                 
             case SEAT_DOWN:
-                bench.seatDown(0, 0);
+                bench.seatDown(inMessage.getIdCoach(), inMessage.getIdContest());
+                outMessage = new Message(MessageType.ACK);
                 break; 
                
             case ALL_SITTING_TEAMS:
@@ -69,11 +78,17 @@ public class BenchInterface implements ServerInterface {
                 break; 
 
             case FOLLOW_COACH_ADVICE:
-                bench.followCoachAdvice(0, 0);
+                bench.followCoachAdvice(inMessage.getIdCoach(), inMessage.getIdContest());
+                outMessage = new Message(MessageType.ACK);
                 break;
                 
-            case END_OPER_COACH:
-                bench.endOfTheGame(0); 
+            case END_OF_THE_GAME:
+                boolean endGame = bench.endOfTheGame(inMessage.getIdCoach());
+                if (endGame)
+                    outMessage = new Message(MessageType.POSITIVE);
+                else
+                    outMessage = new Message(MessageType.NEGATIVE);
+                
                 break; 
 
             default:

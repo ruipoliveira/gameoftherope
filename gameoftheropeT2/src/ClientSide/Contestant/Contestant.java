@@ -84,22 +84,7 @@ public class Contestant extends Thread{
         
         System.out.println("Fim jogador #"+coachId); 
     }
-    
-    /**
-     * Permite atualizar o estado actual do jogador
-     * @param state 
-     */
-    public void setState(EContestantsState state) {
-        this.state = state;
-    }
-    
-    /**
-     * Permite aceder ao estado actual do jogador 
-     * @return state
-     */
-    public EContestantsState getCurrentState() {
-        return state;
-    }
+   
     
     private void seatDown(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
@@ -240,6 +225,40 @@ public class Contestant extends Thread{
         con.close();
         //playground.getReady(coachId, contestId);
     }
+
+
+    private boolean endOperCoach(int idCoach){
+        ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.END_OPER_COACH, idCoach);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();        
+        if (type == MessageType.POSITIVE)
+            return true;
+        else if(type == MessageType.NEGATIVE)
+            return false;
+        else{
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        return false;
+
+        //return true ;//site.endOperCoach(idCoach); 
+    }
     
     /**
      * Permite aceder à força do respectivo jogador. 
@@ -253,19 +272,32 @@ public class Contestant extends Thread{
      * Permite gerar de forma aleatoria a força associada a cada jogador.
      * @return int - valor inteiro entre 10 e 20 
      */
-    public int generateStrength(){
+    private int generateStrength(){
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
 
     private void updateStrength(int coachId, int contId, int contestStrength) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-        // muitas duvidas nisto... acho que nao ha necessidade de a repetir novamente, daí fazer so isto
-    private boolean endOperCoach(int coachId) {
-        return ch.endOperCoach(coachId);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
+    
+    /**
+     * Permite atualizar o estado actual do jogador
+     * @param state 
+     */
+    public void setState(EContestantsState state) {
+        this.state = state;
+    }
+    
+    /**
+     * Permite aceder ao estado actual do jogador 
+     * @return state
+     */
+    public EContestantsState getCurrentState() {
+        return state;
+    }
+    
+    
     private void updateContestantState(int coachId, int contId, EContestantsState state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

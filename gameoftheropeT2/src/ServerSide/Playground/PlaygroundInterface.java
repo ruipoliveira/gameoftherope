@@ -37,7 +37,7 @@ public class PlaygroundInterface implements ServerInterface{
                 this.serviceEnded = true;
                 break;
                 
-            case START_TRIAL:
+                case START_TRIAL:
                 
                 if (inMessage.getGameNumber() == Message.ERROR_INT ||
                         inMessage.getTrialNumber() == Message.ERROR_INT)
@@ -70,13 +70,16 @@ public class PlaygroundInterface implements ServerInterface{
                 
                 break;  
             case INFORM_REFEREE:
-                playground.informReferee(0);
+                playground.informReferee(inMessage.getIdCoach());
+                outMessage = new Message(MessageType.ACK);
                 break; 
             case GET_READY:
-                playground.getReady(0, 0);
+                playground.getReady(inMessage.getIdCoach(), inMessage.getIdContest());
+                outMessage = new Message(MessageType.ACK);
                 break; 
             case AM_DONE:
-                playground.amDone(0, 0, 0);
+                playground.amDone(inMessage.getIdCoach(), inMessage.getIdContest(), inMessage.getContestStrength());
+                outMessage = new Message(MessageType.ACK);
                 break; 
                 
             case SET_POSITION_PULL: 

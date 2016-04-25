@@ -105,6 +105,8 @@ public enum MessageType {
     DECISION_B,
     DECISION_C,
     
+    END_OF_THE_GAME, 
+    
     /**
      * Message used when the referee declares the winner of the game.
      */

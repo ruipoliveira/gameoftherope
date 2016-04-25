@@ -123,6 +123,7 @@ public class Message implements Serializable {
         switch(type){    // executa de igual modo para ambos
             case CALL_CONTESTANTS: 
             case REVIEW_NOTES: 
+            case END_OF_THE_GAME: 
             case INFORM_REFEREE: 
                 this.idCoach = value;
                 break; 

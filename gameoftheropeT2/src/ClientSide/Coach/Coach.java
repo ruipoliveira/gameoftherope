@@ -138,12 +138,9 @@ public class Coach extends Thread{
         ///bench.reviewNotes(idCoach);
     }
     
-    public void setState(ECoachesState state){
-        this.state = state;
-    }
     
-    public boolean endOperCoach(int idCoach){
-        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+     private boolean endOfTheGame(int idCoach) {
+       ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -153,7 +150,7 @@ public class Coach extends Thread{
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(MessageType.END_OPER_COACH);
+        outMessage = new Message(MessageType.END_OF_THE_GAME, idCoach);
         con.writeObject(outMessage);
         
         inMessage = (Message) con.readObject();
@@ -171,10 +168,15 @@ public class Coach extends Thread{
         }
         con.close();
         return false;
-        
-        
-        //return true ;//site.endOperCoach(idCoach); 
     }
+     
+    
+    
+    public void setState(ECoachesState state){
+        this.state = state;
+    }
+    
+   
     
     /**
      * Permite aceder ao estado atual do treinador. 
@@ -192,9 +194,7 @@ public class Coach extends Thread{
         return idCoach;
     }
 
-    private boolean endOfTheGame(int idCoach) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
     private void updateCoachState(int idCoach, ECoachesState state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
