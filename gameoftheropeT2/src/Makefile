@@ -57,17 +57,17 @@ CLASSES = \
 		Communication/Message/MessageException.java \
 		Communication/Message/MessageType.java \
 
-		ClientSide/Craftsman/Craftsman.java \
-		ClientSide/Craftsman/CraftsmanExec.java \
-		ClientSide/Craftsman/CraftsmanState.java \
+		ClientSide/Referee/Referee.java \
+		ClientSide/Referee/RefereeExec.java \
+		ClientSide/Referee/ERefereeState.java \
 
-		ClientSide/Customer/Customer.java \
-		ClientSide/Customer/CustomerExec.java \
-		ClientSide/Customer/CustomerState.java \
+		ClientSide/Coach/Coach.java \
+		ClientSide/Coach/CoachExec.java \
+		ClientSide/Coach/ECoachState.java \
 
-		ClientSide/Entrepreneur/Entrepreneur.java \
-		ClientSide/Entrepreneur/EntrepreneurExec.java \
-		ClientSide/Entrepreneur/EntrepreneurState.java 
+		ClientSide/Contestant/Contestant.java \
+		ClientSide/Contestant/ContestantExec.java \
+		ClientSide/Contestant/EContestantsState.java 
 
 classes: $(CLASSES:.java=.class)
 
