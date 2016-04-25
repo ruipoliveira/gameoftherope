@@ -31,23 +31,17 @@ CLASSES = \
                 ServerSide/Bench/IRefereeBench.java \
                 ServerSide/Bench/ICoachBench.java \
                 ServerSide/Bench/IContestantsBench.java \
-
 		ServerSide/Playground/MPlayground.java \
 		ServerSide/Playground/PlaygroundExec.java \
 		ServerSide/Playground/PlaygroundInterface.java \
-                ServerSide/Bench/IRefereePlayground.java \
-                ServerSide/Bench/ICoachPlayground.java \
-                ServerSide/Bench/IContestantsPlayground.java \
-
-		ServerSide/Repository/Shop.java \
-		ServerSide/Repository/ShopExec.java \
-		ServerSide/Repository/RepositoryInterface.java \
-		
-                ServerSide/Site/Site.java \
+                ServerSide/Playground/IRefereePlayground.java \
+                ServerSide/Playground/ICoachPlayground.java \
+                ServerSide/Playground/IContestantsPlayground.java \
+		ServerSide/Site/MSite.java \
 		ServerSide/Site/SiteExec.java \
 		ServerSide/Site/SiteInterface.java \
-
-		Communication/ProbConst.java \
+		ServerSide/Site/IRefereeSite.java \
+		ServerSide/Site/ICoachSite.java \
 		Communication/ClientComm.java \
 		Communication/CommConst.java \
 		Communication/ServerComm.java \
@@ -56,15 +50,12 @@ CLASSES = \
 		Communication/Message/Message.java \
 		Communication/Message/MessageException.java \
 		Communication/Message/MessageType.java \
-
 		ClientSide/Referee/Referee.java \
 		ClientSide/Referee/RefereeExec.java \
 		ClientSide/Referee/ERefereeState.java \
-
 		ClientSide/Coach/Coach.java \
 		ClientSide/Coach/CoachExec.java \
 		ClientSide/Coach/ECoachState.java \
-
 		ClientSide/Contestant/Contestant.java \
 		ClientSide/Contestant/ContestantExec.java \
 		ClientSide/Contestant/EContestantsState.java 

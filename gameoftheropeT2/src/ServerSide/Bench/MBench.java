@@ -232,7 +232,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull.get(1).clear(); 
         coachAndTeamInPull.get(2).clear();
         
-       // repository.removeContestantsInPull(1);
+       //repository.removeContestantsInPull(1);
        // repository.removeContestantsInPull(2);
 
         endReview++;
