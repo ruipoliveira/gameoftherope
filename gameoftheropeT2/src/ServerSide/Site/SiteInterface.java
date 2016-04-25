@@ -41,7 +41,8 @@ public class SiteInterface implements ServerInterface {
                 break; 
                 
             case DECLARE_GAME_WINNER: 
-                site.declareGameWinner(0);
+                site.declareGameWinner(inMessage.getPullPosition());
+                outMessage = new Message(MessageType.ACK);
                 break;
                 
             case DECLARE_MATCH_WINNER: 
@@ -57,6 +58,10 @@ public class SiteInterface implements ServerInterface {
                     outMessage = new Message(MessageType.NEGATIVE); 
                 
                 break; 
+                
+            default:
+                System.out.println("Mensagem inválida recebida: " + inMessage);
+                break;    
 
         }
         return outMessage;

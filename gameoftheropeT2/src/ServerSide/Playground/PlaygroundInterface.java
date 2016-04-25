@@ -37,8 +37,7 @@ public class PlaygroundInterface implements ServerInterface{
                 this.serviceEnded = true;
                 break;
                 
-                case START_TRIAL:
-                
+            case START_TRIAL:               
                 if (inMessage.getGameNumber() == Message.ERROR_INT ||
                         inMessage.getTrialNumber() == Message.ERROR_INT)
                     throw new MessageException("Id do cliente inválido,", inMessage);
@@ -66,17 +65,19 @@ public class PlaygroundInterface implements ServerInterface{
                         break;
                     default:
                         break;
-                }
-                
+                }               
                 break;  
+                
             case INFORM_REFEREE:
                 playground.informReferee(inMessage.getIdCoach());
                 outMessage = new Message(MessageType.ACK);
                 break; 
+                
             case GET_READY:
                 playground.getReady(inMessage.getIdCoach(), inMessage.getIdContest());
                 outMessage = new Message(MessageType.ACK);
                 break; 
+                
             case AM_DONE:
                 playground.amDone(inMessage.getIdCoach(), inMessage.getIdContest(), inMessage.getContestStrength());
                 outMessage = new Message(MessageType.ACK);
@@ -91,7 +92,11 @@ public class PlaygroundInterface implements ServerInterface{
             case GET_POSITION_PULL: 
                 int posPull = playground.getPositionPull(); 
                 outMessage = new Message(MessageType.ACK,posPull); 
-                break; 
+                break;
+                
+            default:
+                System.out.println("Mensagem inválida recebida: " + inMessage);
+                break;    
         }
         return outMessage;
     }

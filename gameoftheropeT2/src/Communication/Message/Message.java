@@ -39,14 +39,7 @@ public class Message implements Serializable {
     
     
     
-    
-    // duvida aqui.... achas que vale a pena ter 2 variaveis para aquele de uma ser no inicio e outra 
-    // ser depois quando se desenrola o jogo???
-    /**
-     * Variable that holds the strength of players, in case the message requires it.
-     */
-    
-    
+   
  
 
     /**

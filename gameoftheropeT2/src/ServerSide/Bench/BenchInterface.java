@@ -43,7 +43,13 @@ public class BenchInterface implements ServerInterface {
                 break; 
 
             case CALL_TRIAL: 
-                bench.callTrial(0, 0);
+                if (inMessage.getGameNumber() == Message.ERROR_INT ||
+                        inMessage.getTrialNumber() == Message.ERROR_INT)
+                    throw new MessageException("Id do cliente inválido,", inMessage);
+                
+                bench.callTrial(inMessage.getGameNumber(), inMessage.getTrialNumber());               
+                outMessage = new Message(MessageType.ACK);
+                //bench.callTrial(0, 0);
                 break;
                 
             case IS_PLAYER_SELECTED:
