@@ -1,6 +1,4 @@
 package ServerSide.Bench;
-import ServerSide.Playground.MPlayground;
-import ServerSide.Repository.MRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,8 +58,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         for (int i =1; i<= 2; i++){
-            coachAndTeamInBench.put(i, new ArrayList<>());
-            coachAndTeamInPull.put(i, new ArrayList<>());
+            coachAndTeamInBench.put(i, new ArrayList<Integer>());
+            coachAndTeamInPull.put(i, new ArrayList<Integer>());
         }
         
 
@@ -309,8 +307,9 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+        System.out.println("AQUI");
         if (numTrial ==1 && numGame ==1){
+            System.out.println(coachId +"->"+contestId); 
             coachAndTeamInBench.get(coachId).add(contestId);
             nrPlayer++;
         }else{

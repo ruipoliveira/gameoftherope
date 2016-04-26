@@ -35,7 +35,7 @@ public class Coach extends Thread{
                     if (!endOfTheGame(idCoach)) break; 
                     callContestants(idCoach);
                     state = ECoachesState.ASSEMBLE_TEAM;
-                    updateCoachState(idCoach, state);
+                //    updateCoachState(idCoach, state);
                     break; 
 
                 case ASSEMBLE_TEAM:      
@@ -47,7 +47,7 @@ public class Coach extends Thread{
                 case WATCH_TRIAL:
                     reviewNotes(idCoach);
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-                    updateCoachState(idCoach, state);
+               //     updateCoachState(idCoach, state);
                     break;
             }
         }while (endOfTheGame(idCoach));

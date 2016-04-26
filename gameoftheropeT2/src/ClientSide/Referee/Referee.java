@@ -45,8 +45,8 @@ public class Referee extends Thread{
                 case START_OF_THE_MATCH:
                     nrTrial++;
                     nrGame++;
-                    updateGameNumber(nrGame);
-                    updateTrialNumber(nrTrial);
+            //        updateGameNumber(nrGame);
+             //       updateTrialNumber(nrTrial);
                     announceNewGame(nrGame,nrTrial);
                     state = ERefereeState.START_OF_A_GAME;
                     break; 
@@ -54,13 +54,13 @@ public class Referee extends Thread{
                 case START_OF_A_GAME:
                     callTrial(nrGame,nrTrial);
                     state = ERefereeState.TEAMS_READY;
-                    updateRefState(state);
+            //        updateRefState(state);
                     break;
 
                 case TEAMS_READY:
                     startTrial(nrGame,nrTrial);
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    updateRefState(state); 
+            //        updateRefState(state); 
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
@@ -72,7 +72,7 @@ public class Referee extends Thread{
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
                         state = ERefereeState.START_OF_A_GAME;
-                        updateRefState(state);
+              //          updateRefState(state);
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
 
@@ -80,21 +80,21 @@ public class Referee extends Thread{
                             System.out.println("Jogo acaba! - excedeu numero de trials! ");
                         else if (decision == KNOCK_OUT_A){
                             System.out.println("Jogo acaba! - knock out! Ganha A");
-                            isKnockOut(nrGame, nrTrial, "A");
+                //            isKnockOut(nrGame, nrTrial, "A");
                         }
                         else if (decision == KNOCK_OUT_B){
                             System.out.println("Jogo acaba! - knock out! Ganha B");
-                            isKnockOut(nrGame, nrTrial, "B");
+                  //          isKnockOut(nrGame, nrTrial, "B");
                         }
                         
                         int posPull = getPositionPull(); 
 
                         declareGameWinner(posPull); 
 
-                        setPositionPull(PULL_CENTER);
+              //          setPositionPull(PULL_CENTER);
 
                         state = ERefereeState.END_OF_A_GAME;
-                        updateRefState(state);  // actualiza no repositorio
+                     //   updateRefState(state);  // actualiza no repositorio
                     }
                     break; 
 
@@ -102,12 +102,12 @@ public class Referee extends Thread{
                     if(nrGame < nrGamesMax){
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
-                        updateRefState(state);
+                     //   updateRefState(state);
                     }
 
                     else{
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                        updateRefState(state);
+                    //    updateRefState(state);
                         declareMatchWinner();
 
                     } 

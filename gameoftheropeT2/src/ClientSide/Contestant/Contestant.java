@@ -4,7 +4,6 @@ import Communication.ClientComm;
 import Communication.CommConst;
 import Communication.Message.Message;
 import Communication.Message.MessageType;
-import ServerSide.Site.MSite;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 import ClientSide.Coach.*;
@@ -24,13 +23,12 @@ public class Contestant extends Thread{
     private final int contId;
     
     private int contestStrength;
-    Coach ch; //  usado para o endOperCoach
     public Contestant(int contId, int coachId){
         this.coachId = coachId;
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
-        updateStrength(coachId,contId,contestStrength);      
+       // updateStrength(coachId,contId,contestStrength);      
     }
     
     @Override
@@ -48,7 +46,7 @@ public class Contestant extends Thread{
                     } 
                     
                     state = EContestantsState.STAND_IN_POSITION;
-                    updateContestantState(coachId, contId, state);
+                 //   updateContestantState(coachId, contId, state);
                  
                 break;
                 
@@ -57,13 +55,13 @@ public class Contestant extends Thread{
                     if (isPlayerSelected(coachId,contId) ){
                         getReady(coachId, contId);  
                         state = EContestantsState.DO_YOUR_BEST;
-                        updateContestantState(coachId, contId, state);
+                    //    updateContestantState(coachId, contId, state);
                     }
                     else{
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                        updateContestantState(coachId, contId, state);
+                     //   updateContestantState(coachId, contId, state);
                         contestStrength++;
-                        updateStrengthAndWrite(coachId, contId, contestStrength);
+                    //    updateStrengthAndWrite(coachId, contId, contestStrength);
                     }
 
                 break;
@@ -73,9 +71,9 @@ public class Contestant extends Thread{
                     amDone(coachId, contId, contestStrength); 
                     seatDown(coachId,contId); 
                     contestStrength--;
-                    updateStrengthAndWrite(coachId,contId, contestStrength);
+                 //   updateStrengthAndWrite(coachId,contId, contestStrength);
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                    updateContestantState(coachId, contId, state);
+                  //  updateContestantState(coachId, contId, state);
 
                 break;    
             }

@@ -3,7 +3,6 @@ import Communication.ClientComm;
 import Communication.CommConst;
 import Communication.Message.Message;
 import Communication.Message.MessageType;
-import ServerSide.Repository.MRepository;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +39,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         nrGame =0; 
         strengthTeam = new HashMap<>(); 
         for(int i =1; i< 3; i++ ){
-            strengthTeam.put(i, new ArrayList<>()); 
+            strengthTeam.put(i, new ArrayList<Integer>()); 
         }
         
         lastPulled = false;

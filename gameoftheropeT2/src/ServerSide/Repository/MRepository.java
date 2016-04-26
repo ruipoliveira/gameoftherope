@@ -50,7 +50,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
         for (int i =1; i<=nrCoaches; i++){
             lst_coach.add(new Coach(i, ECoachesState.WAIT_FOR_REFEREE_COMMAND)); 
-            lst_player.put(i, new ArrayList<>()); 
+            lst_player.put(i, new ArrayList<Player>()); 
         }
 
         for(int j =1; j<=nrContestants; j++){
@@ -255,13 +255,13 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     @Override
     public synchronized void removeContestantsInPull(int idTeam, int idPlayer){
-
+/*
         if (idTeam ==1 ){
             lstInPullA.removeIf(p -> p.equals(idPlayer));
         }else{
             lstInPullB.removeIf(p -> p.equals(idPlayer));
         }
-
+*/
         writeLine();
     }
 
