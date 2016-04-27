@@ -5,6 +5,7 @@
  */
 package ClientSide.Contestant;
 
+import Communication.ConstConfigs;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,17 +13,15 @@ import java.util.ArrayList;
  *
  * @author roliveira
  */
-public class ContestantExec {
-    public final static int ELEMENTS_IN_TEAM = 5; 
-    private final static int OPPOSING_TEAMS = 2; 
+public class ContestantExec { 
     public static void main(String [] args) throws IOException{
         System.out.print("\033[H\033[2J");
         System.out.flush();
         
-        ArrayList<Contestant> contestant = new ArrayList<>(ELEMENTS_IN_TEAM);
+        ArrayList<Contestant> contestant = new ArrayList<>(ConstConfigs.ELEMENTS_IN_TEAM);
         
-        for (int idc = 1; idc <= OPPOSING_TEAMS ; idc++){
-            for (int idct = 1; idct <= ELEMENTS_IN_TEAM; idct++){
+        for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){
+            for (int idct = 1; idct <= ConstConfigs.ELEMENTS_IN_TEAM; idct++){
                 contestant.add(new Contestant(idct, idc));
             }
         }

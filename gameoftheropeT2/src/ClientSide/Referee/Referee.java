@@ -382,7 +382,6 @@ public class Referee extends Thread{
         
         MessageType type = inMessage.getType();
         int posPull = inMessage.getPullPosition(); 
-        System.out.println("################################"+posPull); 
         if (type != MessageType.ACK || posPull == Message.ERROR_INT ) {
             System.out.println("Thread " + getName() + ": Tipo inválido!");
             System.out.println("Message:"+ inMessage.toString());

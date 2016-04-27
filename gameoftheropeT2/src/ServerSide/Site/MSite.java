@@ -37,17 +37,17 @@ public class MSite implements IRefereeSite, ICoachSite{
 
         if (posPull < 0 ){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
-            isEnd(numGame, "A");
+            //isEnd(numGame, "A");
             winnerTeamA++; 
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
-            isEnd(numGame, "B");
+            //isEnd(numGame, "B");
             winnerTeamB++; 
         }
         else{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
-            wasADraw(numGame);
+            //wasADraw(numGame);
         }
     }
     

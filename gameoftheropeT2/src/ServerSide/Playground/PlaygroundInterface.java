@@ -90,7 +90,6 @@ public class PlaygroundInterface implements ServerInterface{
                 
             case GET_POSITION_PULL: 
                 int posPull = playground.getPositionPull(); 
-                System.out.println("++playgroundInterface * "+posPull); 
                 outMessage = new Message(MessageType.ACK,posPull); 
                 break;
                 

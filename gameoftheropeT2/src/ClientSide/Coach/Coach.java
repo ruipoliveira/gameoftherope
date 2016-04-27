@@ -32,9 +32,7 @@ public class Coach extends Thread{
         do {
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    System.out.println("#"+idCoach+"...") ;
-                    //if (!endOfTheGame(idCoach)) break;
-                    System.out.println("#"+idCoach+"Vai chamar jogadores..") ;
+                    if (!endOfTheGame(idCoach)) break;
                     callContestants(idCoach);
                     state = ECoachesState.ASSEMBLE_TEAM;
                 //    updateCoachState(idCoach, state);

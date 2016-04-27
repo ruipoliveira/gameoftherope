@@ -5,6 +5,7 @@
  */
 package ClientSide.Referee;
 
+import Communication.ConstConfigs;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,12 +15,11 @@ import java.util.logging.Logger;
  * @author roliveira
  */
 public class RefereeExec {
-    
-    public static int GAMES_PER_MATCH = 3; 
+
     public static void main(String [] args) throws IOException{
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        Referee referee = new Referee(GAMES_PER_MATCH);
+        Referee referee = new Referee(ConstConfigs.GAMES_PER_MATCH);
         
         referee.start();
        

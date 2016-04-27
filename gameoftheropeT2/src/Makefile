@@ -13,6 +13,7 @@ clean:
 	rm -r __bin/
 
 CLASSES = \
+        Communication/ConstConfigs.java \
         ClientSide/Coach/ECoachesState.java \
         ClientSide/Contestant/EContestantsState.java \
         ClientSide/Referee/ERefereeState.java \

@@ -1,13 +1,13 @@
 set -x
-echo "	-> Compilar todo o codigo (Makefile)"
+echo "  > Compilar todo o codigo (Makefile)"
 make;
 
-echo "	-> Criar directorio para guardar ficheiros JAR"
+echo "  > Criar directorio para guardar ficheiros JAR, senao estiver criado"
 if [[ ! -e JARS ]]; then
     mkdir JARS;
 fi
 
-echo "	-> Gerar JARS"
+echo "  > Gerar JARs"
 (cd __bin;
 jar cfe Bench.jar ServerSide.Bench.BenchExec ./
 jar cfe Playground.jar ServerSide.Playground.PlaygroundExec ./
@@ -18,7 +18,7 @@ jar cfe Contestant.jar ClientSide.Contestant.ContestantExec ./
 jar cfe Referee.jar ClientSide.Referee.RefereeExec ./
 mv *.jar ../JARS/)
 
-echo "	-> Enviar JARs para as diferentes maquinas"
+echo "  > Enviar JARs para as diferentes maquinas"
 (cd JARS;
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Repository.jar sd0105@l040101-ws01.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Playground.jar sd0105@l040101-ws05.ua.pt:~
