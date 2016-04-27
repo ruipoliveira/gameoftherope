@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Communication.*;
+import Communication.Message.*;
+import static java.lang.Thread.sleep;
+import java.util.Arrays;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -270,7 +275,62 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         return index >= 0 && index < list.size();
     }
 
-
+     /**
+     * Terminates the servers when the clients no longer need the services.
+     */
+    public synchronized void terminateServers() {
+        Message inMessage, outMessage;
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != MessageType.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        
+        con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != MessageType.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+        
+        con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != MessageType.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
+    }
     
 }
 
