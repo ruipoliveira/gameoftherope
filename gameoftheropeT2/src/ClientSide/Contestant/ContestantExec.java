@@ -5,6 +5,7 @@
  */
 package ClientSide.Contestant;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,9 @@ import java.util.ArrayList;
 public class ContestantExec {
     public final static int ELEMENTS_IN_TEAM = 5; 
     private final static int OPPOSING_TEAMS = 2; 
-    public static void main(String [] args){
+    public static void main(String [] args) throws IOException{
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         
         ArrayList<Contestant> contestant = new ArrayList<>(ELEMENTS_IN_TEAM);
         
@@ -34,6 +37,7 @@ public class ContestantExec {
                 c.join ();
             }catch (InterruptedException e) {}
         }
+        
         /*
         Message inMessage, outMessage;
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
@@ -54,4 +58,6 @@ public class ContestantExec {
         con.close();
         */
     }
+    
+
 }

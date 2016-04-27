@@ -8,6 +8,7 @@ package ServerSide.Playground;
 import Communication.CommConst;
 import Communication.Proxy.ClientProxy;
 import Communication.ServerComm;
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
@@ -16,7 +17,10 @@ import java.net.SocketTimeoutException;
  * @author roliveira
  */
 public class PlaygroundExec {
-    public static void main (String [] args) throws SocketException {
+    public final static int MAX_TRAILS_PER_GAME = 6; 
+    public static void main (String [] args) throws SocketException, IOException {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         ServerComm scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
 
@@ -24,7 +28,7 @@ public class PlaygroundExec {
         scon = new ServerComm(CommConst.playServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
         
-        MPlayground playground = new MPlayground(0); 
+        MPlayground playground = new MPlayground(MAX_TRAILS_PER_GAME); 
         PlaygroundInterface playgroundInt = new PlaygroundInterface(playground);
         System.out.println("Playground service has started!");
         System.out.println("Server is listening.");

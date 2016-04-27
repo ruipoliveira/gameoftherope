@@ -10,7 +10,6 @@ import Communication.Message.MessageException;
 import Communication.Message.MessageType;
 import Communication.Proxy.ServerInterface;
 import Communication.ServerComm;
-import ServerSide.Bench.MBench;
 import java.net.SocketException;
 
 /**
@@ -83,7 +82,7 @@ public class PlaygroundInterface implements ServerInterface{
                 outMessage = new Message(MessageType.ACK);
                 break; 
                 
-            case SET_POSITION_PULL: 
+            case SET_POSITION_PULL:
                 playground.setPositionPull(inMessage.getPullPosition());
                 outMessage = new Message(MessageType.ACK);
                 break; 
@@ -91,6 +90,7 @@ public class PlaygroundInterface implements ServerInterface{
                 
             case GET_POSITION_PULL: 
                 int posPull = playground.getPositionPull(); 
+                System.out.println("++playgroundInterface * "+posPull); 
                 outMessage = new Message(MessageType.ACK,posPull); 
                 break;
                 

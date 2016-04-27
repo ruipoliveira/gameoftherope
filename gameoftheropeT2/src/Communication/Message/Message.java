@@ -36,18 +36,13 @@ public class Message implements Serializable {
     private EContestantsState contestState;
 
     private String filename;
-    
-    
-    
-   
- 
 
     /**
      * Variable that holds the pull position (defined by referee), in case the message requires it.
      */
 
 
-    private int pullPosition;
+    public int pullPosition;
     
     /**
      * Variable that holds the trialNumber, in case the message requires it.
@@ -93,7 +88,7 @@ public class Message implements Serializable {
         filename = null;
 
         contestStrength = ERROR_INT;
-        pullPosition = ERROR_INT;
+        pullPosition = 0;
         trialNumber = ERROR_INT;
         gameNumber = ERROR_INT;
 
@@ -101,6 +96,10 @@ public class Message implements Serializable {
         lastPulled = false;
 
         totalPlayer = ERROR_INT;
+    }
+    
+    public Message(int posP){
+        this();
     }
     
     // constructor used in all methods
@@ -117,13 +116,17 @@ public class Message implements Serializable {
             case CALL_CONTESTANTS: 
             case REVIEW_NOTES: 
             case END_OF_THE_GAME: 
+            case END_OPER_COACH: 
             case INFORM_REFEREE: 
                 this.idCoach = value;
                 break; 
             
+            case ACK:
+            case SEND_POS_PULL: 
             case SET_POSITION_PULL: 
             case DECLARE_GAME_WINNER:
                 this.pullPosition = value; 
+                break; 
                 
             default:
                 System.err.println(type + ", wrong message type!");
@@ -254,4 +257,18 @@ public class Message implements Serializable {
     public boolean isLastPulled() {
         return lastPulled;
     }
+    
+    public void setPosPull(int pullPosition){
+        this.pullPosition = pullPosition; 
+    }
+    
+    /**
+     * Convert the message type to a readable/writable format.
+     * @return Message type as a string.
+     */
+    @Override
+    public String toString() {
+        return this.type.toString();
+    }
+    
 }

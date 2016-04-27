@@ -8,6 +8,7 @@ package ServerSide.Site;
 import Communication.CommConst;
 import Communication.Proxy.ClientProxy;
 import Communication.ServerComm;
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
@@ -17,7 +18,9 @@ import java.net.SocketTimeoutException;
  */
 public class SiteExec {
     
-    public static void main (String [] args) throws SocketException {
+    public static void main (String [] args) throws SocketException, IOException {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         ServerComm scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
 
@@ -27,7 +30,7 @@ public class SiteExec {
         
         MSite site = new MSite(); 
         SiteInterface siteInt = new SiteInterface(site);
-        System.out.println("Playground service has started!");
+        System.out.println("Site service has started!");
         System.out.println("Server is listening.");
         
 

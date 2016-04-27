@@ -20,8 +20,9 @@ import java.util.ArrayList;
  */
 public class CoachExec {
     private final static int OPPOSING_TEAMS = 2; 
-    public static void main(String [] args)  throws IOException{
-
+    public static void main(String [] args) throws IOException{
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         ArrayList<Coach> coach = new ArrayList<>(OPPOSING_TEAMS);
     
         for (int idc = 1; idc <= OPPOSING_TEAMS ; idc++){

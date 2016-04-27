@@ -66,6 +66,7 @@ public class Referee extends Thread{
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     if (allSittingTeams()){
                         decision = assertTrialDecision();
+                        //setPositionPull();
                     }
 
                     if(decision == GAME_CONTINUATION ){ 
@@ -87,11 +88,13 @@ public class Referee extends Thread{
                   //          isKnockOut(nrGame, nrTrial, "B");
                         }
                         
+                        
+                        
                         int posPull = getPositionPull(); 
 
                         declareGameWinner(posPull); 
 
-              //          setPositionPull(PULL_CENTER);
+                        setPositionPull(PULL_CENTER);
 
                         state = ERefereeState.END_OF_A_GAME;
                      //   updateRefState(state);  // actualiza no repositorio
@@ -168,6 +171,34 @@ public class Referee extends Thread{
         //bench.callTrial(nrGame, nrTrial);
     }
     
+    
+    private void setPositionPull(int positionCenter){
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.SET_POSITION_PULL, positionCenter);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+    }
+    
     private void startTrial(int nrGame,int numTrial){
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -199,7 +230,7 @@ public class Referee extends Thread{
     
     private char assertTrialDecision(){
         
-        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -237,7 +268,7 @@ public class Referee extends Thread{
     
     private void declareGameWinner(int posPull){
         
-        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -326,37 +357,7 @@ public class Referee extends Thread{
         //site.announceNewGame(numGame, nrTria);
     }
     
-    private void setPositionPull(int posPull){
-        
-        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
-        Message inMessage, outMessage;
-
-        while (!con.open())
-        {
-            try {
-                sleep((long) (10));
-            } catch (InterruptedException e) {
-            }
-        }
-        outMessage = new Message(MessageType.SET_POSITION_PULL, posPull);
-        con.writeObject(outMessage);
-        
-        inMessage = (Message) con.readObject();
-        
-        MessageType type = inMessage.getType();
-        if (type != MessageType.ACK) {
-            System.out.println("Thread " + getName() + ": Tipo inválido!");
-            System.out.println("Message:"+ inMessage.toString());
-            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-            System.exit(1);
-        }
-        
-        con.close();
-        
-        
-        
-        //playground.setPositionPull(pos); 
-    }
+  
 
     private void updateRefState(ERefereeState state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -381,7 +382,7 @@ public class Referee extends Thread{
         
         MessageType type = inMessage.getType();
         int posPull = inMessage.getPullPosition(); 
-        
+        System.out.println("################################"+posPull); 
         if (type != MessageType.ACK || posPull == Message.ERROR_INT ) {
             System.out.println("Thread " + getName() + ": Tipo inválido!");
             System.out.println("Message:"+ inMessage.toString());

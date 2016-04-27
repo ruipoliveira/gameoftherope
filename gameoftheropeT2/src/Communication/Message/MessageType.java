@@ -14,6 +14,9 @@ public enum MessageType {
     
     ERROR,
     
+    SEND_POS_PULL, 
+   
+    
     TERMINATE,
     
     /*### Meter tudo o que é feito nos monitores ###*/

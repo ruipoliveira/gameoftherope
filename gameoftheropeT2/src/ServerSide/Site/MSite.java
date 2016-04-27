@@ -60,16 +60,16 @@ public class MSite implements IRefereeSite, ICoachSite{
         System.out.println("***********************************************************");
         if (winnerTeamA > winnerTeamB){
             System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
-            endMatch("A", winnerTeamA, winnerTeamB);
+           // endMatch("A", winnerTeamA, winnerTeamB);
 
         }
         else if (winnerTeamA < winnerTeamB){
             System.out.println("A Equipa B venceu o match com #" +winnerTeamB +" vitórias!");
-            endMatch("B", winnerTeamB, winnerTeamA);
+            //endMatch("B", winnerTeamB, winnerTeamA);
         }
         else{
             System.out.println("O match ficou empatado! :(  A#" +winnerTeamA +" - B#"+winnerTeamB);
-            endMatch("", winnerTeamB, winnerTeamA);
+            //endMatch("", winnerTeamB, winnerTeamA);
         }
         System.out.println("***********************************************************");
 

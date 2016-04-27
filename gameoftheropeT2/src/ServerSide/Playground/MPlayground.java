@@ -5,6 +5,7 @@ import Communication.Message.Message;
 import Communication.Message.MessageType;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         nrGame =0; 
         strengthTeam = new HashMap<>(); 
         for(int i =1; i< 3; i++ ){
-            strengthTeam.put(i, new ArrayList<Integer>()); 
+            strengthTeam.put(i, new ArrayList<>()); 
         }
         
         lastPulled = false;
@@ -104,11 +105,13 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             System.out.println("Jogo Empatado!!"); 
         }
         
-        updateTrialNumber(numTrial);
-        updatePullPosition(posPull);
+       // updateTrialNumber(numTrial);
+       // updatePullPosition(posPull);
 
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
-
+         
+        
+        
         resultTeamA = resultTeamB = 0;          
 
         while( playerInPull % 3 != 0){
@@ -153,8 +156,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
     
     @Override
-    public synchronized int getPositionPull(){
-        return posPull; 
+    public int getPositionPull(){
+        return posPull;
     }
     
     @Override
@@ -191,7 +194,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
                 
-        addContestantsInPull(coachId, contId);
+      //  addContestantsInPull(coachId, contId);
         
         strengthTeam.get(coachId).add(contestStrength);
         

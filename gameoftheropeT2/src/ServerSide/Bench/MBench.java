@@ -58,8 +58,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         
         
         for (int i =1; i<= 2; i++){
-            coachAndTeamInBench.put(i, new ArrayList<Integer>());
-            coachAndTeamInPull.put(i, new ArrayList<Integer>());
+            coachAndTeamInBench.put(i, new ArrayList<>());
+            coachAndTeamInPull.put(i, new ArrayList<>());
         }
         
 
@@ -100,6 +100,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             }
         }
 
+        
         while(newComand == false){
             try { 
                 wait();
@@ -110,8 +111,8 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
         callContestant = true; 
         notifyAll();
-
-        while(nrPlayer != totalPlayer) {
+        
+            while(nrPlayer != totalPlayer) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -255,7 +256,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      */
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-        removeContestantsInPull(coachId, contestId);
+       // removeContestantsInPull(coachId, contestId);
         finished++;
 
         while(finished % 2*constestantInTrial != 0){
@@ -300,6 +301,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     @Override
     public synchronized void followCoachAdvice(int coachId, int contestId) {
 
+        
         while (callContestant ==false){
             try { 
                 wait();
@@ -307,9 +309,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
                 Logger.getLogger(MBench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("AQUI");
         if (numTrial ==1 && numGame ==1){
-            System.out.println(coachId +"->"+contestId); 
             coachAndTeamInBench.get(coachId).add(contestId);
             nrPlayer++;
         }else{
