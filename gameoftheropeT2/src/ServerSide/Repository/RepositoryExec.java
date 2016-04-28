@@ -14,27 +14,28 @@ import java.net.SocketTimeoutException;
  */
 public class RepositoryExec {
     public static void main (String [] args) throws SocketTimeoutException, FileNotFoundException{
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         ServerComm scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
-
-        /* estabelecimento do servico */
+        
+        // estabelecimento do servico 
         scon = new ServerComm(CommConst.repServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
-        MRepository repository = new MRepository("", 2, 5);
+        MRepository repository = new MRepository(ConstConfigs.NAME_FILE, ConstConfigs.OPPOSING_TEAMS, ConstConfigs.ELEMENTS_IN_TEAM);
         RepositoryInterface repInt = new RepositoryInterface(repository);
-        System.out.println("Logging service has started!");
-        System.out.println("Server is listening.");
         
-        /* processamento de pedidos */
+        System.out.println("******************************************************************\nRepository service has started!");
+        System.out.println("Server is listening.\n******************************************************************");
+
+      // processamento de pedidos 
         while (true) {
-            //scon.setTimeout(500);
-            try {
-                sconi = scon.accept();                         // entrada em processo de escuta
-                cliProxy = new ClientProxy(scon, sconi, repInt);    // lançamento do agente prestador do serviço
-                cliProxy.start();
-            } catch (SocketTimeoutException ex) {
-                System.exit(0);
-            }
-        } 
+            sconi = scon.accept();                         // entrada em processo de escuta
+            cliProxy = new ClientProxy(scon, sconi, repInt);     // lançamento do agente prestador do serviço
+            cliProxy.start();
+        }
+        
+
     }
 }

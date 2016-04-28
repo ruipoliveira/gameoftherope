@@ -40,9 +40,6 @@ CLASSES = \
         ServerSide/Site/MSite.java \
         ServerSide/Site/SiteInterface.java \
         ServerSide/Site/SiteExec.java \
-        ServerSide/Repository/ECoachesState.java \
-        ServerSide/Repository/EContestantsState.java \
-        ServerSide/Repository/ERefereeState.java \
         ServerSide/Repository/MRepository.java \
         ServerSide/Repository/RepositoryExec.java \
 

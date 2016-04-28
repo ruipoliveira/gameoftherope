@@ -18,6 +18,9 @@ public class ContestantExec {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         
+        System.out.println("******************************************************************\nEntity contestant has started!");
+        System.out.println("******************************************************************");
+        
         ArrayList<Contestant> contestant = new ArrayList<>(ConstConfigs.ELEMENTS_IN_TEAM);
         
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){

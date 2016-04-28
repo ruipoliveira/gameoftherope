@@ -17,6 +17,10 @@ public class CoachExec {
     public static void main(String [] args) throws IOException{
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        
+        System.out.println("******************************************************************\nEntity coach has started!");
+        System.out.println("******************************************************************");
+
         ArrayList<Coach> coach = new ArrayList<>(ConstConfigs.OPPOSING_TEAMS);
     
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){

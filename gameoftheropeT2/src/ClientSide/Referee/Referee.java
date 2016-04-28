@@ -54,13 +54,13 @@ public class Referee extends Thread{
                 case START_OF_A_GAME:
                     callTrial(nrGame,nrTrial);
                     state = ERefereeState.TEAMS_READY;
-            //        updateRefState(state);
+                    updateRefState(state);
                     break;
 
                 case TEAMS_READY:
                     startTrial(nrGame,nrTrial);
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-            //        updateRefState(state); 
+                    updateRefState(state); 
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
@@ -73,7 +73,7 @@ public class Referee extends Thread{
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
                         state = ERefereeState.START_OF_A_GAME;
-              //          updateRefState(state);
+                        updateRefState(state);
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
 
@@ -97,7 +97,7 @@ public class Referee extends Thread{
                         setPositionPull(PULL_CENTER);
 
                         state = ERefereeState.END_OF_A_GAME;
-                     //   updateRefState(state);  // actualiza no repositorio
+                        updateRefState(state);  // actualiza no repositorio
                     }
                     break; 
 
@@ -105,12 +105,12 @@ public class Referee extends Thread{
                     if(nrGame < nrGamesMax){
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
-                     //   updateRefState(state);
+                        //updateRefState(state);
                     }
 
                     else{
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                    //    updateRefState(state);
+                        //updateRefState(state);
                         declareMatchWinner();
 
                     } 
@@ -360,7 +360,32 @@ public class Referee extends Thread{
   
 
     private void updateRefState(ERefereeState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_REF_STATE, state);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
     }
 
     private int getPositionPull() {

@@ -1,5 +1,12 @@
 package ServerSide.Site;
 
+import Communication.ClientComm;
+import Communication.CommConst;
+import Communication.Message.Message;
+import Communication.Message.MessageType;
+import static java.lang.Thread.sleep;
+import java.util.Arrays;
+
 
 
 /**
@@ -37,17 +44,17 @@ public class MSite implements IRefereeSite, ICoachSite{
 
         if (posPull < 0 ){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
-            //isEnd(numGame, "A");
+            isEnd(numGame, "A");
             winnerTeamA++; 
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
-            //isEnd(numGame, "B");
+            isEnd(numGame, "B");
             winnerTeamB++; 
         }
         else{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
-            //wasADraw(numGame);
+            wasADraw(numGame);
         }
     }
     
@@ -60,16 +67,16 @@ public class MSite implements IRefereeSite, ICoachSite{
         System.out.println("***********************************************************");
         if (winnerTeamA > winnerTeamB){
             System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
-           // endMatch("A", winnerTeamA, winnerTeamB);
+            endMatch("A", winnerTeamA, winnerTeamB);
 
         }
         else if (winnerTeamA < winnerTeamB){
             System.out.println("A Equipa B venceu o match com #" +winnerTeamB +" vitórias!");
-            //endMatch("B", winnerTeamB, winnerTeamA);
+            endMatch("B", winnerTeamB, winnerTeamA);
         }
         else{
             System.out.println("O match ficou empatado! :(  A#" +winnerTeamA +" - B#"+winnerTeamB);
-            //endMatch("", winnerTeamB, winnerTeamA);
+            endMatch("", winnerTeamB, winnerTeamA);
         }
         System.out.println("***********************************************************");
 
@@ -88,16 +95,82 @@ public class MSite implements IRefereeSite, ICoachSite{
         return nrTrial; 
     }
 
-    private void isEnd(int numGame, String a) {
+    private void isEnd(int numGame, String team) {
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.IS_END, team, numGame);
+        con.writeObject(outMessage);
         
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
     }
 
     private void wasADraw(int numGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.WAS_A_DRAW, numGame);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
     }
 
-    private void endMatch(String a, int winnerTeamA, int winnerTeamB) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void endMatch(String team, int winnerTeamA, int winnerTeamB) {
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.END_MATCH, team, winnerTeamA, winnerTeamB);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
     }
     
 }

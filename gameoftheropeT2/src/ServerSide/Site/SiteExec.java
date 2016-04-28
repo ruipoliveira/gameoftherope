@@ -30,8 +30,8 @@ public class SiteExec {
         
         MSite site = new MSite(); 
         SiteInterface siteInt = new SiteInterface(site);
-        System.out.println("Site service has started!");
-        System.out.println("Server is listening.");
+        System.out.println("******************************************************************\nSite service has started!");
+        System.out.println("Server is listening.\n******************************************************************");
         
 
         /* processamento de pedidos */

@@ -120,6 +120,10 @@ public enum MessageType {
      */
     DECLARE_MATCH_WINNER,
     
+    
+    
+    
+    
     /*### REPOSITORY ###*/
     /**
      * Message used to update the referee state in logger's information
@@ -165,6 +169,14 @@ public enum MessageType {
      * Message used to know if a team wins a game by knock out 
      */
     IS_KNOCK_OUT,
+    
+    
+    IS_END, 
+    
+    WAS_A_DRAW,
+    
+    END_MATCH,
+    
     
     /**
      * Message used to notify that constestants must be ADDED to the pull

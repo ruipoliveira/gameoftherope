@@ -67,7 +67,14 @@ public class Message implements Serializable {
     /**
      * Variable that holds if the last pulled the rope, in case the message requires it.
      */
+   
     private boolean lastPulled;
+    
+    
+    private String team; 
+    
+    private int resultA; 
+    private int resultB; 
     
      /******************
      ** CONSTRUCTORS **
@@ -127,7 +134,9 @@ public class Message implements Serializable {
             case DECLARE_GAME_WINNER:
                 this.pullPosition = value; 
                 break; 
-                
+            case WAS_A_DRAW: 
+                this.gameNumber = value; 
+                break; 
             default:
                 System.err.println(type + ", wrong message type!");
                 this.type = MessageType.ERROR;
@@ -202,6 +211,21 @@ public class Message implements Serializable {
         this.contestState = contestState;
     }
     
+    public Message(MessageType type, String team, int resultA, int resultB){
+        this();
+        this.type = type;
+        this.team = team; 
+        this.resultA = resultA; 
+        this.resultB = resultB; 
+    }
+    
+    public Message(MessageType type, String team, int numGame){
+        this();
+        this.type = type;
+        this.team = team; 
+        this.gameNumber = numGame; 
+    }
+    
     
     public MessageType getType() {
         return type;
@@ -252,6 +276,18 @@ public class Message implements Serializable {
 
     public int getTotalPlayer() {
         return totalPlayer;
+    }
+    
+    public String getTeam(){
+        return team; 
+    }
+    
+    public int getResultA(){
+        return resultA; 
+    }
+    
+    public int getResultB(){
+        return resultB; 
     }
 
     public boolean isLastPulled() {

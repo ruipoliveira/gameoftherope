@@ -1,5 +1,6 @@
 package ServerSide.Repository;
 
+import ClientSide.Contestant.EContestantsState;
 import java.util.List;
 
 /**

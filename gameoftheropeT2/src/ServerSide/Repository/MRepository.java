@@ -1,5 +1,8 @@
 
 package ServerSide.Repository;
+import ClientSide.Coach.ECoachesState;
+import ClientSide.Contestant.EContestantsState;
+import ClientSide.Referee.ERefereeState;
 import java.io.FileNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
@@ -41,10 +44,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private int nrGame; 
     private int nrTrial; 
     private int posPull; 
-    
 
     public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException{
-
+        
         this.fName = fName;
         log = new File(fName);
         this.nrCoaches = nrCoaches; 
@@ -73,11 +75,13 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
         nrTrial = 0; 
         posPull =0; 
+        
         pw = new PrintWriter(log);
         initWriting();
     }
     
     public void initWriting(){
+                
         StringBuilder sb = new StringBuilder("Ref");
         StringBuilder sb2 = new StringBuilder("Sta ");
 
@@ -222,9 +226,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     public synchronized  void isEnd(int nrGame, String team){
         if (posPull != 4 )
-            pw.println(posPull+"Game "+nrGame+" was won by team "+team+" by points.");
+            pw.println("Game "+nrGame+" was won by team "+team+" by points.");
         else if (posPull != -4)
-            pw.println(posPull+"Game "+nrGame+" was won by team "+team+" by points.");
+            pw.println("Game "+nrGame+" was won by team "+team+" by points.");
         
     }
     
@@ -260,13 +264,13 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     @Override
     public synchronized void removeContestantsInPull(int idTeam, int idPlayer){
-/*
+
         if (idTeam ==1 ){
             lstInPullA.removeIf(p -> p.equals(idPlayer));
         }else{
             lstInPullB.removeIf(p -> p.equals(idPlayer));
         }
-*/
+
         writeLine();
     }
 

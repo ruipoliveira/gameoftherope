@@ -30,8 +30,8 @@ public class PlaygroundExec {
         
         MPlayground playground = new MPlayground(ConstConfigs.MAX_TRAILS_PER_GAME); 
         PlaygroundInterface playgroundInt = new PlaygroundInterface(playground);
-        System.out.println("Playground service has started!");
-        System.out.println("Server is listening.");
+        System.out.println("******************************************************************\nPlayground service has started!");
+        System.out.println("Server is listening.\n******************************************************************");
         
 
         /* processamento de pedidos */

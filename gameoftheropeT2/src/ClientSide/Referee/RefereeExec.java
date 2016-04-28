@@ -19,6 +19,10 @@ public class RefereeExec {
     public static void main(String [] args) throws IOException{
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        
+        System.out.println("******************************************************************\nEntity referee has started!");
+        System.out.println("******************************************************************");
+        
         Referee referee = new Referee(ConstConfigs.GAMES_PER_MATCH);
         
         referee.start();

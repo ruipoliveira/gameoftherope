@@ -27,8 +27,8 @@ public class BenchExec {
         
         MBench bench = new MBench( ConstConfigs.GAMES_PER_MATCH, ConstConfigs.CONTESTANTS_IN_TRIAL, ConstConfigs.ELEMENTS_IN_TEAM, ConstConfigs.OPPOSING_TEAMS); 
         BenchInterface shopInt = new BenchInterface(bench);
-        System.out.println("Bench service has started!");
-        System.out.println("Server is listening.");
+        System.out.println("******************************************************************\nBench service has started!");
+        System.out.println("Server is listening.\n******************************************************************");
         
 
         /* processamento de pedidos */
