@@ -137,6 +137,18 @@ public class Message implements Serializable {
             case WAS_A_DRAW: 
                 this.gameNumber = value; 
                 break; 
+                
+            case UPDATE_TRIAL_NUMBER:
+                this.trialNumber = value; 
+                break; 
+            case UPDATE_GAME_NUMBER: 
+                this.gameNumber = value; 
+                break;
+                
+            case UPDATE_PULL_POSITION: 
+                this.pullPosition = value;
+                break; 
+            
             default:
                 System.err.println(type + ", wrong message type!");
                 this.type = MessageType.ERROR;
@@ -161,6 +173,8 @@ public class Message implements Serializable {
             case REVIEW_NOTES: 
             case SEAT_DOWN: 
             case FOLLOW_COACH_ADVICE:
+            case ADD_CONTESTANTS_IN_PULL: 
+            case REMOVE_CONTESTANTS_IN_PULL: 
                 this.idCoach = value1; 
                 this.idContestant = value2;
                 break; 
@@ -178,6 +192,8 @@ public class Message implements Serializable {
         this.type = type;
         
         switch(type){
+            case UPDATE_AND_WRITE_STRENGTH: 
+            case UPDATE_STRENGTH: 
             case AM_DONE : 
                 this.idCoach = value1; 
                 this.idContestant = value2; 
@@ -199,15 +215,18 @@ public class Message implements Serializable {
         this.refState = refState;
     }
     
-    public Message(MessageType type, ECoachesState coachState) {
+    public Message(MessageType type, int coach, ECoachesState coachState) {
         this();
         this.type = type;
+        this.idCoach = coach; 
         this.coachState = coachState;
     }
     
-    public Message(MessageType type, EContestantsState contestState) {
+    public Message(MessageType type, int idCoach, int idContestant, EContestantsState contestState) {
         this();
         this.type = type;
+        this.idCoach = idCoach; 
+        this.idContestant = idContestant; 
         this.contestState = contestState;
     }
     
@@ -217,6 +236,15 @@ public class Message implements Serializable {
         this.team = team; 
         this.resultA = resultA; 
         this.resultB = resultB; 
+    }
+    
+    
+    public Message(MessageType type, int nrGame, int nrTrial, String team){
+        this();
+        this.type = type;
+        this.team = team;
+        this.trialNumber = nrTrial; 
+        this.gameNumber = nrGame; 
     }
     
     public Message(MessageType type, String team, int numGame){

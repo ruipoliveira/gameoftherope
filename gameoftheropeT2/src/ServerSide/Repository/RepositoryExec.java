@@ -29,7 +29,7 @@ public class RepositoryExec {
         System.out.println("******************************************************************\nRepository service has started!");
         System.out.println("Server is listening.\n******************************************************************");
 
-      // processamento de pedidos 
+        // processamento de pedidos 
         while (true) {
             sconi = scon.accept();                         // entrada em processo de escuta
             cliProxy = new ClientProxy(scon, sconi, repInt);     // lançamento do agente prestador do serviço

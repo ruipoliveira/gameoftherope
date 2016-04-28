@@ -146,7 +146,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
     }
 
-    public void endWriting(){
+    public synchronized void endWriting(){
         pw.println();
         pw.println("SIMULATION ENDED!");
         pw.println();
@@ -158,7 +158,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     }
     
     
-    public void writeLineGame(){
+    public synchronized void writeLineGame(){
         pw.println("Game "+nrGame);
         initWriting();
     }
@@ -203,6 +203,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     
     @Override
     public synchronized void updateTrialNumber(int nrTrial){
+        System.out.println(nrTrial); 
         this.nrTrial = nrTrial;
         writeLine();
     }

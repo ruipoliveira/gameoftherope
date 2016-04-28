@@ -61,7 +61,7 @@ public class RepositoryInterface implements ServerInterface {
     
 
             case UPDATE_CONTESTANT_STATE:
-                rep.updateContestantState(inMessage.getIdCoach(), inMessage.getIdContest(), EContestantsState.DO_YOUR_BEST);
+                rep.updateContestantState(inMessage.getIdCoach(), inMessage.getIdContest(), inMessage.getContestState());
                 outMessage = new Message(MessageType.ACK);
                 break; 
     

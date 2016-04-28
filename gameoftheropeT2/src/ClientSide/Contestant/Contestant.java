@@ -28,7 +28,7 @@ public class Contestant extends Thread{
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
-       // updateStrength(coachId,contId,contestStrength);      
+        updateStrength(coachId,contId,contestStrength);      
     }
     
     @Override
@@ -46,7 +46,7 @@ public class Contestant extends Thread{
                     } 
                     
                     state = EContestantsState.STAND_IN_POSITION;
-                 //   updateContestantState(coachId, contId, state);
+                    updateContestantState(coachId, contId, state);
                  
                 break;
                 
@@ -55,13 +55,13 @@ public class Contestant extends Thread{
                     if (isPlayerSelected(coachId,contId) ){
                         getReady(coachId, contId);  
                         state = EContestantsState.DO_YOUR_BEST;
-                    //    updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state);
                     }
                     else{
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                     //   updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state);
                         contestStrength++;
-                    //    updateStrengthAndWrite(coachId, contId, contestStrength);
+                        updateStrengthAndWrite(coachId, contId, contestStrength);
                     }
 
                 break;
@@ -71,9 +71,9 @@ public class Contestant extends Thread{
                     amDone(coachId, contId, contestStrength); 
                     seatDown(coachId,contId); 
                     contestStrength--;
-                 //   updateStrengthAndWrite(coachId,contId, contestStrength);
+                    updateStrengthAndWrite(coachId,contId, contestStrength);
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                  //  updateContestantState(coachId, contId, state);
+                    updateContestantState(coachId, contId, state);
 
                 break;    
             }
@@ -83,7 +83,11 @@ public class Contestant extends Thread{
         System.out.println("Fim jogador #"+coachId); 
     }
    
-    
+    /**
+     * 
+     * @param coachId
+     * @param contestId 
+     */
     private void seatDown(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
@@ -275,7 +279,30 @@ public class Contestant extends Thread{
     }
 
     private void updateStrength(int coachId, int contId, int contestStrength) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_STRENGTH, coachId,contId, contestStrength );
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close(); 
     }
 
     
@@ -297,11 +324,59 @@ public class Contestant extends Thread{
     
     
     private void updateContestantState(int coachId, int contId, EContestantsState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_CONTESTANT_STATE, coachId,contId,state );
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
     }
 
     private void updateStrengthAndWrite(int coachId, int contId, int contestStrength) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_AND_WRITE_STRENGTH, coachId,contId, contestStrength );
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
     }
 
 }

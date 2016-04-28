@@ -50,7 +50,11 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         this.maxTrials = maxTrials;
     }
 
-
+    /**
+     * 
+     * @param nrGame
+     * @param nrTrial 
+     */
     @Override
     public synchronized void startTrial(int nrGame,int nrTrial) {
         this.nrGame = nrGame; 
@@ -105,8 +109,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             System.out.println("Jogo Empatado!!"); 
         }
         
-       // updateTrialNumber(numTrial);
-       // updatePullPosition(posPull);
+        updateTrialNumber(numTrial);
+        updatePullPosition(posPull);
 
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
          
@@ -140,7 +144,10 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
     }
 
-    
+    /**
+     * 
+     * @param coachId 
+     */
     @Override
     public synchronized void informReferee(int coachId) {
         newTrial++;
@@ -154,18 +161,29 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         notifyAll();
     }
 
-    
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getPositionPull(){
         return posPull;
     }
     
+    /**
+     * 
+     * @param posPull 
+     */
     @Override
     public synchronized void setPositionPull(int posPull){
         this.posPull = posPull; 
     }
     
-    
+    /**
+     * 
+     * @param coachId
+     * @param contId 
+     */
     @Override
     public synchronized void getReady(int coachId, int contId) {
         while(startTrial == false){
@@ -194,18 +212,18 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
                 
-      //  addContestantsInPull(coachId, contId);
+        addContestantsInPull(coachId, contId);
         
         strengthTeam.get(coachId).add(contestStrength);
         
         System.out.println("["+coachId+"] #"+contId + " PUXA A CORDA!! | Força da Equipa: "+strengthTeam.toString()); 
-/*
+        /*
         try {
             Thread.sleep(200);
         } catch (InterruptedException ex) {
             Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
         }
-*/
+        */
         allPulled++;
         while(allPulled % 6 != 0){
             try {
@@ -221,14 +239,20 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         notifyAll();
         
     }
-    
+    /**
+     * 
+     * @return 
+     */
     public int getNrGame(){
         return nrGame; 
     }
 
-            // communication messages
+    /**
+     * 
+     * @param numTrial 
+     */
     private void updateTrialNumber(int numTrial) {
-        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -242,16 +266,22 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         con.writeObject(outMessage);
         
         inMessage = (Message) con.readObject();
+        
         MessageType type = inMessage.getType();
         if (type != MessageType.ACK) {
-            System.out.println("Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
             System.exit(1);
         }
+        
         con.close();
     }
-
+    /**
+     * 
+     * @param posPull 
+     */
     private void updatePullPosition(int posPull) {
-        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -272,9 +302,14 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
         con.close();
     }
-
+    
+    /**
+     * 
+     * @param coachId
+     * @param contId 
+     */
     private void addContestantsInPull(int coachId, int contId) {
-        ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())
@@ -295,5 +330,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
         con.close();
     }
-
+    
+ 
 }

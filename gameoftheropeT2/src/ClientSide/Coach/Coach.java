@@ -35,19 +35,19 @@ public class Coach extends Thread{
                     if (!endOfTheGame(idCoach)) break;
                     callContestants(idCoach);
                     state = ECoachesState.ASSEMBLE_TEAM;
-                //    updateCoachState(idCoach, state);
+                    updateCoachState(idCoach, state);
                     break; 
 
                 case ASSEMBLE_TEAM:      
                     informReferee(idCoach); 
                     state = ECoachesState.WATCH_TRIAL;
-                    //repository.updateCoachState(idCoach, state);
+                    updateCoachState(idCoach, state);
                     break; 
                     
                 case WATCH_TRIAL:
                     reviewNotes(idCoach);
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-               //     updateCoachState(idCoach, state);
+                    updateCoachState(idCoach, state);
                     break;
             }
         }while (endOfTheGame(idCoach));
@@ -197,7 +197,31 @@ public class Coach extends Thread{
    
 
     private void updateCoachState(int idCoach, ECoachesState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
+        Message inMessage, outMessage;
+
+        while (!con.open())
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(MessageType.UPDATE_COACH_STATE, idCoach, state);
+        con.writeObject(outMessage);
+        
+        inMessage = (Message) con.readObject();
+        
+        MessageType type = inMessage.getType();
+        if (type != MessageType.ACK) {
+            System.out.println("Thread " + getName() + ": Tipo inválido!");
+            System.out.println("Message:"+ inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        
+        con.close();
+        
     }
     
 }

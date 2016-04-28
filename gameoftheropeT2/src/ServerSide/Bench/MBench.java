@@ -139,9 +139,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull.get(coachId).addAll(constestantInPullID);
 
         System.out.println("Na corda estão: "+coachAndTeamInPull.toString());
-        
-       // repository.addContestantsInPull(coachId, coachAndTeamInPull.get(coachId));
-  
+          
         if(coachId == 1)
             readyA = elementInTeam;
         
@@ -231,8 +229,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         coachAndTeamInPull.get(1).clear(); 
         coachAndTeamInPull.get(2).clear();
         
-       //repository.removeContestantsInPull(1);
-       // repository.removeContestantsInPull(2);
 
         endReview++;
         while(endReview % opposingTeam != 0){
@@ -256,7 +252,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
      */
     @Override
     public synchronized void seatDown(int coachId, int contestId) {
-       // removeContestantsInPull(coachId, contestId);
+        removeContestantsInPull(coachId, contestId);
         finished++;
 
         while(finished % 2*constestantInTrial != 0){
@@ -359,15 +355,23 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         notifyAll();
     }
 
-    
+    /**
+     * 
+     * @param c
+     * @return 
+     */
     @Override
     public boolean endOfTheGame(int c ){
         return numGame <= gamesPerMatch;
     }
 
-            // enviar mensagem para o cliente
+    /**
+     * 
+     * @param coachId
+     * @param contestId 
+     */
     private void removeContestantsInPull(int coachId, int contestId) {
-        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
 
         while (!con.open())

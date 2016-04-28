@@ -26,7 +26,7 @@ sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Site.jar sd0105@l040101
 sshpass -p qwerty scp -o StrictHostKeyChecking=no Bench.jar sd0105@l040101-ws03.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Referee.jar sd0105@l040101-ws02.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Contestant.jar sd0105@l040101-ws06.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Coach.jar sd0105@l040101-ws07.ua.pt:~
+sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Coach.jar sd0105@l040101-ws08.ua.pt:~
 )
 
 
