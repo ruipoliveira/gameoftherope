@@ -1,0 +1,10 @@
+ClientSide.Coach
+ClientSide.Contestant
+ClientSide.Referee
+Communication
+Communication.Message
+Communication.Proxy
+ServerSide.Bench
+ServerSide.Playground
+ServerSide.Repository
+ServerSide.Site
