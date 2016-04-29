@@ -1,18 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This file defines the main method to run the Logging server
  */
 package ServerSide.Repository;
 import Communication.*;
 import Communication.Proxy.*;
 import java.io.FileNotFoundException;
 import java.net.SocketTimeoutException;
+
 /**
- * This file defines the main method to run the Logging server
- * 
- * @author roliveira
- * @author gabriel
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
 public class RepositoryExec {
     public static void main (String [] args) throws SocketTimeoutException, FileNotFoundException{

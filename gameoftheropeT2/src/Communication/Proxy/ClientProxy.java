@@ -1,4 +1,3 @@
-
 package Communication.Proxy;
 
 import Communication.Message.Message;
@@ -7,8 +6,6 @@ import Communication.ServerComm;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 /**
  * This data type defines the service thread for a server-client architecture.

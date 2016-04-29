@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Communication;
 
 /**
  * This file stores the communication constants so that it is easier to change the values, if needed.
- *
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
+
 public class CommConst {
     // ssh sd0105@l040101-wsXX.ua.pt
     // qualquercoisa

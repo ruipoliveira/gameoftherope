@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ClientSide.Contestant;
 
 import Communication.ConstConfigs;
@@ -10,8 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
 public class ContestantExec { 
     public static void main(String [] args) throws IOException{

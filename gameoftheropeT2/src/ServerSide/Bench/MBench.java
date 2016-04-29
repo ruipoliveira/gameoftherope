@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import Communication.ClientComm;
 import Communication.CommConst;
 import Communication.Message.*;
 import static java.lang.Thread.sleep;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
- * @version 1.0
+ * @version 2.0
  */
 public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
     private boolean callContestant; 

@@ -1,15 +1,13 @@
 package Communication;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
 
 public class ConstConfigs {
 
-    /**
-     * 
-     */
     public static int MAX_TRAILS_PER_GAME =  10; 
     public static int ELEMENTS_IN_TEAM =  10;
     public static int GAMES_PER_MATCH =  100; 

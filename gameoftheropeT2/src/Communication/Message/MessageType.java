@@ -3,26 +3,43 @@ package Communication.Message;
 
 /**
  * This file defines the message types.
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
+
 public enum MessageType {
+    /**
+     * 
+     */
+    
     ACK,
+    /**
+     * 
+     */
     
     POSITIVE,
-    
+    /**
+     * 
+     */
     NEGATIVE,
     
+    /**
+     * 
+     */
     ERROR,
     
+    /**
+     * 
+     */
     SEND_POS_PULL, 
    
-    
+    /**
+     * 
+     */
     TERMINATE,
     
-    /*### Meter tudo o que é feito nos monitores ###*/
-    
-    // ### CONTESTANTS ##### messages types ( I guess)
-    
+
     /**
      * Message used when the Contestant is seating at the bench.
      */
@@ -53,10 +70,6 @@ public enum MessageType {
      */
     ALL_SITTING_TEAMS,
  
-    
-    
-    // ### COACH ##### messages types ( I guess)
-    
     /**
      * Message used when the Coach calls the contestants.
      */
@@ -77,12 +90,16 @@ public enum MessageType {
      */ 
     END_OPER_COACH,
     
+    /**
+     * 
+     */
     GET_POSITION_PULL,
+    
+    /**
+     * 
+     */
     SET_POSITION_PULL,
 
-    
-    // ### REFEREE ##### messages types ( I guess)
-    
     /**
      * Message used when the referee says that another game will start.
      */
@@ -103,11 +120,26 @@ public enum MessageType {
      */
     ASSERT_TRIAL_DECISION,
 
+    /**
+     * 
+     */
     DECISION_E,
+    /**
+     * 
+     */
     DECISION_A,
+    /**
+     * 
+     */
     DECISION_B,
-    DECISION_C,
     
+    /**
+     * 
+     */
+    DECISION_C,
+    /**
+     * 
+     */
     END_OF_THE_GAME, 
     
     /**
@@ -120,11 +152,6 @@ public enum MessageType {
      */
     DECLARE_MATCH_WINNER,
     
-    
-    
-    
-    
-    /*### REPOSITORY ###*/
     /**
      * Message used to update the referee state in logger's information
      */
@@ -170,13 +197,20 @@ public enum MessageType {
      */
     IS_KNOCK_OUT,
     
+    /**
+     * 
+     */
     
     IS_END, 
+    /**
+     * 
+     */
     
     WAS_A_DRAW,
-    
+    /**
+     * 
+     */
     END_MATCH,
-    
     
     /**
      * Message used to notify that constestants must be ADDED to the pull

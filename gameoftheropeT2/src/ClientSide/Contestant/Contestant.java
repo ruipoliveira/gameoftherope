@@ -6,16 +6,12 @@ import Communication.Message.Message;
 import Communication.Message.MessageType;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
-import ClientSide.Coach.*;
-
-
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
- * @version 1.0
+ * @version 2.0
  */
-
 public class Contestant extends Thread{
     
     private final int coachId;

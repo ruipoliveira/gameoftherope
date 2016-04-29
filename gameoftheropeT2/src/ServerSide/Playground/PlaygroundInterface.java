@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ServerSide.Playground;
 
 import Communication.Message.Message;
@@ -13,8 +8,9 @@ import Communication.ServerComm;
 import java.net.SocketException;
 
 /**
- *
- * @author roliveira
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
 public class PlaygroundInterface implements ServerInterface{
 

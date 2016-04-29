@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
- * @version 1.0
+ * @version 2.0
  */
 public interface IContestantsRepository {
     public void updateContestantState(int idTeam, int contestId, EContestantsState state);

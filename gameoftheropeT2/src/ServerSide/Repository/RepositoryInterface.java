@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ServerSide.Repository;
 
-import ClientSide.Coach.ECoachesState;
-import ClientSide.Contestant.EContestantsState;
 import Communication.Message.Message;
 import Communication.Message.MessageException;
 import Communication.Message.MessageType;
@@ -15,8 +8,9 @@ import Communication.ServerComm;
 import java.net.SocketException;
 
 /**
- *
- * @author gabriel
+ * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
+ * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
+ * @version 2.0
  */
 public class RepositoryInterface implements ServerInterface {
     
@@ -130,8 +124,7 @@ public class RepositoryInterface implements ServerInterface {
                 rep.removeContestantsInPull(inMessage.getIdCoach(), inMessage.getIdContest());
                 outMessage = new Message(MessageType.ACK);
                 break; 
-   
-            
+
             default:
                 System.out.println("Mensagem inválida recebida: " + inMessage);
                 break;
