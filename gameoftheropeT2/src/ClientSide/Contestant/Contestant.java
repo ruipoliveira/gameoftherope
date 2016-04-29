@@ -84,9 +84,10 @@ public class Contestant extends Thread{
     }
    
     /**
+     * players go to seat down at the bench
      * 
-     * @param coachId
-     * @param contestId 
+     * @param coachId is the coach identifier (ID)
+     * @param contestId is the contestant identifier (ID)
      */
     private void seatDown(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
@@ -115,6 +116,15 @@ public class Contestant extends Thread{
         //bench.seatDown(coachId, contestId); 
     }
     
+    /**
+     * verify if the player is selected to pull the rope
+     * return true if is selected
+     * return false, otherwise
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contestId is the contestant identifier (ID)
+     * @return 
+     */
     private boolean isPlayerSelected(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
@@ -146,6 +156,12 @@ public class Contestant extends Thread{
         return false ;//bench.isPlayerSelected(coachId,contId); 
     }
     
+    /**
+     * contestants follow the coach instructions for the game
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contestId is the contestant identifier (ID)
+     */
     private void followCoachAdvice(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
@@ -174,6 +190,13 @@ public class Contestant extends Thread{
        
     }
     
+    /**
+     * players are playing the game
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contId is the contestant identifier (ID)
+     * @param contestStrength is the contestant strength 
+     */
     private void amDone(int coachId, int contId, int contestStrength){
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -201,6 +224,12 @@ public class Contestant extends Thread{
         //playground.amDone(coachId, contId, contestStrength);
     }
     
+    /**
+     * players that will play the game, positioning into the field
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contestId  is the contestant identifier (ID)
+     */
     private void getReady(int coachId, int contestId){
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -228,7 +257,14 @@ public class Contestant extends Thread{
         //playground.getReady(coachId, contestId);
     }
 
-
+    /**
+     * verify if the coach operation was terminated
+     * return true if the coach operation is terminated
+     * return false, otherwise
+     * 
+     * @param idCoach is the coach identifier (ID)
+     * @return 
+     */
     private boolean endOperCoach(int idCoach){
         ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
         Message inMessage, outMessage;
@@ -278,6 +314,13 @@ public class Contestant extends Thread{
         return 10 + (int)(Math.random() * ((20 - 10) + 1)); 
     }
 
+    /**
+     * updates the strength of the contestants 
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contId is the contestant identifier (ID)
+     * @param contestStrength is the contestant strength
+     */
     private void updateStrength(int coachId, int contId, int contestStrength) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
@@ -322,7 +365,13 @@ public class Contestant extends Thread{
         return state;
     }
     
-    
+    /**
+     * updates the contestants current state
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contId is the contestant identifier (ID)
+     * @param state is the contestant state
+     */
     private void updateContestantState(int coachId, int contId, EContestantsState state) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
@@ -349,7 +398,14 @@ public class Contestant extends Thread{
         
         con.close();
     }
-
+    
+    /**
+     * updates and write the strength of contestants
+     * 
+     * @param coachId is the coach identifier (ID)
+     * @param contId is the contestant identifier (ID)
+     * @param contestStrength is the strength of contestants
+     */
     private void updateStrengthAndWrite(int coachId, int contId, int contestStrength) {
 
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);

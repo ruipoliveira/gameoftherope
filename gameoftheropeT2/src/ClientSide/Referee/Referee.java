@@ -135,7 +135,13 @@ public class Referee extends Thread{
     public ERefereeState getCurrentState() {
         return state;
     }
-
+    
+    /**
+     * referee announces a new trial
+     * 
+     * @param nrGame is the number of the game
+     * @param nrTrial is the number of the trial
+     */
     private void callTrial(int nrGame, int nrTrial){
 
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
@@ -165,7 +171,11 @@ public class Referee extends Thread{
         //bench.callTrial(nrGame, nrTrial);
     }
     
-    
+    /**
+     * sets the position of the pull to the center
+     * 
+     * @param positionCenter is the center's position pull 
+     */
     private void setPositionPull(int positionCenter){
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -193,6 +203,12 @@ public class Referee extends Thread{
         con.close();
     }
     
+    /**
+     * referee start's the trial
+     * 
+     * @param nrGame is the number of the game
+     * @param numTrial is the number of the trial
+     */
     private void startTrial(int nrGame,int numTrial){
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -222,6 +238,14 @@ public class Referee extends Thread{
         //playground.startTrial(nrGame,numTrial);
     }
     
+    /**
+     * referee makes a decision in the end of the trial or game
+     * 
+     * @return A Team A wins
+     * @return B Team B wins
+     * @return C the game will continue
+     * @return E the game is over
+     */
     private char assertTrialDecision(){
         
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
@@ -260,6 +284,11 @@ public class Referee extends Thread{
         //playground.assertTrialDecision(); 
     }
     
+    /**
+     * referee declares the winner of the game
+     * 
+     * @param posPull is the position of the pull
+     */
     private void declareGameWinner(int posPull){
         
         ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
@@ -291,6 +320,10 @@ public class Referee extends Thread{
         //site.declareGameWinner(posPull);
     }
     
+    /**
+     * referee decides the winner of the match
+     * 
+     */
     private void declareMatchWinner(){
         
         ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
@@ -321,6 +354,12 @@ public class Referee extends Thread{
         //site.declareMatchWinner();
     }
     
+    /**
+     * referee announces a new game
+     * 
+     * @param nrGame is the number of the game
+     * @param nrTrial is the number of the trial
+     */
     private void announceNewGame(int nrGame, int nrTrial){
         
         ClientComm con = new ClientComm(CommConst.siteServerName, CommConst.siteServerPort);
@@ -352,7 +391,11 @@ public class Referee extends Thread{
     }
     
   
-
+    /**
+     * updates referee current state
+     * 
+     * @param state is the current referee state
+     */
     private void updateRefState(ERefereeState state) {
 
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
@@ -382,6 +425,11 @@ public class Referee extends Thread{
         
     }
 
+    /**
+     * gets the postion of the pull
+     * 
+     * @return the position of the pull
+     */
     private int getPositionPull() {
         
         ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
@@ -411,7 +459,14 @@ public class Referee extends Thread{
         con.close();
         return posPull; 
     }
-
+    
+    /**
+     * Say if the a game was ended by a knock out
+     * 
+     * @param nrGame is the number of the game
+     * @param nrTrial is the number of the trial
+     * @param team is the name of the team
+     */
     private void isKnockOut(int nrGame, int nrTrial, String team) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
@@ -440,7 +495,13 @@ public class Referee extends Thread{
         
         
     }
-
+    
+    /**
+     * verifies if all contestants of each team are sitting down at the bench
+     * 
+     * @return true if all contestants are sitting donw
+     * @return false, otherwise
+     */
     private boolean allSittingTeams() {
 
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
@@ -474,7 +535,12 @@ public class Referee extends Thread{
         return false;
 
     }
-
+    
+    /**
+     * updates the number of the game
+     * 
+     * @param nrGame is the number of the game
+     */
     private void updateGameNumber(int nrGame) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;
@@ -501,7 +567,12 @@ public class Referee extends Thread{
         
         con.close();
     }
-
+    
+    /**
+     * updates the number of the trial
+     * 
+     * @param nrTrial is the number of the trial
+     */
     private void updateTrialNumber(int nrTrial) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;

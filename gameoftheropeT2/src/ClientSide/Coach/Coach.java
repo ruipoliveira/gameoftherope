@@ -56,6 +56,11 @@ public class Coach extends Thread{
     
     }
     
+    /**
+     * coach call the contestants to play the game
+     * 
+     * @param idCoach is the coach identifier (ID)
+     */
     private void callContestants(int idCoach){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
@@ -84,6 +89,11 @@ public class Coach extends Thread{
         
     }
     
+    /**
+     * coach informs referee that his team is ready to play the game
+     * 
+     * @param idCoach 
+     */
     private void informReferee(int idCoach){
          ClientComm con = new ClientComm(CommConst.playServerName, CommConst.playServerPort);
         Message inMessage, outMessage;
@@ -111,6 +121,11 @@ public class Coach extends Thread{
         //playground.informReferee(idCoach);
     }
     
+    /**
+     * after each trial, coach review his notes
+     * 
+     * @param idCoach 
+     */
     private void reviewNotes(int idCoach){
         ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
@@ -138,8 +153,15 @@ public class Coach extends Thread{
         ///bench.reviewNotes(idCoach);
     }
     
-    
-     private boolean endOfTheGame(int idCoach) {
+    /**
+     * verify if the game is over
+     * return true if the game is over
+     * return false, otherwise
+     * 
+     * @param idCoach
+     * @return 
+     */
+    private boolean endOfTheGame(int idCoach) {
        ClientComm con = new ClientComm(CommConst.benchServerName, CommConst.benchServerPort);
         Message inMessage, outMessage;
 
@@ -195,7 +217,12 @@ public class Coach extends Thread{
     }
 
    
-
+    /**
+     * updates the coach current state
+     * 
+     * @param idCoach is the coach identifier (ID)
+     * @param state is the coach current state
+     */
     private void updateCoachState(int idCoach, ECoachesState state) {
         ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
         Message inMessage, outMessage;

@@ -9,8 +9,10 @@ import Communication.Proxy.*;
 import java.io.FileNotFoundException;
 import java.net.SocketTimeoutException;
 /**
- *
+ * This file defines the main method to run the Logging server
+ * 
  * @author roliveira
+ * @author gabriel
  */
 public class RepositoryExec {
     public static void main (String [] args) throws SocketTimeoutException, FileNotFoundException{

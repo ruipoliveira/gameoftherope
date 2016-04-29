@@ -44,7 +44,15 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private int nrGame; 
     private int nrTrial; 
     private int posPull; 
-
+    
+    /**
+    * Initializes the logger (gameoftherope.log) file
+    *
+    * @param fName to be given to the logger that will be created
+    * @param nrCoaches is the number of the coaches present in the simulation 
+    * @param nrContestants is the number of the contestants in the simulation 
+    * @throws FileNotFoundException is thrown when fails to write/open the file
+    */
     public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException{
         
         this.fName = fName;
@@ -80,6 +88,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         initWriting();
     }
     
+    /*
+    * Writes the first lines of the header in the logger file created .
+    */
     public void initWriting(){
                 
         StringBuilder sb = new StringBuilder("Ref");
@@ -107,7 +118,9 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
     }
         
-    
+    /*
+    *  writes a line to the logger with the simulation information updated.
+    */
     public synchronized void writeLine(){ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
@@ -145,6 +158,10 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         pw.println();
 
     }
+    
+    /*
+    * Writes the end of a logger file
+    */
 
     public synchronized void endWriting(){
         pw.println();
@@ -157,50 +174,92 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
             
     }
     
-    
+    /*
+    * writes the number of a game in a line
+    */
     public synchronized void writeLineGame(){
         pw.println("Game "+nrGame);
         initWriting();
     }
     
+    /**
+    * updates the state of the referee
+    *
+    * @param state The Referee's current state
+    */
     @Override
     public synchronized void updateRefState(ERefereeState state){
         ref.setState(state);
         writeLine();
     }
     
+     /**
+    * updates the state of the coach
+    *
+    * @param state The Coach's current state
+    * @param idCoach Is the coach Identifier (ID)
+    */
     @Override
     public synchronized void updateCoachState(int idCoach, ECoachesState state){
         lst_coach.get(idCoach-1).setState(state);  
         writeLine();
     }
     
+    /**
+     * updates the state of the contestant
+     * 
+    * @param state The Contestant's current state
+    * @param idTeam Is the team Identifier (ID) (or coach id)
+    * @param idContest Is the contestant identifier (ID)
+    * @param state The Contestant's current state 
+    */
     @Override
     public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state){
         lst_player.get(idTeam).get(idContest-1).setState(state); 
         writeLine();
     }
 
-    
+    /**
+     * updates the strength of the contestants
+     * 
+     * @param idTeam Is the team identifier (ID) (or coachID)
+     * @param idContest Is the contestant identifier (ID)
+     * @param contestStrength Is the contestant's strength
+     */
     @Override
     public synchronized void updateStrength(int idTeam, int idContest, int contestStrength){ 
         lst_player.get(idTeam).get(idContest-1).setStrength(contestStrength); 
     }
     
+    /**
+     * updates and writes the strength of the contestants
+     * 
+     * @param idTeam Is the team identifier (ID) (or coachID)
+     * @param contestId Is the contestant identifier (ID)
+     * @param contestStrength Is the contestant's strength
+     */
     @Override
     public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength){ 
         lst_player.get(idTeam).get(contestId-1).setStrength(contestStrength); 
         writeLine();
     }
     
-    
+    /**
+     * updates the position of the pull
+     * 
+     * @param posPull is the position of the pull
+     */
     @Override
     public synchronized void updatePullPosition(int posPull){
         this.posPull = posPull;
         writeLine();
     }
     
-    
+    /**
+     * updates the number of the trial
+     * 
+     * @param nrTrial is the number of the trial 
+     */
     @Override
     public synchronized void updateTrialNumber(int nrTrial){
         System.out.println(nrTrial); 
@@ -208,7 +267,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         writeLine();
     }
     
-
+    /**
+     * updates the number of the game
+     * 
+     * @param nrGame is the number of the game
+     */
     @Override
     public synchronized void updateGameNumber(int nrGame){
         this.nrGame = nrGame;
@@ -218,13 +281,21 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         writeLine();
     }
     
-    
+    /**
+     * Say if the game was won by knock out and who won him
+     * 
+     * @param nrGame is the number of the game
+     * @param nrTrial
+     * @param team 
+     */
     @Override
     public synchronized void isKnockOut(int nrGame, int nrTrial, String team ){
         pw.println("Game "+nrGame+" was won by team "+team+" by knock out in "+nrTrial+" trials.");
     }
     
-    
+    /*
+    * Say that the game ends
+    */
     public synchronized  void isEnd(int nrGame, String team){
         if (posPull != 4 )
             pw.println("Game "+nrGame+" was won by team "+team+" by points.");
@@ -233,11 +304,16 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
     }
     
-
+    /*
+    * Say that the result of the game was a draw
+    */
     public synchronized  void wasADraw(int nrGame){
         pw.println("Game "+nrGame+" was a draw");
     }       
-            
+    
+    /*
+    * Say that the match is over
+    */
     public synchronized void endMatch(String team, int resultA, int resultB){
         
         if(resultA == resultB){
@@ -250,7 +326,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         endWriting(); 
     }
     
-    
+    /**
+     * 
+     * @param idTeam Is the team identifier (ID) (or coachID)
+     * @param idPlayer Is the Contestant's identifier (ID)
+     */
     @Override
     public synchronized void addContestantsInPull(int idTeam, int idPlayer){
         
@@ -263,6 +343,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         writeLine();
     } 
     
+    /**
+     * 
+     * @param idTeam idTeam Is the team identifier (ID) (or coachID)
+     * @param idPlayer idPlayer Is the Contestant's identifier (ID)
+     */
     @Override
     public synchronized void removeContestantsInPull(int idTeam, int idPlayer){
 
@@ -275,7 +360,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         writeLine();
     }
 
-    
+    /*
+    * verify if the index exists
+    * return true -> index exists
+    * return false, otherwise
+    */
     private boolean indexExists(final List list, final int index) {
         return index >= 0 && index < list.size();
     }
