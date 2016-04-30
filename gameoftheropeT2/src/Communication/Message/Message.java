@@ -102,16 +102,30 @@ public class Message implements Serializable {
         totalPlayer = ERROR_INT;
     }
     
+    /**
+     * messageType used only for positionPull
+     * 
+     * @param posP is the position of the pull
+     */
     public Message(int posP){
         this();
     }
     
-    // constructor used in all methods
+    /**
+     * 
+     * @param type is the type of message
+     */
     public Message(MessageType type) {
         this();
         this.type = type;
     }
    
+     /**
+      * constructor used to say the of message and associate a value
+      * 
+      * @param type is the type of message 
+      * @param value is the possible value for the message
+      */
     public Message(MessageType type, int value) {
         this();
         this.type = type;
@@ -153,7 +167,14 @@ public class Message implements Serializable {
         }
 
     }
-   
+    
+    /**
+     * constructor used for the type of message and associate some values
+     * 
+     * @param type is the type of message
+     * @param value1 is one of the possible values of message
+     * @param value2 is one of the possible values of message
+     */
     public Message(MessageType type, int value1, int value2) {
         this();
         this.type = type;
@@ -184,6 +205,14 @@ public class Message implements Serializable {
         
     }
     
+    /**
+     * constructor used for the type of message and associate some values and the contestStrength
+     * 
+     * @param type is the type of message
+     * @param value1 is one of the possible values of message
+     * @param value2 is one of the possible values of message
+     * @param contestStrength is the strength of contestant 
+     */
     public Message(MessageType type, int value1, int value2, int contestStrength) {
         this();
         this.type = type;
@@ -205,13 +234,25 @@ public class Message implements Serializable {
     }
     
     
-    // mensagem com o tipo e o estado de cada cliente / entidade
+    /**
+     * constructor used for the type of message and the state of referee 
+     * 
+     * @param type is the type of message
+     * @param refState is the state of referee
+     */
     public Message(MessageType type, ERefereeState refState) {
         this();
         this.type = type;
         this.refState = refState;
     }
     
+    /**
+     * constructor used for the type of message, coach ID and state of coach
+     * 
+     * @param type is the type of message
+     * @param coach is the coach identifier (ID)
+     * @param coachState is the state of coach
+     */
     public Message(MessageType type, int coach, ECoachesState coachState) {
         this();
         this.type = type;
@@ -219,6 +260,14 @@ public class Message implements Serializable {
         this.coachState = coachState;
     }
     
+    /**
+     * constructor used for the type of message, coach ID, contestant identifier and state of contestant
+     * 
+     * @param type is the type of message
+     * @param idCoach is the coach identifier (ID)
+     * @param idContestant is the contestant identifier (ID)
+     * @param contestState is the state of contestant
+     */
     public Message(MessageType type, int idCoach, int idContestant, EContestantsState contestState) {
         this();
         this.type = type;
@@ -227,6 +276,14 @@ public class Message implements Serializable {
         this.contestState = contestState;
     }
     
+    /**
+     * constructor used for the tyoe of message, name of the team, result of team A and result of team B
+     * 
+     * @param type is the type of message
+     * @param team is the name of the team
+     * @param resultA is the result of team A
+     * @param resultB is the result of team B
+     */
     public Message(MessageType type, String team, int resultA, int resultB){
         this();
         this.type = type;
@@ -235,7 +292,14 @@ public class Message implements Serializable {
         this.resultB = resultB; 
     }
     
-    
+    /**
+     * constructor used for the type of message, number of the game, number of the trial and name of the team
+     * 
+     * @param type is the type of message
+     * @param nrGame is the number of the game
+     * @param nrTrial is the number of the trial
+     * @param team is the name of the team
+     */
     public Message(MessageType type, int nrGame, int nrTrial, String team){
         this();
         this.type = type;
@@ -244,6 +308,13 @@ public class Message implements Serializable {
         this.gameNumber = nrGame; 
     }
     
+    /**
+     * constructor used for the type of message, name of the team and numbe rof the game
+     * 
+     * @param type is type of message
+     * @param team is the name of the team
+     * @param numGame is the number of the game
+     */
     public Message(MessageType type, String team, int numGame){
         this();
         this.type = type;
@@ -251,74 +322,164 @@ public class Message implements Serializable {
         this.gameNumber = numGame; 
     }
     
-    
+    /**
+     * Get the current message type 
+     * 
+     * @return Message type
+     */
     public MessageType getType() {
         return type;
     }
-
+    
+    /**
+     * Get the id of the coach
+     * 
+     * @return idCoach
+     */
     public int getIdCoach() {
         return idCoach;
     }
-
+    
+    /**
+     * Get the id of the contestant
+     * 
+     * @return idContestant
+     */
     public int getIdContest() {
         return idContestant;
     }
+    
+    /**
+     * Get the information about the Referee state present in the current message
+     * 
+     * @return EReferee refState
+     */
     public ERefereeState getRefState() {
         return refState;
     }
-
+    
+    /**
+     * Get the information about the Coach state present in the current message
+     * 
+     * @return ECoaches coachState
+     */
     public ECoachesState getCoachState() {
         return coachState;
     }
-
+    
+    /**
+     * Get the information about the Contestant state present in the current message
+     * 
+     * @return EContestants contestState
+     */
     public EContestantsState getContestState() {
         return contestState;
     }
-
+    
+    /**
+     * Get the name of the logger file
+     * 
+     * @return String filename
+     */
     public String getFilename() {
         return filename;
     }
-
+    
+    /**
+     * Get the strength of contestants
+     * 
+     * @return contestStrength
+     */
     public int getContestStrength() {
         return contestStrength;
     }
-
+    
+    /**
+     * Get the position of the pull
+     * 
+     * @return pullPosition
+     */
     public int getPullPosition() {
         return pullPosition;
     }
-
+    
+    /**
+     * Get the number of the trial
+     * 
+     * @return trialNumber
+     */
     public int getTrialNumber() {
         return trialNumber;
     }
-
+    
+    /**
+     * Get the number of game
+     * 
+     * @return gameNumber 
+     */
     public int getGameNumber() {
         return gameNumber;
     }
-
+    
+    /**
+     * Return if the game was terminated by knockOut
+     * 
+     * @return isKnockOut
+     */
     public boolean isIsKnockOut() {
         return isKnockOut;
     }
-
+    
+    /**
+     * Get total number of players
+     * 
+     * @return totalPlayer
+     */
     public int getTotalPlayer() {
         return totalPlayer;
     }
     
+    /**
+     * Get the name of team
+     * 
+     * @return team
+     */
     public String getTeam(){
         return team; 
     }
     
+    /**
+     * Get the result of team A
+     * 
+     * @return resultA
+     */
     public int getResultA(){
         return resultA; 
     }
     
+    /**
+     * Get the result of team B
+     * 
+     * @return resultB
+     */
     public int getResultB(){
         return resultB; 
     }
-
+    
+    /**
+     * Return if the last player pulled the rope
+     * 
+     * @return lastPulled
+     */
     public boolean isLastPulled() {
         return lastPulled;
     }
     
+    /**
+     * Set the position of pull
+     * 
+     * @param pullPosition is the position of pull
+     */
     public void setPosPull(int pullPosition){
         this.pullPosition = pullPosition; 
     }

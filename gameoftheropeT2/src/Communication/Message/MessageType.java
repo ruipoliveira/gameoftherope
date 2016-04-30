@@ -10,32 +10,32 @@ package Communication.Message;
 
 public enum MessageType {
     /**
-     * 
-     */
-    
+     * This message type allows the sender of a previous message to make sure the message was received
+     */   
     ACK,
-    /**
-     * 
-     */
     
-    POSITIVE,
     /**
-     * 
+     * Simulates the boolean functionality for the messages (like TRUE return)
+     */   
+    POSITIVE,
+    
+    /**
+     * Simulates the boolean functionality for the messages (like FALSE return)
      */
     NEGATIVE,
     
     /**
-     * 
+     * Alerts that the message is an error message
      */
     ERROR,
     
     /**
-     * 
+     * Message to send position of pull
      */
     SEND_POS_PULL, 
    
     /**
-     * 
+     * Alerts the logger that the clients are finishing
      */
     TERMINATE,
     
@@ -66,7 +66,7 @@ public enum MessageType {
     GET_READY,
     
     /**
-     * 
+     * Message to know if all teams are seated down
      */
     ALL_SITTING_TEAMS,
  
@@ -91,12 +91,12 @@ public enum MessageType {
     END_OPER_COACH,
     
     /**
-     * 
+     * Message to get position of pull
      */
     GET_POSITION_PULL,
     
     /**
-     * 
+     * Message to set the position of pull
      */
     SET_POSITION_PULL,
 
@@ -121,24 +121,27 @@ public enum MessageType {
     ASSERT_TRIAL_DECISION,
 
     /**
-     * 
+     * Message used to say that the game is ended 
      */
     DECISION_E,
+    
     /**
-     * 
+     * Message used to say that team A won the game
      */
     DECISION_A,
+    
     /**
-     * 
+     * Message used to say that team B won the game
      */
     DECISION_B,
     
     /**
-     * 
+     * Message used to say that the game will continue
      */
     DECISION_C,
+    
     /**
-     * 
+     * Message used to know if the game is ended
      */
     END_OF_THE_GAME, 
     
@@ -198,17 +201,17 @@ public enum MessageType {
     IS_KNOCK_OUT,
     
     /**
-     * 
-     */
+     * Message used to know if the game is ended
+     */   
+    IS_END,
     
-    IS_END, 
     /**
-     * 
+     * Message used to know if the result of the game was a draw
      */
-    
     WAS_A_DRAW,
+    
     /**
-     * 
+     * Message used to know if the match is ended
      */
     END_MATCH,
     
