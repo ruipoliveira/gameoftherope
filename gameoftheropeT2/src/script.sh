@@ -23,7 +23,7 @@ echo "  > Enviar JARs para as diferentes maquinas"
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Repository.jar sd0105@l040101-ws01.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Playground.jar sd0105@l040101-ws05.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Site.jar sd0105@l040101-ws04.ua.pt:~
-sshpass -p qwerty scp -o StrictHostKeyChecking=no Bench.jar sd0105@l040101-ws03.ua.pt:~
+sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Bench.jar sd0105@l040101-ws03.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Referee.jar sd0105@l040101-ws02.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Contestant.jar sd0105@l040101-ws06.ua.pt:~
 sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Coach.jar sd0105@l040101-ws08.ua.pt:~

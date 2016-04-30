@@ -13,7 +13,10 @@ import java.util.Map;
 import Communication.*;
 import Communication.Message.*;
 import static java.lang.Thread.sleep;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -83,6 +86,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         
         nrTrial = 0; 
         posPull =0; 
+        fistLine = true; 
         
         pw = new PrintWriter(log);
         initWriting();
@@ -110,6 +114,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         sb2.append("3 2 1 . 1 2 3 NB PS ");
         if (fistLine){
             pw.println("\t \t *Game of the Rope - Description of the internal state*"); 
+            pw.println("\t \t "+hour());
             fistLine = false; 
         }
 
@@ -171,6 +176,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         pw.println("@authors Gabriel Vieira (68021) gabriel.vieira@ua.pt / Rui Oliveira (68779) ruipedrooliveira@ua.pt");
         pw.flush();
         pw.close();
+        
+        System.out.println("\n Fim do repositorio!"); 
             
     }
     
@@ -262,7 +269,6 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
      */
     @Override
     public synchronized void updateTrialNumber(int nrTrial){
-        System.out.println(nrTrial); 
         this.nrTrial = nrTrial;
         writeLine();
     }
@@ -425,6 +431,18 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         }
         con.close();
     }
+    
+    
+    /**
+     * 
+     * @return Hora atual em formato HH:mm:ss
+     */
+    private String hour(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
+        Date hora = Calendar.getInstance().getTime();
+        return sdf.format(hora);
+    }
+    
     
 }
 
