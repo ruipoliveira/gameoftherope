@@ -24,7 +24,7 @@ import java.util.Date;
  * @version 2.0
  */
 public class MRepository implements IContestantsRepository, IRefereeRepository, ICoachRepository{
-        
+    
     private final String fName;
     private final int nrCoaches; 
     private final int nrContestants; 
@@ -32,13 +32,11 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     private final File log;
     
     private final Map<Integer, List<Player>> lst_player;
-    private List<Coach> lst_coach = new ArrayList<>(2);
+    private final List<Coach> lst_coach = new ArrayList<>(2);
     private final Refere ref;
     
     private final int strength;
     private boolean fistLine;
-    
-    //private final Map<Integer, List<Integer>> playerInPull;  
     
     private final List<Integer> lstInPullA; 
     private final List<Integer> lstInPullB; 
@@ -68,17 +66,12 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
 
         for (int i =1; i<=nrCoaches; i++){
             lst_coach.add(new Coach(i, ECoachesState.WAIT_FOR_REFEREE_COMMAND)); 
-            lst_player.put(i, new ArrayList<Player>()); 
+            lst_player.put(i, new ArrayList<>()); 
         }
 
         for(int j =1; j<=nrContestants; j++){
             lst_player.get(1).add(new Player(1,j,strength,EContestantsState.SEAT_AT_THE_BENCH));
             lst_player.get(2).add(new Player(2,j,strength,EContestantsState.SEAT_AT_THE_BENCH));
-        }
-        
-        List<Integer> lst = new ArrayList<>();
-        for (int i =0; i<3; i++){
-            lst.add(0); 
         }
         
         lstInPullA = new ArrayList<>();
@@ -217,8 +210,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
      * 
     * @param state The Contestant's current state
     * @param idTeam Is the team Identifier (ID) (or coach id)
-    * @param idContest Is the contestant identifier (ID)
-    * @param state The Contestant's current state 
+    * @param idContest Is the contestant identifier (ID) 
     */
     @Override
     public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state){
@@ -441,12 +433,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
         Date hora = Calendar.getInstance().getTime();
         return sdf.format(hora);
-    }
-    
-    
+    }    
 }
-
-
 
 class Player{
     private final int idTeam; 

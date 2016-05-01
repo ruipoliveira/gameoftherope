@@ -62,7 +62,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
             coachAndTeamInPull.put(i, new ArrayList<>());
         }
         
-
         nrContestant = 0; 
         numTrial = 0; 
         allReady =6; 
@@ -327,7 +326,6 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
         }
               
         else if(coachId == 2){
-
            while(readyB == 0){
                try {
                    wait();

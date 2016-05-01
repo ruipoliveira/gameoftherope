@@ -2,8 +2,6 @@ package ServerSide.Repository;
 
 import ClientSide.Referee.ERefereeState;
 
-
-
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt

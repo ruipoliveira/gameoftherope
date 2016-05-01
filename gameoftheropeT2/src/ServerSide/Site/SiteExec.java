@@ -29,7 +29,6 @@ public class SiteExec {
         System.out.println("******************************************************************\nSite service has started!");
         System.out.println("Server is listening.\n******************************************************************");
         
-
         /* processamento de pedidos */
         while (true) {
             //scon.setTimeout(500);

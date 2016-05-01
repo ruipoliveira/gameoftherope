@@ -37,8 +37,6 @@ public class Message implements Serializable {
     /**
      * Variable that holds the pull position (defined by referee), in case the message requires it.
      */
-
-
     public int pullPosition;
     
     /**
@@ -62,20 +60,23 @@ public class Message implements Serializable {
     private int totalPlayer;
     
     /**
-     * Variable that holds if the last pulled the rope, in case the message requires it.
+     * Team "A" or "B".
      */
-   
-    private boolean lastPulled;
-    
-    
     private String team; 
     
+    /**
+     * resultado da equipa A.
+     */
     private int resultA; 
+    
+    /**
+     * resultado da equipa B.
+     */
     private int resultB; 
     
-     /******************
-     ** CONSTRUCTORS **
-     ******************/
+    /******************
+    ** CONSTRUCTORS **
+    ******************/
     
     /**
      * Empty constructor for the message that initializes the default values for the previous variables.
@@ -83,33 +84,18 @@ public class Message implements Serializable {
     private Message(){
         idCoach = ERROR_INT;
         idContestant = ERROR_INT;
-        
         refState = null;
         coachState = null;
         contestState = null;
-  
-
         filename = null;
-
         contestStrength = ERROR_INT;
         pullPosition = 0;
         trialNumber = ERROR_INT;
         gameNumber = ERROR_INT;
-
         isKnockOut = false;
-        lastPulled = false;
-
         totalPlayer = ERROR_INT;
     }
     
-    /**
-     * messageType used only for positionPull
-     * 
-     * @param posP is the position of the pull
-     */
-    public Message(int posP){
-        this();
-    }
     
     /**
      * 
@@ -120,12 +106,12 @@ public class Message implements Serializable {
         this.type = type;
     }
    
-     /**
-      * constructor used to say the of message and associate a value
-      * 
-      * @param type is the type of message 
-      * @param value is the possible value for the message
-      */
+    /**
+     * constructor used to say the of message and associate a value
+     * 
+     * @param type is the type of message 
+     * @param value is the possible value for the message
+     */
     public Message(MessageType type, int value) {
         this();
         this.type = type;
@@ -466,14 +452,6 @@ public class Message implements Serializable {
         return resultB; 
     }
     
-    /**
-     * Return if the last player pulled the rope
-     * 
-     * @return lastPulled
-     */
-    public boolean isLastPulled() {
-        return lastPulled;
-    }
     
     /**
      * Set the position of pull

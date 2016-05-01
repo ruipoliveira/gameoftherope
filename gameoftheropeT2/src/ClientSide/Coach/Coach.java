@@ -192,8 +192,10 @@ public class Coach extends Thread{
         return false;
     }
      
-    
-    
+    /**
+     * Permite atualizar o estado o treiandor. 
+     * @param state 
+     */
     public void setState(ECoachesState state){
         this.state = state;
     }

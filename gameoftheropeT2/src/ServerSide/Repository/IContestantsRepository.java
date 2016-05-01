@@ -1,7 +1,6 @@
 package ServerSide.Repository;
 
 import ClientSide.Contestant.EContestantsState;
-import java.util.List;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt

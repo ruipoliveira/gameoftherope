@@ -6,7 +6,6 @@ package ClientSide.Coach;
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
  * @version 2.0
  */
-public interface ICoachPlayground {
-        
+public interface ICoachPlayground {  
     public void informReferee(int coachId);
 }

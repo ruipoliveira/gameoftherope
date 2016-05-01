@@ -1,5 +1,5 @@
 /**
- * Contém a implementação dos clientes. 
+ * Contém a implementação dos três clientes. 
  */
 package ClientSide;
 

@@ -24,7 +24,6 @@ public class Referee extends Thread{
     private final int nrGamesMax; 
     
     public Referee(int nrGamesMax){
-
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
 
@@ -76,15 +75,20 @@ public class Referee extends Thread{
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
 
-                        if (decision == GAME_END)
-                            System.out.println("Jogo acaba! - excedeu numero de trials! ");
-                        else if (decision == KNOCK_OUT_A){
-                            System.out.println("Jogo acaba! - knock out! Ganha A");
-                            isKnockOut(nrGame, nrTrial, "A");
-                        }
-                        else if (decision == KNOCK_OUT_B){
-                            System.out.println("Jogo acaba! - knock out! Ganha B");
-                            isKnockOut(nrGame, nrTrial, "B");
+                        switch (decision) {
+                            case GAME_END:
+                                System.out.println("Jogo acaba! - excedeu numero de trials! ");
+                                break;
+                            case KNOCK_OUT_A:
+                                System.out.println("Jogo acaba! - knock out! Ganha A");
+                                isKnockOut(nrGame, nrTrial, "A");
+                                break;
+                            case KNOCK_OUT_B:
+                                System.out.println("Jogo acaba! - knock out! Ganha B");
+                                isKnockOut(nrGame, nrTrial, "B");
+                                break;
+                            default:
+                                break;
                         }
                         
                         int posPull = getPositionPull(); 
@@ -264,20 +268,22 @@ public class Referee extends Thread{
         inMessage = (Message) con.readObject();
         MessageType type = inMessage.getType();
         
-        if (type == MessageType.DECISION_A)
-            return 'A';
-        else if(type == MessageType.DECISION_B)
-            return 'B';
-        else if(type == MessageType.DECISION_C)
-            return 'C';
-        else if(type == MessageType.DECISION_E)
-            return 'E';        
-        else {
-            System.out.println("Thread " + getName() + ": Tipo inválido!");
-            System.out.println("Message:"+ inMessage.toString());
-            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-            System.exit(1);
-        }
+        if (null != type)
+            switch (type) {
+                case DECISION_A:
+                    return 'A';
+                case DECISION_B:
+                    return 'B';
+                case DECISION_C:
+                    return 'C';
+                case DECISION_E:
+                    return 'E';
+                default:
+                    System.out.println("Thread " + getName() + ": Tipo inválido!");
+                    System.out.println("Message:"+ inMessage.toString());
+                    System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+                    System.exit(1);
+            }
         
         con.close();
         return ' '; 
@@ -350,7 +356,6 @@ public class Referee extends Thread{
         }
         
         con.close();
-        
         //site.declareMatchWinner();
     }
     

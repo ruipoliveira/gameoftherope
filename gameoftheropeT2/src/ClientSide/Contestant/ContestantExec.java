@@ -36,25 +36,6 @@ public class ContestantExec {
             }catch (InterruptedException e) {}
         }
         
-        /*
-        Message inMessage, outMessage;
-        ClientComm con = new ClientComm(CommConst.repServerName, CommConst.repServerPort);
-        while (!con.open()) {
-            try {
-                sleep((long) (10));
-            } catch (InterruptedException e) {
-            }
-        }
-        outMessage = new Message(MessageType.TERMINATE);
-        con.writeObject(outMessage);
-        inMessage = (Message) con.readObject();
-        if (inMessage.getType() != MessageType.ACK) {
-            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
-            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-            System.exit(1);
-        }
-        con.close();
-        */
     }
     
 

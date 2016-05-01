@@ -18,7 +18,7 @@ public class CommConst {
     public final static String repServerName = "l040101-ws01.ua.pt";
     
     /**
-     * Variable that holds the port number for the logging server.
+     * Variable that holds the port number for the repository server.
      */
     public final static int repServerPort = 22151;
     

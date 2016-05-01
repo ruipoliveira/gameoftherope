@@ -62,7 +62,6 @@ public class SiteInterface implements ServerInterface {
                     outMessage = new Message(MessageType.POSITIVE); 
                 else
                     outMessage = new Message(MessageType.NEGATIVE); 
-                
                 break; 
                 
             default:

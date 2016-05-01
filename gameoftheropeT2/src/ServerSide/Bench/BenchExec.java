@@ -31,13 +31,12 @@ public class BenchExec {
         System.out.println("******************************************************************\nBench service has started!");
         System.out.println("Server is listening.\n******************************************************************");
         
-
         /* processamento de pedidos */
         while (true) {
             //scon.setTimeout(500);
             try {
-                sconi = scon.accept();                         // entrada em processo de escuta
-                cliProxy = new ClientProxy(scon, sconi, shopInt);    // lançamento do agente prestador do serviço
+                sconi = scon.accept(); // entrada em processo de escuta
+                cliProxy = new ClientProxy(scon, sconi, shopInt); // lançamento do agente prestador do serviço
                 cliProxy.start();
             } catch (SocketTimeoutException ex) {
                 System.exit(0);

@@ -1,4 +1,3 @@
-
 package Communication.Message;
 
 /**
@@ -121,27 +120,27 @@ public enum MessageType {
     ASSERT_TRIAL_DECISION,
 
     /**
-     * Message used to say that the game is ended 
+     * Message used to say that the game is ended .
      */
     DECISION_E,
     
     /**
-     * Message used to say that team A won the game
+     * Message used to say that team A won the game.
      */
     DECISION_A,
     
     /**
-     * Message used to say that team B won the game
+     * Message used to say that team B won the game.
      */
     DECISION_B,
     
     /**
-     * Message used to say that the game will continue
+     * Message used to say that the game will continue.
      */
     DECISION_C,
     
     /**
-     * Message used to know if the game is ended
+     * Message used to know if the game is ended.
      */
     END_OF_THE_GAME, 
     
@@ -156,62 +155,62 @@ public enum MessageType {
     DECLARE_MATCH_WINNER,
     
     /**
-     * Message used to update the referee state in logger's information
+     * Message used to update the referee state in logger's information.
      */
     UPDATE_REF_STATE,
     
     /**
-     * Message used to update the COACH state in logger's information
+     * Message used to update the COACH state in logger's information.
      */
     UPDATE_COACH_STATE,
     
     /**
-     * Message used to update the COACH state in logger's information
+     * Message used to update the COACH state in logger's information.
      */
     UPDATE_CONTESTANT_STATE,
     
     /**
-     * Message used to update the strength of contestant (only used initially)
+     * Message used to update the strength of contestant (only used initially).
      */
     UPDATE_STRENGTH,
     
     /**
-     * Message used to update and write strength of contestant 
+     * Message used to update and write strength of contestant .
      */
     UPDATE_AND_WRITE_STRENGTH,
     
     /**
-     * Message used to update pull position 
+     * Message used to update pull position .
      */
     UPDATE_PULL_POSITION,
     
     /**
-     * Message used to update trial number 
+     * Message used to update trial number .
      */
     UPDATE_TRIAL_NUMBER,
     
     /**
-     * Message used to update game number 
+     * Message used to update game number .
      */
     UPDATE_GAME_NUMBER,
         
     /**
-     * Message used to know if a team wins a game by knock out 
+     * Message used to know if a team wins a game by knock out .
      */
     IS_KNOCK_OUT,
     
     /**
-     * Message used to know if the game is ended
+     * Message used to know if the game is ended.
      */   
     IS_END,
     
     /**
-     * Message used to know if the result of the game was a draw
+     * Message used to know if the result of the game was a draw.
      */
     WAS_A_DRAW,
     
     /**
-     * Message used to know if the match is ended
+     * Message used to know if the match is ended.
      */
     END_MATCH,
     
@@ -224,8 +223,5 @@ public enum MessageType {
      * Message used to notify that constestants must be moved out to the pull
      */
     REMOVE_CONTESTANTS_IN_PULL,  
-    
-    
-    
-    
+
 }

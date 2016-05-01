@@ -6,7 +6,6 @@ package ClientSide.Coach;
  * @version 2.0
  */
 public interface ICoachRepository {
-    
     public void updateCoachState(int coachId, ECoachesState state);
      
 }

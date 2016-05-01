@@ -27,6 +27,9 @@ public class Contestant extends Thread{
         updateStrength(coachId,contId,contestStrength);      
     }
     
+    /**
+     * Esta função representada o ciclo de vida de um jogador.
+     */
     @Override
     public void run() {
        
@@ -138,18 +141,21 @@ public class Contestant extends Thread{
         inMessage = (Message) con.readObject(); 
         
         MessageType type = inMessage.getType();
-        if (type == MessageType.POSITIVE)
-            return true;
-        else if(type == MessageType.NEGATIVE)
-            return false;
-        else{
-            System.out.println("Thread " + getName() + ": Tipo inválido!");
-            System.out.println("Message:"+ inMessage.toString());
-            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-            System.exit(1);
+        if (null != type)
+            switch (type) {
+            case POSITIVE:
+                return true;
+            case NEGATIVE:
+                return false;
+            default:
+                System.out.println("Thread " + getName() + ": Tipo inválido!");
+                System.out.println("Message:"+ inMessage.toString());
+                System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+                System.exit(1);
         }
         con.close();
-        return false ;//bench.isPlayerSelected(coachId,contId); 
+        return false ;
+        //bench.isPlayerSelected(coachId,contId); 
     }
     
     /**
@@ -278,15 +284,17 @@ public class Contestant extends Thread{
         inMessage = (Message) con.readObject();
         
         MessageType type = inMessage.getType();        
-        if (type == MessageType.POSITIVE)
-            return true;
-        else if(type == MessageType.NEGATIVE)
-            return false;
-        else{
-            System.out.println("Thread " + getName() + ": Tipo inválido!");
-            System.out.println("Message:"+ inMessage.toString());
-            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
-            System.exit(1);
+        if (null != type)
+            switch (type) {
+            case POSITIVE:
+                return true;
+            case NEGATIVE:
+                return false;
+            default:
+                System.out.println("Thread " + getName() + ": Tipo inválido!");
+                System.out.println("Message:"+ inMessage.toString());
+                System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+                System.exit(1);
         }
         con.close();
         return false;

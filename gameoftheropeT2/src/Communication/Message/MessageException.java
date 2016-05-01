@@ -1,6 +1,5 @@
 package Communication.Message;
 
-
 /**
  * This date type defines an exception that is thrown if the message 
  * type is invalid.

@@ -114,8 +114,6 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
         System.out.println("POSIÇÃO DA CORDA: " + posPull); 
          
-        
-        
         resultTeamA = resultTeamB = 0;          
 
         while( playerInPull % 3 != 0){
