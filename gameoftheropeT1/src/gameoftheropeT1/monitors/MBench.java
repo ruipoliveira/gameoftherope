@@ -64,7 +64,7 @@ public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
 
         nrContestant = 0; 
         numTrial = 0; 
-        allReady =6; 
+        allReady =constestantInTrial*2; 
         nrPlayer = 0;
         seatedA = 0;
         seatedB = 0;

@@ -22,11 +22,12 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     private boolean lastPulled;
     private int resultTeamA, resultTeamB;  
     private int nrGame; 
-    private final int maxTrials; 
+    private final int maxTrials;
+    private final int contestantInTrial;
     
     private final MRepository repository; 
     
-      public MPlayground(MRepository repository, int maxTrials){
+      public MPlayground(MRepository repository, int maxTrials, int contestantInTrial){
         this.repository = repository; 
         newTrial = 0; 
         numTrial = 0; 
@@ -45,6 +46,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         posPull = 0; 
         
         this.maxTrials = maxTrials;
+        this.contestantInTrial = contestantInTrial;
     }
 
 
@@ -81,7 +83,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
             }
         }
 
-        for (int i =0; i<3; i++ ){
+        for (int i =0; i<contestantInTrial; i++ ){
             resultTeamA += strengthTeam.get(1).get(i) ;
             resultTeamB += strengthTeam.get(2).get(i);
             
@@ -109,7 +111,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
 
         resultTeamA = resultTeamB = 0;          
 
-        while( playerInPull % 3 != 0){
+        while( playerInPull % contestantInTrial != 0){
             try { 
                 wait();
             } catch (InterruptedException ex) {
@@ -181,7 +183,7 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
     @Override
     public synchronized void amDone(int coachId, int contId, int contestStrength) {
         
-        while( playerInPull % 3 != 0){
+        while( playerInPull % contestantInTrial != 0){
             try { 
                 wait();
             } catch (InterruptedException ex) {
@@ -202,7 +204,8 @@ public class MPlayground implements IRefereePlayground, ICoachPlayground, IConte
         }
 */
         allPulled++;
-        while(allPulled % 6 != 0){
+        int todos = contestantInTrial*2;
+        while(allPulled % todos != 0){
             try {
                 wait();
                         } catch (InterruptedException ex) {
