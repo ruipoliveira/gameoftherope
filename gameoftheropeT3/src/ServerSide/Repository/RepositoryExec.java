@@ -32,7 +32,7 @@ public class RepositoryExec {
         rmiRegHostName = rc.registryHost();
         rmiRegPortNumb = rc.registryPort();
         
-        
+        /* instanciação e instalação do gestor de segurança */
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
