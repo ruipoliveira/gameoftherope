@@ -1,8 +1,10 @@
 
 package ServerSide.Repository;
+import Interfaces.RepositoryInterface;
 import Structures.Enumerates.ECoachesState;
 import Structures.Enumerates.EContestantsState;
 import Structures.Enumerates.ERefereeState;
+import Structures.VectorClock.VectorTimestamp;
 import java.io.FileNotFoundException;
 import java.io.*;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -21,7 +24,7 @@ import java.util.Date;
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
  * @version 2.0
  */
-public class MRepository implements IContestantsRepository, IRefereeRepository, ICoachRepository{
+public class MRepository implements RepositoryInterface{
     
     private final String fName;
     private final int nrCoaches; 
@@ -117,7 +120,8 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     /*
     *  writes a line to the logger with the simulation information updated.
     */
-    public synchronized void writeLine(){ 
+    @Override
+    public synchronized void writeLine(VectorTimestamp vt){ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
 
@@ -159,6 +163,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     * Writes the end of a logger file
     */
 
+    @Override
     public synchronized void endWriting(){
         pw.println();
         pw.println("SIMULATION ENDED!");
@@ -175,6 +180,7 @@ public class MRepository implements IContestantsRepository, IRefereeRepository, 
     /*
     * writes the number of a game in a line
     */
+    @Override
     public synchronized void writeLineGame(){
         pw.println("Game "+nrGame);
         initWriting();
