@@ -165,7 +165,7 @@ public class Referee extends Thread{
      */
     private void startTrial(int nrGame,int numTrial){    
         
-        playground.startTrial(nrGame,numTrial);
+        //playground.startTrial(nrGame,numTrial);
     }
     
     /**
@@ -178,7 +178,7 @@ public class Referee extends Thread{
      */
     private char assertTrialDecision(){
  
-        playground.assertTrialDecision(); 
+        //playground.assertTrialDecision(); 
     }
     
     /**
@@ -188,7 +188,7 @@ public class Referee extends Thread{
      */
     private void declareGameWinner(int posPull){
         
-        site.declareGameWinner(posPull);
+        //site.declareGameWinner(posPull);
     }
     
     /**
@@ -197,7 +197,7 @@ public class Referee extends Thread{
      */
     private void declareMatchWinner(){
          
-        site.declareMatchWinner();
+        //site.declareMatchWinner();
     }
     
     /**
@@ -208,7 +208,7 @@ public class Referee extends Thread{
      */
     private void announceNewGame(int nrGame, int nrTrial){
         
-        site.announceNewGame(numGame, nrTria);
+        //site.announceNewGame(numGame, nrTria);
     }
     
   

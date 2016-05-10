@@ -3,6 +3,7 @@ package ClientSide.Coach;
 import Structures.Enumerates.ECoachesState;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
+ 
 
 
 /**
@@ -59,7 +60,7 @@ public class Coach extends Thread{
      * @param idCoach is the coach identifier (ID)
      */
     private void callContestants(int idCoach){
-        bench.callContestants(idCoach);    
+        //bench.callContestants(idCoach);    
     }
     
     /**
@@ -68,7 +69,7 @@ public class Coach extends Thread{
      * @param idCoach 
      */
     private void informReferee(int idCoach){   
-        playground.informReferee(idCoach);
+        //playground.informReferee(idCoach);
     }
     
     /**
@@ -77,7 +78,7 @@ public class Coach extends Thread{
      * @param idCoach 
      */
     private void reviewNotes(int idCoach){
-        bench.reviewNotes(idCoach);
+        //bench.reviewNotes(idCoach);
     }
     
     /**
