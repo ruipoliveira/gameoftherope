@@ -1,4 +1,7 @@
 package ServerSide.Bench;
+import Interfaces.IContestantsBench;
+import Interfaces.ICoachBench;
+import Interfaces.IRefereeBench;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

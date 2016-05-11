@@ -1,4 +1,7 @@
 package ServerSide.Playground;
+import Interfaces.IRefereePlayground;
+import Interfaces.ICoachPlayground;
+import Interfaces.IContestantsPlayground;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.Arrays;

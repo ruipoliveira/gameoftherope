@@ -1,6 +1,8 @@
 package ServerSide.Site;
 
 
+import Interfaces.IRefereeSite;
+import Interfaces.ICoachSite;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 

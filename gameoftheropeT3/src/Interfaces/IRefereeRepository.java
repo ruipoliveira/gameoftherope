@@ -1,4 +1,4 @@
-package ServerSide.Repository;
+package Interfaces;
 
 import Structures.Enumerates.ERefereeState;
 

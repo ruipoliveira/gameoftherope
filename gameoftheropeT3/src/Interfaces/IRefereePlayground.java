@@ -1,4 +1,4 @@
-package ServerSide.Playground;
+package Interfaces;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
