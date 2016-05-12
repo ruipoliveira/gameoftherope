@@ -120,8 +120,8 @@ public class MRepository implements RepositoryInterface{
     /*
     *  writes a line to the logger with the simulation information updated.
     */
-    @Override
-    public synchronized void writeLine(VectorTimestamp vt){ 
+    
+    public synchronized void writeLine(){ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
 
@@ -163,7 +163,7 @@ public class MRepository implements RepositoryInterface{
     * Writes the end of a logger file
     */
 
-    @Override
+    
     public synchronized void endWriting(){
         pw.println();
         pw.println("SIMULATION ENDED!");
@@ -180,7 +180,7 @@ public class MRepository implements RepositoryInterface{
     /*
     * writes the number of a game in a line
     */
-    @Override
+    
     public synchronized void writeLineGame(){
         pw.println("Game "+nrGame);
         initWriting();

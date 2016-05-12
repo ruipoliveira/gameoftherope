@@ -14,7 +14,7 @@ import java.rmi.Remote;
  *
  * @author gabriel
  */
-public interface RepositoyInterface extends Remote{
+public interface RepositoryInterface extends Remote{
     
     public void updateCoachState(int coachId, ECoachesState state);
     
