@@ -1,6 +1,7 @@
 package ClientSide.Contestant;
 
 import Structures.Enumerates.EContestantsState;
+import Interfaces.*;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
@@ -10,13 +11,21 @@ import java.util.Arrays;
  * @version 2.0
  */
 public class Contestant extends Thread{
+    private final BenchInterface bench;
+    private final PlaygroundInterface playground;
+    private final RepositoryInterface repository;
     
     private final int coachId;
     private EContestantsState state; 
     private final int contId;
     
     private int contestStrength;
-    public Contestant(int contId, int coachId){
+    public Contestant(int contId, int coachId, RepositoryInterface repository, PlaygroundInterface playground, 
+            BenchInterface bench){
+        this.bench = bench;
+        this.playground = playground;
+        this.repository = repository;
+        //this.site = site;
         this.coachId = coachId;
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;

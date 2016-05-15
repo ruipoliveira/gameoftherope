@@ -1,7 +1,5 @@
 package ServerSide.Playground;
-import Interfaces.IRefereePlayground;
-import Interfaces.ICoachPlayground;
-import Interfaces.IContestantsPlayground;
+
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Interfaces.PlaygroundInterface;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
  * @version 2.0
  */
-public class MPlayground implements IRefereePlayground, ICoachPlayground, IContestantsPlayground{
+public class MPlayground implements PlaygroundInterface{
     private int newTrial;
     private final Map<Integer, List<Integer>> strengthTeam;
     private boolean startTrial; 

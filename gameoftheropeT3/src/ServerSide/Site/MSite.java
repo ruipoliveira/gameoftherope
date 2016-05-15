@@ -1,8 +1,7 @@
 package ServerSide.Site;
 
+import Interfaces.SiteInterface;
 
-import Interfaces.IRefereeSite;
-import Interfaces.ICoachSite;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
@@ -11,7 +10,7 @@ import java.util.Arrays;
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
  * @version 2.0
  */
-public class MSite implements IRefereeSite, ICoachSite{
+public class MSite implements SiteInterface{
     private int winnerTeamA;
     private int winnerTeamB; 
     private int nrTrial, numGame; 

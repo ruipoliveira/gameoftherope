@@ -95,7 +95,7 @@ public class CoachExec {
         ArrayList<Coach> coach = new ArrayList<>(ConstConfigs.OPPOSING_TEAMS);
     
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){
-            coach.add(new Coach(idc));
+            coach.add(new Coach(idc, repInt, playInt, benchInt));
         }
         
         for (Coach c : coach)

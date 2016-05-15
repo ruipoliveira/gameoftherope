@@ -1,7 +1,5 @@
 package ServerSide.Bench;
-import Interfaces.IContestantsBench;
-import Interfaces.ICoachBench;
-import Interfaces.IRefereeBench;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,13 +8,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
+import Interfaces.BenchInterface;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
  * @version 2.0
  */
-public class MBench implements ICoachBench, IContestantsBench, IRefereeBench{
+public class MBench implements BenchInterface{
     private boolean callContestant; 
     private boolean newComand; 
     private boolean teamAssemble, isEndReview; 

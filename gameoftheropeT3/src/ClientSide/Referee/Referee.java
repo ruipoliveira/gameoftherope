@@ -1,6 +1,7 @@
 package ClientSide.Referee; 
 
 import Structures.Enumerates.ERefereeState;
+import Interfaces.*;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
@@ -16,11 +17,20 @@ public class Referee extends Thread{
     public final static char GAME_END = 'E';
     public final static char KNOCK_OUT_A = 'A';
     public final static char KNOCK_OUT_B = 'B';
-
+    
+    
+    private final SiteInterface site;
+    private final PlaygroundInterface playground;
+    private final RepositoryInterface repository;
+    private final BenchInterface bench; 
     private ERefereeState state;
     private final int nrGamesMax; 
     
-    public Referee(int nrGamesMax){
+    public Referee(RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench, SiteInterface site , int nrGamesMax){
+        this.repository = repository;
+        this.playground = playground;
+        this.bench = bench;
+        this.site = site;
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
 

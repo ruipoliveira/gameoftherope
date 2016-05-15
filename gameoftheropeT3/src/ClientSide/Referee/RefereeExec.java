@@ -114,7 +114,7 @@ public class RefereeExec {
         }
         
         
-        Referee referee = new Referee(ConstConfigs.GAMES_PER_MATCH);
+        Referee referee = new Referee(repInt, playInt, benchInt, siteInt, ConstConfigs.GAMES_PER_MATCH);
         
         referee.start();
        

@@ -1,6 +1,7 @@
 package ClientSide.Coach;
 
 import Structures.Enumerates.ECoachesState;
+import Interfaces.*;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
  
@@ -14,11 +15,21 @@ import java.util.Arrays;
 public class Coach extends Thread{
     
     private ECoachesState state; 
+    
+    private final BenchInterface bench; 
+    //private final ICoachSite site; 
+    private final PlaygroundInterface playground;
+    private final RepositoryInterface repository;
+    
     private final int idCoach;
 
-    public Coach(int idCoach){
+    public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench){
         this.setName("Coach "+idCoach);
-        this.idCoach = idCoach; 
+        this.idCoach = idCoach;
+        this.bench = bench;
+        //this.site = site; 
+        this.playground = playground;
+        this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
     }
     

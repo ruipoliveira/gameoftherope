@@ -93,7 +93,7 @@ public class ContestantExec {
         
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){
             for (int idct = 1; idct <= ConstConfigs.ELEMENTS_IN_TEAM; idct++){
-                contestant.add(new Contestant(idct, idc));
+                contestant.add(new Contestant(idct, idc, repInt, playInt, benchInt));
             }
         }
         
