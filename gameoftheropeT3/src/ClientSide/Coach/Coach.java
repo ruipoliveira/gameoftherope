@@ -20,14 +20,15 @@ public class Coach extends Thread{
     //private final ICoachSite site; 
     private final PlaygroundInterface playground;
     private final RepositoryInterface repository;
+    private final SiteInterface site; 
     
     private final int idCoach;
 
-    public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench){
+    public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench, SiteInterface site){
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach;
         this.bench = bench;
-        //this.site = site; 
+        this.site = site; 
         this.playground = playground;
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 

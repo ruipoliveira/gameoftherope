@@ -11,21 +11,6 @@ import java.rmi.Remote;
  *
  * @author gabriel
  */
-public interface BenchInterface extends Remote{
+public interface BenchInterface extends Remote, IContestantsBench, ICoachBench, IRefereeBench{
     
-    public void callContestants(int coachId);
-    
-    public void reviewNotes(int coachId);
-    
-    public boolean endOfTheGame(int c);
-    
-    public void seatDown(int coachId, int contId);
-    
-    public void followCoachAdvice(int coachId, int contId);
-    
-    public boolean isPlayerSelected(int coachId, int contestId); 
-    
-    public void callTrial(int nrTrial, int numGame);
-
-    public boolean allSittingTeams(); 
 }

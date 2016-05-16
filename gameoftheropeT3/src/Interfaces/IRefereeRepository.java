@@ -1,4 +1,4 @@
-package ClientSide.Referee;
+package Interfaces;
 
 import Structures.Enumerates.ERefereeState;
 

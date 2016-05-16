@@ -1,4 +1,4 @@
-package ClientSide.Contestant;
+package Interfaces;
 
 import Structures.Enumerates.EContestantsState;
 

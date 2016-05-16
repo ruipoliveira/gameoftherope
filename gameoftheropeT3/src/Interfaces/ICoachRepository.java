@@ -1,4 +1,4 @@
-package ClientSide.Coach;
+package Interfaces;
 
 import Structures.Enumerates.ECoachesState;
 

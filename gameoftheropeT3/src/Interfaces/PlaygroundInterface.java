@@ -11,18 +11,6 @@ import java.rmi.Remote;
  *
  * @author gabriel
  */
-public interface PlaygroundInterface extends Remote{
-    public void getReady(int coachId, int contId);
+public interface PlaygroundInterface extends Remote, ICoachPlayground, IContestantsPlayground, IRefereePlayground{
 
-    public void amDone(int coachId, int contId, int contestStrength);
-    
-    public void informReferee(int coachId);
-    
-    public void startTrial(int nrGame,int numTrial);
-    
-    public char assertTrialDecision();
-    
-    public int getPositionPull(); 
-    
-    public void setPositionPull (int posPull);
 }

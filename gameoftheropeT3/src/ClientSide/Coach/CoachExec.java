@@ -4,6 +4,7 @@ package ClientSide.Coach;
 import Interfaces.BenchInterface;
 import Interfaces.PlaygroundInterface;
 import Interfaces.RepositoryInterface;
+import Interfaces.SiteInterface;
 import Structures.Constants.ConstConfigs;
 import Structures.Constants.RegistryConfig;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class CoachExec {
         RepositoryInterface repInt = null;
         PlaygroundInterface playInt = null;
         BenchInterface benchInt = null;
+        SiteInterface siteInt = null;
         
         try
         { 
@@ -92,10 +94,30 @@ public class CoachExec {
         }
         
 
+        try
+        { 
+            Registry registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+            siteInt = (SiteInterface) registry.lookup (RegistryConfig.siteNameEntry);
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating site: " + e.getMessage () + "!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("Site is not registered: " + e.getMessage () + "!");
+            e.printStackTrace ();
+            System.exit(1);
+        }
+              
+        
+        
         ArrayList<Coach> coach = new ArrayList<>(ConstConfigs.OPPOSING_TEAMS);
     
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){
-            coach.add(new Coach(idc, repInt, playInt, benchInt));
+            coach.add(new Coach(idc, repInt, playInt, benchInt, siteInt));
         }
         
         for (Coach c : coach)

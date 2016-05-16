@@ -11,13 +11,7 @@ import java.rmi.Remote;
  *
  * @author gabriel
  */
-public interface SiteInterface extends Remote{
-    public boolean endOperCoach(int c);
-    
-    public void announceNewGame(int numGame, int nrTrial);
-    
-    public void declareGameWinner(int posPull);
-    
-    public void declareMatchWinner();
+public interface SiteInterface extends Remote, ICoachSite, IRefereeSite{
+
     
 }
