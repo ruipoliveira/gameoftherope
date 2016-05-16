@@ -2,6 +2,8 @@ package ClientSide.Contestant;
 
 import Structures.Enumerates.EContestantsState;
 import Interfaces.*;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
@@ -15,6 +17,9 @@ public class Contestant extends Thread{
     private final PlaygroundInterface playground;
     private final RepositoryInterface repository;
     
+    private final VectorTimestamp myClock;
+    private VectorTimestamp receivedClock;
+    
     private final int coachId;
     private EContestantsState state; 
     private final int contId;
@@ -25,12 +30,14 @@ public class Contestant extends Thread{
         this.bench = bench;
         this.playground = playground;
         this.repository = repository;
-        //this.site = site;
         this.coachId = coachId;
         this.contId = contId;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
-        updateStrength(coachId,contId,contestStrength);      
+        updateStrength(coachId,contId,contestStrength);  
+        
+        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + 1);
+
     }
     
     /**

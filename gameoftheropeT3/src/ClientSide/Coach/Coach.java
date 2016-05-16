@@ -2,6 +2,8 @@ package ClientSide.Coach;
 
 import Structures.Enumerates.ECoachesState;
 import Interfaces.*;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
  
@@ -22,6 +24,9 @@ public class Coach extends Thread{
     private final RepositoryInterface repository;
     private final SiteInterface site; 
     
+    private final VectorTimestamp myClock;
+    private VectorTimestamp receivedClock;
+    
     private final int idCoach;
 
     public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench, SiteInterface site){
@@ -32,6 +37,8 @@ public class Coach extends Thread{
         this.playground = playground;
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
+        
+        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, ConstConfigs.ELEMENTS_IN_TEAM + idCoach + 1);
     }
     
     /**

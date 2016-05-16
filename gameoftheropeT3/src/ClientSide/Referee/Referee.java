@@ -2,6 +2,8 @@ package ClientSide.Referee;
 
 import Structures.Enumerates.ERefereeState;
 import Interfaces.*;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
 
@@ -23,6 +25,10 @@ public class Referee extends Thread{
     private final PlaygroundInterface playground;
     private final RepositoryInterface repository;
     private final BenchInterface bench; 
+    
+    private final VectorTimestamp myClock;
+    private VectorTimestamp receivedClock;
+    
     private ERefereeState state;
     private final int nrGamesMax; 
     
@@ -33,6 +39,8 @@ public class Referee extends Thread{
         this.site = site;
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
+        
+        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
 
     }
     
