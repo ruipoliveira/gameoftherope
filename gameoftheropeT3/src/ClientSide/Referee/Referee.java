@@ -57,39 +57,64 @@ public class Referee extends Thread{
 
             switch(state){
                 case START_OF_THE_MATCH:
-                    nrTrial++;
+                    myClock.increment(); // added                  
                     nrGame++;
                     updateGameNumber(nrGame);
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
+                    nrTrial++;
                     updateTrialNumber(nrTrial);
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
                     announceNewGame(nrGame,nrTrial);
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
                     state = ERefereeState.START_OF_A_GAME;
+                    myClock.update(receivedClock); // added
                     break; 
 
                 case START_OF_A_GAME:
+                    myClock.increment();
                     callTrial(nrGame,nrTrial); 
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment();
                     state = ERefereeState.TEAMS_READY;
                     updateRefState(state);
+                    myClock.update(receivedClock); // added
                     break;
 
                 case TEAMS_READY:
+                    myClock.increment(); // added
                     startTrial(nrGame,nrTrial);
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment();
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    updateRefState(state); 
+                    updateRefState(state);
+                    myClock.update(receivedClock); // added
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     if (allSittingTeams()){
+                        myClock.increment(); // added
                         decision = assertTrialDecision();
+                        myClock.update(receivedClock); // added
                     }
 
-                    if(decision == GAME_CONTINUATION ){ 
+                    if(decision == GAME_CONTINUATION ){
+                        myClock.increment(); // added
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
                         state = ERefereeState.START_OF_A_GAME;
                         updateRefState(state);
+                        myClock.update(receivedClock); // added
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
-
+                        myClock.increment(); // added
                         switch (decision) {
                             case GAME_END:
                                 System.out.println("Jogo acaba! - excedeu numero de trials! ");
@@ -113,26 +138,36 @@ public class Referee extends Thread{
 
                         state = ERefereeState.END_OF_A_GAME;
                         updateRefState(state);  // actualiza no repositorio
+                        myClock.update(receivedClock); // added
                     }
                     break; 
 
                 case END_OF_A_GAME:
                     if(nrGame < nrGamesMax){
+                        myClock.increment(); // added
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
                         updateRefState(state);
+                        myClock.update(receivedClock); // added
+                        
                     }
                     else{
+                        myClock.increment(); // added
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
                         updateRefState(state);
+                        myClock.update(receivedClock); // added
+                        
+                        myClock.increment(); // added
                         declareMatchWinner();
+                        myClock.update(receivedClock); // added
                     } 
                     break;
 
                 case END_OF_THE_MATCH: 
-
+                    myClock.increment(); // added
                     System.out.println("Fim do match!");
                     endOp = false; 
+                    myClock.update(receivedClock); // added
                     break; 
             }
         }while(endOp);
@@ -183,7 +218,7 @@ public class Referee extends Thread{
      */
     private void startTrial(int nrGame,int numTrial){    
         
-        //playground.startTrial(nrGame,numTrial);
+        playground.startTrial(nrGame,numTrial);
     }
     
     /**
@@ -196,7 +231,7 @@ public class Referee extends Thread{
      */
     private char assertTrialDecision(){
  
-        //playground.assertTrialDecision(); 
+        return playground.assertTrialDecision(); 
     }
     
     /**
@@ -206,7 +241,7 @@ public class Referee extends Thread{
      */
     private void declareGameWinner(int posPull){
         
-        //site.declareGameWinner(posPull);
+        site.declareGameWinner(posPull);
     }
     
     /**
@@ -215,7 +250,7 @@ public class Referee extends Thread{
      */
     private void declareMatchWinner(){
          
-        //site.declareMatchWinner();
+        site.declareMatchWinner();
     }
     
     /**
@@ -226,7 +261,7 @@ public class Referee extends Thread{
      */
     private void announceNewGame(int nrGame, int nrTrial){
         
-        //site.announceNewGame(numGame, nrTria);
+        site.announceNewGame(nrGame, nrTrial);
     }
     
   

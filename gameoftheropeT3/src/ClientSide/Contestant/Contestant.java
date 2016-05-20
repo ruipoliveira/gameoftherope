@@ -36,7 +36,7 @@ public class Contestant extends Thread{
         contestStrength = generateStrength();
         updateStrength(coachId,contId,contestStrength);  
         
-        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + 1);
+        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + ConstConfigs.OPPOSING_TEAMS + 1);
 
     }
     
@@ -50,43 +50,65 @@ public class Contestant extends Thread{
         
         do {
             switch(this.state){                             
-                case SEAT_AT_THE_BENCH:         
-                    followCoachAdvice (coachId, contId);                    
+                case SEAT_AT_THE_BENCH:
+                    myClock.increment(); // added
+                    followCoachAdvice (coachId, contId);  
+                    myClock.update(receivedClock);
+                    
                     if (endOperCoach(coachId)){
-                        endOp = false; 
+                        myClock.increment(); // added
+                        endOp = false;
+                        myClock.update(receivedClock); // added
                         break;
                     } 
-                    
+                    myClock.increment(); // added
                     state = EContestantsState.STAND_IN_POSITION;
                     updateContestantState(coachId, contId, state);
-                 
+                    myClock.update(receivedClock);
                 break;
                 
                 case STAND_IN_POSITION:
-                    
                     if (isPlayerSelected(coachId,contId) ){
-                        getReady(coachId, contId);  
+                        myClock.increment(); // added
+                        getReady(coachId, contId);
+                        myClock.update(receivedClock); // added
+                        
+                        myClock.increment(); // added
                         state = EContestantsState.DO_YOUR_BEST;
                         updateContestantState(coachId, contId, state);
+                        myClock.update(receivedClock); // added
                     }
                     else{
+                        myClock.increment(); // added
                         state = EContestantsState.SEAT_AT_THE_BENCH;
                         updateContestantState(coachId, contId, state);
+                        myClock.update(receivedClock); // added
+                        
+                        myClock.increment();
                         contestStrength++;
                         updateStrengthAndWrite(coachId, contId, contestStrength);
+                        myClock.update(receivedClock); // added
                     }
-
                 break;
                 
                 case DO_YOUR_BEST:
-                    
+                    myClock.increment(); // added
                     amDone(coachId, contId, contestStrength); 
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
                     seatDown(coachId,contId); 
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
                     contestStrength--;
                     updateStrengthAndWrite(coachId,contId, contestStrength);
+                    myClock.update(receivedClock); // added
+                    
+                    myClock.increment(); // added
                     state = EContestantsState.SEAT_AT_THE_BENCH;
                     updateContestantState(coachId, contId, state);
-
+                    myClock.update(receivedClock); // added
                 break;    
             }
             
@@ -117,7 +139,7 @@ public class Contestant extends Thread{
      */
     private boolean isPlayerSelected(int coachId, int contestId){
         
-        bench.isPlayerSelected(coachId,contId); 
+        return bench.isPlayerSelected(coachId,contId); 
     }
     
     /**
