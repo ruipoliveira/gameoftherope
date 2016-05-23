@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Interfaces.PlaygroundInterface;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -27,7 +29,7 @@ public class MPlayground implements PlaygroundInterface{
     private int nrGame; 
     private final int maxTrials; 
     private final int contestantInTrial;
-    
+    private VectorTimestamp clocks;
     
     public MPlayground(int maxTrials, int contestantInTrial){
         newTrial = 0; 
@@ -48,6 +50,8 @@ public class MPlayground implements PlaygroundInterface{
         
         this.maxTrials = maxTrials;
         this.contestantInTrial = contestantInTrial;
+        
+        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
     }
 
     /**
@@ -56,7 +60,8 @@ public class MPlayground implements PlaygroundInterface{
      * @param nrTrial 
      */
     @Override
-    public synchronized void startTrial(int nrGame,int nrTrial) {
+    public synchronized VectorTimestamp startTrial(int nrGame,int nrTrial, VectorTimestamp vt) {
+        clocks.update(vt);
         this.nrGame = nrGame; 
         numTrial = nrTrial; 
 
@@ -71,6 +76,8 @@ public class MPlayground implements PlaygroundInterface{
         newTrial =0;
         startTrial = true; 
         notifyAll(); 
+        
+        return clocks.clone();
     }
     
     /**
@@ -78,7 +85,11 @@ public class MPlayground implements PlaygroundInterface{
      * @return decision trial decision 
      */
     @Override
-    public synchronized char assertTrialDecision() { 
+    public synchronized Object[] assertTrialDecision(VectorTimestamp vt) { 
+        
+        clocks.update(vt);
+        Object[] res = new Object[2];
+        res[0] = clocks.clone();
         
         while(lastPulled == false){
             try {
@@ -128,18 +139,20 @@ public class MPlayground implements PlaygroundInterface{
         strengthTeam.get(2).clear();
 
         if (numTrial == maxTrials){  
-            return 'E';
+            res[1] = 'E';
         } 
         else if (posPull >= 4 ){
-            return 'B'; 
+            res[1] = 'B'; 
         }
         else if (posPull <= -4){
-            return 'A'; 
+            res[1] = 'A'; 
         }
         else{
             resultTeamA = resultTeamB = 0; 
-            return 'C';
+            res[1] = 'C';
         }
+        
+        return res; // not sure about this
     }
 
     /**

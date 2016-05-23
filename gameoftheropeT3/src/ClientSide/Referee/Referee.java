@@ -51,6 +51,8 @@ public class Referee extends Thread{
     public void run() {
         int nrGame =0, nrTrial = 0;
         boolean endOp = true; 
+        
+        Object[] res = null;
 
         do{
             char decision = 0; 
@@ -68,7 +70,7 @@ public class Referee extends Thread{
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added
-                    announceNewGame(nrGame,nrTrial);
+                    receivedClock = announceNewGame(nrGame,nrTrial, myClock.clone());
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added
@@ -78,7 +80,7 @@ public class Referee extends Thread{
 
                 case START_OF_A_GAME:
                     myClock.increment();
-                    callTrial(nrGame,nrTrial); 
+                    receivedClock = callTrial(nrGame,nrTrial, myClock.clone()); 
                     myClock.update(receivedClock); // added
                     
                     myClock.increment();
@@ -89,7 +91,7 @@ public class Referee extends Thread{
 
                 case TEAMS_READY:
                     myClock.increment(); // added
-                    startTrial(nrGame,nrTrial);
+                    receivedClock = startTrial(nrGame,nrTrial, myClock.clone());
                     myClock.update(receivedClock); // added
                     
                     myClock.increment();
@@ -101,11 +103,12 @@ public class Referee extends Thread{
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     if (allSittingTeams()){
                         myClock.increment(); // added
-                        decision = assertTrialDecision();
-                        myClock.update(receivedClock); // added
+                        res = assertTrialDecision(myClock.clone());
+                        decision = (char)res[1];
+                        myClock.update(VectorTimestamp)res[0])); // added
                     }
 
-                    if(decision == GAME_CONTINUATION ){
+                    if(res[0] == GAME_CONTINUATION ){
                         myClock.increment(); // added
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
@@ -196,9 +199,9 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param nrTrial is the number of the trial
      */
-    private void callTrial(int nrGame, int nrTrial){
+    private VectorTimestamp callTrial(int nrGame, int nrTrial, VectorTimestamp vt){
      
-        bench.callTrial(nrGame, nrTrial);
+        return bench.callTrial(nrGame, nrTrial, vt);
     }
     
     /**
@@ -216,9 +219,9 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param numTrial is the number of the trial
      */
-    private void startTrial(int nrGame,int numTrial){    
+    private VectorTimestamp startTrial(int nrGame,int numTrial, VectorTimestamp vt){    
         
-        playground.startTrial(nrGame,numTrial);
+        return playground.startTrial(nrGame,numTrial, vt);
     }
     
     /**
@@ -229,9 +232,9 @@ public class Referee extends Thread{
      * @return C the game will continue
      * @return E the game is over
      */
-    private char assertTrialDecision(){
+    private Object[] assertTrialDecision(VectorTimestamp vt){
  
-        return playground.assertTrialDecision(); 
+        return playground.assertTrialDecision(VectorTimestamp vt); 
     }
     
     /**
@@ -259,9 +262,8 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param nrTrial is the number of the trial
      */
-    private void announceNewGame(int nrGame, int nrTrial){
-        
-        site.announceNewGame(nrGame, nrTrial);
+    private VectorTimestamp announceNewGame(int nrGame, int nrTrial, VectorTimestamp vt){       
+        return site.announceNewGame(nrGame, nrTrial, vt);
     }
     
   
@@ -280,7 +282,7 @@ public class Referee extends Thread{
      * @return the position of the pull
      */
     private int getPositionPull() {
-        
+        return playground.getPositionPull();
     }
     
     /**
@@ -291,7 +293,7 @@ public class Referee extends Thread{
      * @param team is the name of the team
      */
     private void isKnockOut(int nrGame, int nrTrial, String team) {
-      
+        repository.isKnockOut(nrGame, nrTrial, team);
     }
     
     /**
@@ -301,7 +303,7 @@ public class Referee extends Thread{
      * @return false, otherwise
      */
     private boolean allSittingTeams() {
-
+        return bench.allSittingTeams();
     }
     
     /**
@@ -310,7 +312,7 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      */
     private void updateGameNumber(int nrGame) {
-     
+        repository.updateGameNumber(nrGame);
     }
     
     /**
@@ -319,7 +321,7 @@ public class Referee extends Thread{
      * @param nrTrial is the number of the trial
      */
     private void updateTrialNumber(int nrTrial) {
- 
+        repository.updateTrialNumber(nrTrial);
     }
     
 }

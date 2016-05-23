@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Structures.VectorClock.VectorTimestamp;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -7,9 +9,9 @@ package Interfaces;
  */
 public interface IRefereePlayground {
     
-    public void startTrial(int nrGame,int numTrial);
+    public VectorTimestamp startTrial(int nrGame,int numTrial, VectorTimestamp vt);
     
-    public char assertTrialDecision();
+    public Object [] assertTrialDecision(VectorTimestamp vt);
     
     public int getPositionPull(); 
     

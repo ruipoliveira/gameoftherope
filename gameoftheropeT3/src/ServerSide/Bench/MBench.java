@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import Interfaces.BenchInterface;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -36,6 +38,7 @@ public class MBench implements BenchInterface{
     private final int totalPlayer; 
     private final Map<Integer, List<Integer>> coachAndTeamInBench; 
     private final Map<Integer, List<Integer>> coachAndTeamInPull; 
+    private VectorTimestamp clocks;
     
     
     public MBench( int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
@@ -69,6 +72,8 @@ public class MBench implements BenchInterface{
         seatedB = 0;
         isEndReview = false; 
         finished = 0;
+        
+        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
 
     }
     
@@ -169,7 +174,9 @@ public class MBench implements BenchInterface{
      * @param numTrial 
      */
     @Override
-    public synchronized void callTrial(int numGame, int numTrial) {
+    public synchronized VectorTimestamp callTrial(int numGame, int numTrial, VectorTimestamp vt) {
+        
+        clocks.update(vt);
         this.numGame = numGame; 
         this.numTrial = numTrial; 
 
@@ -195,6 +202,7 @@ public class MBench implements BenchInterface{
 
         newComand = true; 
         notifyAll();
+        return clocks.clone();
          
     }
     

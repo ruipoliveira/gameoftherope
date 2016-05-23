@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Structures.VectorClock.VectorTimestamp;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -7,7 +9,7 @@ package Interfaces;
  */
 public interface IRefereeBench {
     
-    public void callTrial(int nrTrial, int numGame);
+    public VectorTimestamp callTrial(int nrTrial, int numGame, VectorTimestamp vt);
 
     public boolean allSittingTeams(); 
 }

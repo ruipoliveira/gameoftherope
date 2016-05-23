@@ -1,6 +1,8 @@
 package ServerSide.Site;
 
 import Interfaces.SiteInterface;
+import Structures.Constants.ConstConfigs;
+import Structures.VectorClock.VectorTimestamp;
 
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
@@ -16,8 +18,11 @@ public class MSite implements SiteInterface{
     private int nrTrial, numGame; 
     private final boolean endOp; 
     
+    private final VectorTimestamp clocks;
+    
     public MSite(){
         endOp = false; 
+        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
     }
     
     /**
@@ -26,9 +31,13 @@ public class MSite implements SiteInterface{
      * @param nrTrial 
      */
     @Override
-    public synchronized void announceNewGame(int numGame, int nrTrial) {
+    public synchronized VectorTimestamp announceNewGame(int numGame, int nrTrial, VectorTimestamp vt){
+        
+        clocks.update(vt);
         this.nrTrial = nrTrial; 
-        this.numGame = numGame; 
+        this.numGame = numGame;
+        
+        return clocks.clone();
     }
     
     /**
