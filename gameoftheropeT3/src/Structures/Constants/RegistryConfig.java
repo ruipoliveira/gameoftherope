@@ -48,83 +48,57 @@ public class RegistryConfig {
     private Properties prop;
     /**
      * Constructor that receives the file with the configurations.
-     * @param filename path for the configuration file
      */
-    public RegistryConfig(String filename) {
-        prop = new Properties();
-        InputStream in = null;
-        try {
-            in = new FileInputStream(filename);
-            prop.load(in);
-            in.close();
-        } catch (IOException ex) {
-            Logger.getLogger(RegistryConfig.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(RegistryConfig.class.getName()).log(Level.SEVERE, null, ex);
-                } 
-            }
-        }
+    public RegistryConfig() {
     }
-    /**
-     * Loads a parameter from the bash.
-     * @param param parameter name
-     * @return parameter value
-     */
-    public String loadParam(String param) {
-        return prop.getProperty(param);
-    }
-    
+
     /** 
      * Loads the parameter REGISTER_HOST from the configuration file.
      * @return parameter value
      */
     public String registryHost() {
-        return loadParam("REGISTER_HOST");
+        return "l040101-ws07.ua.pt";
     }
     /** 
      * Loads the parameter REGISTER_PORT from the configuration file.
      * @return parameter value
      */
     public int registryPort() {
-        return Integer.parseInt(loadParam("REGISTER_PORT"));
+        return 22150;
     }
     /** 
      * Loads the parameter REGISTER_OBJECT_PORT from the configuration file.
      * @return parameter value
      */
     public int objectPort() {
-        return Integer.parseInt(loadParam("REGISTER_OBJECT_PORT"));
+        return 22151;
     }
     /** 
      * Loads the parameter REPOSITORY_PORT from the configuration file.
      * @return parameter value
      */
     public int repositoryPort() {
-        return Integer.parseInt(loadParam("REPOSITORY_PORT"));
+        return 22152;
     }
     /** 
      * Loads the parameter BENCH_PORT from the configuration file.
      * @return parameter value
      */
     public int benchPort() {
-        return Integer.parseInt(loadParam("BENCH_PORT"));
+        return 22154;
     }
     /** 
      * Loads the parameter PLAYGROUND_PORT from the configuration file.
      * @return parameter value
      */
     public int playgroundPort() {
-        return Integer.parseInt(loadParam("PLAYGROUND_PORT"));
+        return 22152;
     }
     /** 
      * Loads the parameter SITE_PORT from the configuration file.
      * @return parameter value
      */
     public int sitePort() {
-        return Integer.parseInt(loadParam("SITE_PORT"));
+        return 22153;
     }
 }

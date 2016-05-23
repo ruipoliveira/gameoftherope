@@ -29,7 +29,7 @@ public class RepositoryExec {
         String rmiRegHostName;                      // nome do sistema onde está localizado o serviço de registos RMI
         int rmiRegPortNumb;                         // port de escuta do serviço
 
-        RegistryConfig rc = new RegistryConfig("../../config.ini");
+        RegistryConfig rc = new RegistryConfig();
         rmiRegHostName = rc.registryHost();
         rmiRegPortNumb = rc.registryPort();
         

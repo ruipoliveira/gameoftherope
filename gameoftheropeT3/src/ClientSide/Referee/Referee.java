@@ -280,7 +280,7 @@ public class Referee extends Thread{
      * @return the position of the pull
      */
     private int getPositionPull() {
-        
+        return playground.getPositionPull(); 
     }
     
     /**
@@ -291,7 +291,7 @@ public class Referee extends Thread{
      * @param team is the name of the team
      */
     private void isKnockOut(int nrGame, int nrTrial, String team) {
-      
+      repository.isKnockOut(nrGame, nrTrial, team);
     }
     
     /**
@@ -301,7 +301,7 @@ public class Referee extends Thread{
      * @return false, otherwise
      */
     private boolean allSittingTeams() {
-
+        return bench.allSittingTeams(); 
     }
     
     /**
@@ -310,7 +310,7 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      */
     private void updateGameNumber(int nrGame) {
-     
+        repository.updateGameNumber(nrGame);
     }
     
     /**
@@ -319,7 +319,7 @@ public class Referee extends Thread{
      * @param nrTrial is the number of the trial
      */
     private void updateTrialNumber(int nrTrial) {
- 
+        repository.updateTrialNumber(nrTrial);
     }
     
 }
