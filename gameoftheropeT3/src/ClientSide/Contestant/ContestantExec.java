@@ -4,6 +4,7 @@ import Structures.Constants.ConstConfigs;
 import Interfaces.BenchInterface;
 import Interfaces.PlaygroundInterface;
 import Interfaces.RepositoryInterface;
+import Interfaces.SiteInterface;
 import Structures.Constants.RegistryConfig;
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -35,6 +36,7 @@ public class ContestantExec {
         RepositoryInterface repInt = null;
         PlaygroundInterface playInt = null;
         BenchInterface benchInt = null;
+        SiteInterface siteInt = null;
         
         try
         { 
@@ -89,11 +91,30 @@ public class ContestantExec {
             e.printStackTrace ();
             System.exit(1);
         }
+        
+        try
+        { 
+            Registry registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
+            siteInt = (SiteInterface) registry.lookup (RegistryConfig.siteNameEntry);
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating site: " + e.getMessage () + "!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("Site is not registered: " + e.getMessage () + "!");
+            e.printStackTrace ();
+            System.exit(1);
+        }
+        
         ArrayList<Contestant> contestant = new ArrayList<>(ConstConfigs.ELEMENTS_IN_TEAM);
         
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){
             for (int idct = 1; idct <= ConstConfigs.ELEMENTS_IN_TEAM; idct++){
-                contestant.add(new Contestant(idct, idc, repInt, playInt, benchInt));
+                contestant.add(new Contestant(idct, idc, repInt, playInt, benchInt, siteInt));
             }
         }
         

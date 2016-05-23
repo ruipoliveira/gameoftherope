@@ -3,6 +3,7 @@ package ClientSide.Contestant;
 import Structures.Enumerates.EContestantsState;
 import Interfaces.*;
 import Structures.Constants.ConstConfigs;
+import Structures.Enumerates.ECoachesState;
 import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public class Contestant extends Thread{
     private final BenchInterface bench;
     private final PlaygroundInterface playground;
     private final RepositoryInterface repository;
+    private final SiteInterface site;
     
     private final VectorTimestamp myClock;
     private VectorTimestamp receivedClock;
@@ -26,17 +28,18 @@ public class Contestant extends Thread{
     
     private int contestStrength;
     public Contestant(int contId, int coachId, RepositoryInterface repository, PlaygroundInterface playground, 
-            BenchInterface bench){
+            BenchInterface bench, SiteInterface site){
         this.bench = bench;
         this.playground = playground;
         this.repository = repository;
         this.coachId = coachId;
         this.contId = contId;
+        this.site = site;
         state = EContestantsState.SEAT_AT_THE_BENCH;
         contestStrength = generateStrength();
         updateStrength(coachId,contId,contestStrength);  
         
-        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + ConstConfigs.OPPOSING_TEAMS + 1);
+        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + ConstConfigs.OPPOSING_TEAMS);
 
     }
     
@@ -186,8 +189,7 @@ public class Contestant extends Thread{
      * @return 
      */
     private boolean endOperCoach(int idCoach){
-        
-        //return true ;//site.endOperCoach(idCoach); 
+        return site.endOperCoach(idCoach);
     }
     
     /**
@@ -214,7 +216,7 @@ public class Contestant extends Thread{
      * @param contestStrength is the contestant strength
      */
     private void updateStrength(int coachId, int contId, int contestStrength) {
-        
+        repository.updateStrength(coachId, contId, contestStrength);
     }
 
     
@@ -242,7 +244,7 @@ public class Contestant extends Thread{
      * @param state is the contestant state
      */
     private void updateContestantState(int coachId, int contId, EContestantsState state) {
-        
+        repository.updateContestantState(coachId, contId, state);
     }
     
     /**
@@ -253,7 +255,7 @@ public class Contestant extends Thread{
      * @param contestStrength is the strength of contestants
      */
     private void updateStrengthAndWrite(int coachId, int contId, int contestStrength) {
-
+        repository.updateStrengthAndWrite(coachId, contId, contestStrength);
        
     }
 
