@@ -11,7 +11,7 @@ public interface IRefereeSite {
     
     public VectorTimestamp announceNewGame(int numGame, int nrTrial, VectorTimestamp vt);
     
-    public void declareGameWinner(int posPull);
+    public VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt);
     
     public void declareMatchWinner();
         

@@ -24,7 +24,7 @@ public class PlaygroundExec {
         scon = new ServerComm(CommConst.playServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
         
-        MPlayground playground = new MPlayground(ConstConfigs.MAX_TRAILS_PER_GAME); 
+        MPlayground playground = new MPlayground(ConstConfigs.MAX_TRAILS_PER_GAME, ConstConfigs.CONTESTANTS_IN_TRIAL); 
         PlaygroundInterface playgroundInt = new PlaygroundInterface(playground);
         System.out.println("******************************************************************\nPlayground service has started!");
         System.out.println("Server is listening.\n******************************************************************");

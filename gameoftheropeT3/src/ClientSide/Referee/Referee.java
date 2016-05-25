@@ -104,11 +104,11 @@ public class Referee extends Thread{
                     if (allSittingTeams()){
                         myClock.increment(); // added
                         res = assertTrialDecision(myClock.clone());
-                        decision = (char)res[1];
-                        myClock.update(VectorTimestamp)res[0])); // added
+                        myClock.update((VectorTimestamp)res[0]); // added
+                        decision = (char)res[1];                        
                     }
 
-                    if(res[0] == GAME_CONTINUATION ){
+                    if(decision == GAME_CONTINUATION ){
                         myClock.increment(); // added
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
@@ -117,27 +117,34 @@ public class Referee extends Thread{
                         myClock.update(receivedClock); // added
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
-                        myClock.increment(); // added
                         switch (decision) {
                             case GAME_END:
                                 System.out.println("Jogo acaba! - excedeu numero de trials! ");
                                 break;
                             case KNOCK_OUT_A:
                                 System.out.println("Jogo acaba! - knock out! Ganha A");
-                                isKnockOut(nrGame, nrTrial, "A");
+                                myClock.increment(); // added
+                                isKnockOut(nrGame, nrTrial, "A"); // ver depois para o rep a cena dos clocks e tal e coisas
+                                myClock.update(receivedClock);
                                 break;
                             case KNOCK_OUT_B:
                                 System.out.println("Jogo acaba! - knock out! Ganha B");
+                                myClock.increment(); // added
                                 isKnockOut(nrGame, nrTrial, "B");
+                                myClock.update(receivedClock);
                                 break;
                             default:
                                 break;
                         }
+                      
+                        int posPull = getPositionPull(); ///// VER MELHOR /////
                         
-                        int posPull = getPositionPull(); 
-
-                        declareGameWinner(posPull); 
-                        setPositionPull(PULL_CENTER);
+                        myClock.increment();
+                        receivedClock = declareGameWinner(posPull, myClock.clone()); 
+                        myClock.update(receivedClock);
+                        
+                        
+                        setPositionPull(PULL_CENTER); // VER MELHOR:::::::
 
                         state = ERefereeState.END_OF_A_GAME;
                         updateRefState(state);  // actualiza no repositorio
@@ -234,7 +241,7 @@ public class Referee extends Thread{
      */
     private Object[] assertTrialDecision(VectorTimestamp vt){
  
-        return playground.assertTrialDecision(VectorTimestamp vt); 
+        return playground.assertTrialDecision(vt); 
     }
     
     /**
@@ -242,9 +249,9 @@ public class Referee extends Thread{
      * 
      * @param posPull is the position of the pull
      */
-    private void declareGameWinner(int posPull){
+    private VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt){
         
-        site.declareGameWinner(posPull);
+        return site.declareGameWinner(posPull, vt);
     }
     
     /**
@@ -282,7 +289,7 @@ public class Referee extends Thread{
      * @return the position of the pull
      */
     private int getPositionPull() {
-        return playground.getPositionPull();
+        return playground.getPositionPull(); 
     }
     
     /**
@@ -293,7 +300,7 @@ public class Referee extends Thread{
      * @param team is the name of the team
      */
     private void isKnockOut(int nrGame, int nrTrial, String team) {
-        repository.isKnockOut(nrGame, nrTrial, team);
+      repository.isKnockOut(nrGame, nrTrial, team);
     }
     
     /**

@@ -45,22 +45,26 @@ public class MSite implements SiteInterface{
      * @param posPull 
      */
     @Override
-    public synchronized void declareGameWinner(int posPull) {
-
-        if (posPull < 0 ){
+    public synchronized VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt) {
+        clocks.update(vt);
+        if (posPull < 0 ){            
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
             isEnd(numGame, "A");
             winnerTeamA++; 
+            return clocks.clone();
         }
         else if (posPull > 0){
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa B!"); 
             isEnd(numGame, "B");
-            winnerTeamB++; 
+            winnerTeamB++;
+            return clocks.clone();
         }
         else{
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Empatado!"); 
             wasADraw(numGame);
+            return clocks.clone();
         }
+        
     }
     
     /**
