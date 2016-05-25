@@ -13,6 +13,6 @@ public interface IRefereeSite {
     
     public VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt);
     
-    public void declareMatchWinner();
+    public VectorTimestamp declareMatchWinner(VectorTimestamp vt);
         
 }

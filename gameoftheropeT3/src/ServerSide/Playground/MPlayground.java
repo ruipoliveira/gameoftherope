@@ -184,10 +184,14 @@ public class MPlayground implements PlaygroundInterface{
     /**
      * 
      * @param posPull 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void setPositionPull(int posPull){
+    public synchronized VectorTimestamp setPositionPull(int posPull, VectorTimestamp vt){
+        clocks.update(vt);
         this.posPull = posPull; 
+        return clocks.clone();
     }
     
     /**

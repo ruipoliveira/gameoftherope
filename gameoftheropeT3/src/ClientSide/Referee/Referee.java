@@ -104,8 +104,9 @@ public class Referee extends Thread{
                     if (allSittingTeams()){
                         myClock.increment(); // added
                         res = assertTrialDecision(myClock.clone());
+                        decision = (char)res[1]; 
                         myClock.update((VectorTimestamp)res[0]); // added
-                        decision = (char)res[1];                        
+                                               
                     }
 
                     if(decision == GAME_CONTINUATION ){
@@ -124,13 +125,13 @@ public class Referee extends Thread{
                             case KNOCK_OUT_A:
                                 System.out.println("Jogo acaba! - knock out! Ganha A");
                                 myClock.increment(); // added
-                                isKnockOut(nrGame, nrTrial, "A"); // ver depois para o rep a cena dos clocks e tal e coisas
+                                receivedClock = isKnockOut(nrGame, nrTrial, "A", myClock.clone()); // ver depois para o rep a cena dos clocks e tal e coisas
                                 myClock.update(receivedClock);
                                 break;
                             case KNOCK_OUT_B:
                                 System.out.println("Jogo acaba! - knock out! Ganha B");
                                 myClock.increment(); // added
-                                isKnockOut(nrGame, nrTrial, "B");
+                                receivedClock = isKnockOut(nrGame, nrTrial, "B", myClock.clone());
                                 myClock.update(receivedClock);
                                 break;
                             default:
@@ -143,9 +144,11 @@ public class Referee extends Thread{
                         receivedClock = declareGameWinner(posPull, myClock.clone()); 
                         myClock.update(receivedClock);
                         
+                        myClock.increment();
+                        receivedClock = setPositionPull(PULL_CENTER, myClock.clone()); 
+                        myClock.update(receivedClock);
                         
-                        setPositionPull(PULL_CENTER); // VER MELHOR:::::::
-
+                        myClock.update(receivedClock);
                         state = ERefereeState.END_OF_A_GAME;
                         updateRefState(state);  // actualiza no repositorio
                         myClock.update(receivedClock); // added
@@ -168,7 +171,7 @@ public class Referee extends Thread{
                         myClock.update(receivedClock); // added
                         
                         myClock.increment(); // added
-                        declareMatchWinner();
+                        receivedClock = declareMatchWinner(myClock.clone());
                         myClock.update(receivedClock); // added
                     } 
                     break;
@@ -216,8 +219,8 @@ public class Referee extends Thread{
      * 
      * @param positionCenter is the center's position pull 
      */
-    private void setPositionPull(int positionCenter){
-        
+    private VectorTimestamp setPositionPull(int positionCenter, VectorTimestamp vt){
+        return playground.setPositionPull(positionCenter, vt); 
     }
     
     /**
@@ -258,9 +261,9 @@ public class Referee extends Thread{
      * referee decides the winner of the match
      * 
      */
-    private void declareMatchWinner(){
+    private VectorTimestamp declareMatchWinner(VectorTimestamp vt){
          
-        site.declareMatchWinner();
+        return site.declareMatchWinner(vt);
     }
     
     /**

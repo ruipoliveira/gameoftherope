@@ -15,6 +15,6 @@ public interface IRefereePlayground {
     
     public int getPositionPull(); 
     
-    public void setPositionPull (int posPull); 
+    public VectorTimestamp setPositionPull (int posPull, VectorTimestamp vt); 
     
 }

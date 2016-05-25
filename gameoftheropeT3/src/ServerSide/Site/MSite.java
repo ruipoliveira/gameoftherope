@@ -71,8 +71,9 @@ public class MSite implements SiteInterface{
      * The referee announces which teams has won the match. Both internal state and match result should be saved.
      */
     @Override
-    public synchronized void declareMatchWinner() {
-
+    public synchronized VectorTimestamp declareMatchWinner(VectorTimestamp vt) {
+        
+        clocks.update(vt);
         System.out.println("***********************************************************");
         if (winnerTeamA > winnerTeamB){
             System.out.println("A Equipa A venceu o match com #" +winnerTeamA +" vitórias!");
@@ -87,6 +88,7 @@ public class MSite implements SiteInterface{
             endMatch("", winnerTeamB, winnerTeamA);
         }
         System.out.println("***********************************************************");
+        return clocks.clone();
 
     }
     /**

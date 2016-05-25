@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Structures.Enumerates.ERefereeState;
+import Structures.VectorClock.VectorTimestamp;
 
 
 /**
@@ -18,6 +19,6 @@ public interface IRefereeRepository {
 
     public void updateGameNumber(int gameNumber);
 
-    public void isKnockOut(int nrGame, int nrTrial, String team); 
+    public VectorTimestamp isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt); 
               
 }
