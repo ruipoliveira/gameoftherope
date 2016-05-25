@@ -174,6 +174,7 @@ public class MBench implements BenchInterface{
      * The referee starts a trial and waits for its conclusion. The contestants at the ends of the rope have to be alerted for the fact. The internal state should be saved.
      * @param numGame
      * @param numTrial 
+     * @param vt 
      */
     @Override
     public synchronized VectorTimestamp callTrial(int numGame, int numTrial, VectorTimestamp vt) {
@@ -261,9 +262,12 @@ public class MBench implements BenchInterface{
      * The contestant seats at the bench and waits to be called by the coach. The internal state should be saved.
      * @param coachId
      * @param contestId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void seatDown(int coachId, int contestId) {
+    public synchronized VectorTimestamp seatDown(int coachId, int contestId, VectorTimestamp vt) {
+        clocks.update(vt);
         removeContestantsInPull(coachId, contestId);
         finished++;
 
@@ -289,6 +293,7 @@ public class MBench implements BenchInterface{
         teamAssemble = false; 
  
         notifyAll();  
+        return clocks.clone();
         
     }
 
@@ -305,11 +310,13 @@ public class MBench implements BenchInterface{
      * The contestant join the trial team if requested by the coach and waits for the referee's command to start pulling. The last contestant to join his end of the rope should alert the coach. The internal state should be saved.
      * @param coachId
      * @param contestId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void followCoachAdvice(int coachId, int contestId) {
+    public synchronized VectorTimestamp followCoachAdvice(int coachId, int contestId, VectorTimestamp vt) {
 
-        
+        clocks.update(vt);
         while (callContestant ==false){
             try { 
                 wait();
@@ -364,6 +371,7 @@ public class MBench implements BenchInterface{
         isEndReview = false; 
         callContestant = false; 
         notifyAll();
+        return clocks.clone();
     }
 
     /**

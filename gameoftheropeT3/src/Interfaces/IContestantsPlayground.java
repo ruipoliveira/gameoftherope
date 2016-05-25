@@ -1,6 +1,8 @@
 
 package Interfaces;
 
+import Structures.VectorClock.VectorTimestamp;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -8,7 +10,7 @@ package Interfaces;
  */
 public interface IContestantsPlayground {
     
-    public void getReady(int coachId, int contId);
+    public VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt);
 
-    public void amDone(int coachId, int contId, int contestStrength);
+    public VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt);
 }

@@ -82,6 +82,7 @@ public class MPlayground implements PlaygroundInterface{
     
     /**
      * The referee announces which team has won the game. An error message should be generated if decision is not 'end of the game'. The game result should be updated. Both internal state and game result should be saved.
+     * @param vt
      * @return decision trial decision 
      */
     @Override
@@ -202,9 +203,12 @@ public class MPlayground implements PlaygroundInterface{
      * 
      * @param coachId
      * @param contId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void getReady(int coachId, int contId) {
+    public synchronized VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt) {
+        clocks.update(vt);
         while(startTrial == false){
             try {
                 wait();
@@ -212,6 +216,7 @@ public class MPlayground implements PlaygroundInterface{
                 Logger.getLogger(MPlayground.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return clocks.clone();
     }
 
     /**
@@ -219,10 +224,12 @@ public class MPlayground implements PlaygroundInterface{
      * @param coachId
      * @param contId
      * @param contestStrength 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void amDone(int coachId, int contId, int contestStrength) {
-        
+    public synchronized VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt) {
+        clocks.update(vt);
         while( playerInPull % contestantInTrial != 0){
             try { 
                 wait();
@@ -257,6 +264,7 @@ public class MPlayground implements PlaygroundInterface{
         startTrial = false; 
 
         notifyAll();
+        return clocks.clone();
         
     }
     /**

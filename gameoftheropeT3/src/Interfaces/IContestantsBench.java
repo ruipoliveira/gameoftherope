@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Structures.VectorClock.VectorTimestamp;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -7,9 +9,10 @@ package Interfaces;
  */
 public interface IContestantsBench {
     
-    public void seatDown(int coachId, int contId);
+    public VectorTimestamp seatDown(int coachId, int contId, VectorTimestamp vt);
     
-    public void followCoachAdvice(int coachId, int contId);
+    public VectorTimestamp followCoachAdvice(int coachId, int contId, VectorTimestamp vt);
     
     public boolean isPlayerSelected(int coachId, int contestId); 
+    
 }

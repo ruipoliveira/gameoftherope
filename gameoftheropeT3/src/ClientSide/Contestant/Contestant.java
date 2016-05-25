@@ -55,7 +55,7 @@ public class Contestant extends Thread{
             switch(this.state){                             
                 case SEAT_AT_THE_BENCH:
                     myClock.increment(); // added
-                    followCoachAdvice (coachId, contId);  
+                    receivedClock = followCoachAdvice(coachId, contId, myClock.clone());  
                     myClock.update(receivedClock);
                     
                     if (endOperCoach(coachId)){
@@ -73,34 +73,34 @@ public class Contestant extends Thread{
                 case STAND_IN_POSITION:
                     if (isPlayerSelected(coachId,contId) ){
                         myClock.increment(); // added
-                        getReady(coachId, contId);
+                        receivedClock = getReady(coachId, contId, myClock.clone());
                         myClock.update(receivedClock); // added
                         
                         myClock.increment(); // added
                         state = EContestantsState.DO_YOUR_BEST;
-                        updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state); // ver depois
                         myClock.update(receivedClock); // added
                     }
                     else{
                         myClock.increment(); // added
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                        updateContestantState(coachId, contId, state);
+                        updateContestantState(coachId, contId, state); // ver depois
                         myClock.update(receivedClock); // added
                         
                         myClock.increment();
                         contestStrength++;
-                        updateStrengthAndWrite(coachId, contId, contestStrength);
+                        updateStrengthAndWrite(coachId, contId, contestStrength); // ver depois
                         myClock.update(receivedClock); // added
                     }
                 break;
                 
                 case DO_YOUR_BEST:
                     myClock.increment(); // added
-                    amDone(coachId, contId, contestStrength); 
+                    receivedClock = amDone(coachId, contId, contestStrength, myClock.clone()); 
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added
-                    seatDown(coachId,contId); 
+                    receivedClock = seatDown(coachId,contId, myClock.clone()); 
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added
@@ -126,9 +126,9 @@ public class Contestant extends Thread{
      * @param coachId is the coach identifier (ID)
      * @param contestId is the contestant identifier (ID)
      */
-    private void seatDown(int coachId, int contestId){
+    private VectorTimestamp seatDown(int coachId, int contestId, VectorTimestamp vt){
         
-        bench.seatDown(coachId, contestId); 
+        return bench.seatDown(coachId, contestId, vt); 
     }
     
     /**
@@ -142,7 +142,7 @@ public class Contestant extends Thread{
      */
     private boolean isPlayerSelected(int coachId, int contestId){
         
-        return bench.isPlayerSelected(coachId,contId); 
+        return bench.isPlayerSelected(coachId,contestId); 
     }
     
     /**
@@ -151,9 +151,9 @@ public class Contestant extends Thread{
      * @param coachId is the coach identifier (ID)
      * @param contestId is the contestant identifier (ID)
      */
-    private void followCoachAdvice(int coachId, int contestId){
+    private VectorTimestamp followCoachAdvice(int coachId, int contestId, VectorTimestamp vt){
        
-       bench.followCoachAdvice(coachId, contestId);
+       return bench.followCoachAdvice(coachId, contestId, vt);
        
     }
     
@@ -164,9 +164,9 @@ public class Contestant extends Thread{
      * @param contId is the contestant identifier (ID)
      * @param contestStrength is the contestant strength 
      */
-    private void amDone(int coachId, int contId, int contestStrength){
+    private VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt){
         
-        playground.amDone(coachId, contId, contestStrength);
+        return playground.amDone(coachId, contId, contestStrength, vt);
     }
     
     /**
@@ -175,9 +175,9 @@ public class Contestant extends Thread{
      * @param coachId is the coach identifier (ID)
      * @param contestId  is the contestant identifier (ID)
      */
-    private void getReady(int coachId, int contestId){
+    private VectorTimestamp getReady(int coachId, int contestId, VectorTimestamp vt){
         
-        playground.getReady(coachId, contestId);
+        return playground.getReady(coachId, contestId, vt);
     }
 
     /**
