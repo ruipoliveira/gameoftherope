@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Structures.VectorClock.VectorTimestamp;
+
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
  * @author Rui Oliveira (68779) ruipedrooliveira@ua.pt
@@ -7,9 +9,9 @@ package Interfaces;
  */
 public interface ICoachBench {
     
-    public void callContestants(int coachId);
+    public VectorTimestamp callContestants(int coachId, VectorTimestamp vt);
     
-    public void reviewNotes(int coachId);
+    public VectorTimestamp reviewNotes(int coachId, VectorTimestamp vt);
     
     public boolean endOfTheGame(int c); 
 }

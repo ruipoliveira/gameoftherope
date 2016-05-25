@@ -158,9 +158,12 @@ public class MPlayground implements PlaygroundInterface{
     /**
      * 
      * @param coachId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void informReferee(int coachId) {
+    public synchronized VectorTimestamp informReferee(int coachId, VectorTimestamp vt) {
+        clocks.update(vt);
         newTrial++;
         while(newTrial % 2 != 0){
             try { 
@@ -170,6 +173,7 @@ public class MPlayground implements PlaygroundInterface{
             }
         }
         notifyAll();
+        return clocks.clone();
     }
 
     /**

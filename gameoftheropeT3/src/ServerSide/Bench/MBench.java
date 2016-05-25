@@ -81,10 +81,12 @@ public class MBench implements BenchInterface{
     /**
      * The coach of the last team to become ready informs the referee. The coach waits for the trial to take place. The internal state should be saved.
      * @param coachId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void callContestants(int coachId ) {
-
+    public synchronized VectorTimestamp callContestants(int coachId, VectorTimestamp vt) {
+        clocks.update(vt);
         if (numTrial > 1 || numGame > 1){
             while(seatedA != constestantInTrial){
                 try { 
@@ -165,7 +167,7 @@ public class MBench implements BenchInterface{
         seatedB = 0;
         
         System.out.println("***********************Equipa #"+coachId+" formada***********************"); 
-        
+        return clocks.clone();
     }
 
     /**
@@ -220,10 +222,13 @@ public class MBench implements BenchInterface{
     /**
      * The coach asserts if the end of operations has arrived.
      * @param coachId 
+     * @param vt 
+     * @return  
      */
     @Override
-    public synchronized void reviewNotes(int coachId) {
-
+    public synchronized VectorTimestamp reviewNotes(int coachId, VectorTimestamp vt) {
+        
+        clocks.update(vt);
         while(seatedA % constestantInTrial != 0 || seatedB % constestantInTrial != 0){
         }
         try {
@@ -248,6 +253,7 @@ public class MBench implements BenchInterface{
         isEndReview = true; 
         
         notifyAll();
+        return clocks.clone();
 
     }
     

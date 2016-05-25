@@ -49,37 +49,37 @@ public class Coach extends Thread{
         do {
             switch(this.state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    
                     if (!bench.endOfTheGame(idCoach)) break;
+                    
                     myClock.increment(); // added    // ver melhor isto
-                    callContestants(idCoach);
+                    receivedClock = callContestants(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added
                     state = ECoachesState.ASSEMBLE_TEAM;
-                    updateCoachState(idCoach, state);
+                    repository.updateCoachState(idCoach, state); // ver depois
                     myClock.update(receivedClock); // added
                     break; 
 
                 case ASSEMBLE_TEAM:
                     myClock.increment(); // added
-                    informReferee(idCoach);
+                    receivedClock = informReferee(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added                    
                     state = ECoachesState.WATCH_TRIAL;
-                    updateCoachState(idCoach, state);
+                    repository.updateCoachState(idCoach, state);
                     myClock.update(receivedClock); // added
                     break; 
                     
                 case WATCH_TRIAL:
                     myClock.increment(); // added
-                    reviewNotes(idCoach);
+                    receivedClock = reviewNotes(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
                     myClock.increment(); // added     
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-                    updateCoachState(idCoach, state);
+                    repository.updateCoachState(idCoach, state); // fazer mais tarde
                     myClock.update(receivedClock); // added
                     break;
             }
@@ -94,8 +94,8 @@ public class Coach extends Thread{
      * 
      * @param idCoach is the coach identifier (ID)
      */
-    private void callContestants(int idCoach){
-        bench.callContestants(idCoach);    
+    private VectorTimestamp callContestants(int idCoach, VectorTimestamp vt){
+        return bench.callContestants(idCoach, vt);    
     }
     
     /**
@@ -103,8 +103,8 @@ public class Coach extends Thread{
      * 
      * @param idCoach 
      */
-    private void informReferee(int idCoach){   
-        playground.informReferee(idCoach);
+    private VectorTimestamp informReferee(int idCoach, VectorTimestamp vt){   
+        return playground.informReferee(idCoach, vt);
     }
     
     /**
@@ -112,8 +112,8 @@ public class Coach extends Thread{
      * 
      * @param idCoach 
      */
-    private void reviewNotes(int idCoach){
-        bench.reviewNotes(idCoach);
+    private VectorTimestamp reviewNotes(int idCoach, VectorTimestamp vt){
+        return bench.reviewNotes(idCoach, vt);
     }
     
   
@@ -142,16 +142,5 @@ public class Coach extends Thread{
      */
     public int getIdCoach(){
         return idCoach;
-    }
-
-   
-    /**
-     * updates the coach current state
-     * 
-     * @param idCoach is the coach identifier (ID)
-     * @param state is the coach current state
-     */
-    private void updateCoachState(int idCoach, ECoachesState state) {
-    }
-    
+    }    
 }
