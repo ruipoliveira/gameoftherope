@@ -55,10 +55,8 @@ public class Coach extends Thread{
                     receivedClock = callContestants(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment(); // added
                     state = ECoachesState.ASSEMBLE_TEAM;
-                    repository.updateCoachState(idCoach, state); // ver depois
-                    myClock.update(receivedClock); // added
+                    repository.updateCoachState(idCoach, state, myClock.clone() ); // ver depois
                     break; 
 
                 case ASSEMBLE_TEAM:
@@ -66,10 +64,8 @@ public class Coach extends Thread{
                     receivedClock = informReferee(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment(); // added                    
                     state = ECoachesState.WATCH_TRIAL;
-                    repository.updateCoachState(idCoach, state);
-                    myClock.update(receivedClock); // added
+                    repository.updateCoachState(idCoach, state, myClock.clone());
                     break; 
                     
                 case WATCH_TRIAL:
@@ -77,10 +73,8 @@ public class Coach extends Thread{
                     receivedClock = reviewNotes(idCoach, myClock.clone());
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment(); // added     
                     state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-                    repository.updateCoachState(idCoach, state); // fazer mais tarde
-                    myClock.update(receivedClock); // added
+                    repository.updateCoachState(idCoach, state, myClock.clone()); // fazer mais tarde
                     break;
             }
         }while (bench.endOfTheGame(idCoach));

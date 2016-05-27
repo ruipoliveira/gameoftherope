@@ -58,7 +58,7 @@ public class PlaygroundExec {
         /* instanciação do objecto remoto que representa a barbearia e geração de um stub para ele */
         MPlayground play = null;                              // barbearia (representa o objecto remoto)
         PlaygroundInterface playInt = null;             // interface da barbearia
-        play = new MPlayground(ConstConfigs.MAX_TRAILS_PER_GAME, ConstConfigs.CONTESTANTS_IN_TRIAL);
+        play = new MPlayground(ConstConfigs.MAX_TRAILS_PER_GAME, ConstConfigs.CONTESTANTS_IN_TRIAL, repInt);
         try {
             playInt = (PlaygroundInterface) UnicastRemoteObject.exportObject((Remote) play, rc.playgroundPort());
         } catch (RemoteException e) {

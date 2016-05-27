@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Structures.Enumerates.ECoachesState;
+import Structures.VectorClock.VectorTimestamp;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -8,6 +9,6 @@ import Structures.Enumerates.ECoachesState;
  * @version 2.0
  */
 public interface ICoachRepository {
-    public void updateCoachState(int coachId, ECoachesState state);
+    public void updateCoachState(int coachId, ECoachesState state, VectorTimestamp vt);
      
 }

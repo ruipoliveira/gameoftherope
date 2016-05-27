@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Interfaces.PlaygroundInterface;
+import Interfaces.RepositoryInterface;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
 
@@ -30,14 +31,16 @@ public class MPlayground implements PlaygroundInterface{
     private final int maxTrials; 
     private final int contestantInTrial;
     private VectorTimestamp clocks;
+    private final RepositoryInterface repository; 
     
-    public MPlayground(int maxTrials, int contestantInTrial){
+    public MPlayground(int maxTrials, int contestantInTrial, RepositoryInterface repository){
         newTrial = 0; 
         numTrial = 0; 
         playerInPull=0;
         resultTeamA = 0;
         resultTeamB = 0; 
         startTrial = false;
+        this.repository = repository; 
         nrGame =0; 
         strengthTeam = new HashMap<>(); 
         for(int i =1; i< 3; i++ ){
@@ -280,14 +283,14 @@ public class MPlayground implements PlaygroundInterface{
      * @param numTrial 
      */
     private void updateTrialNumber(int numTrial) {
-       
+       repository.updateTrialNumber(numTrial, clocks.clone());
     }
     /**
      * 
      * @param posPull 
      */
     private void updatePullPosition(int posPull) {
-       
+       repository.updatePullPosition(posPull, clocks.clone());
     }
     
     /**
@@ -296,7 +299,7 @@ public class MPlayground implements PlaygroundInterface{
      * @param contId 
      */
     private void addContestantsInPull(int coachId, int contId) {
-        
+        repository.addContestantsInPull(coachId, contId, clocks.clone()); 
     }
     
  

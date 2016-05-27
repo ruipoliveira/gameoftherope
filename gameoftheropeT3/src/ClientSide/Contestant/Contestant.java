@@ -59,15 +59,13 @@ public class Contestant extends Thread{
                     myClock.update(receivedClock);
                     
                     if (endOperCoach(coachId)){
-                        myClock.increment(); // added
                         endOp = false;
-                        myClock.update(receivedClock); // added
                         break;
                     } 
-                    myClock.increment(); // added
+                    
                     state = EContestantsState.STAND_IN_POSITION;
-                    updateContestantState(coachId, contId, state);
-                    myClock.update(receivedClock);
+                    updateContestantState(coachId, contId, state, myClock.clone());
+
                 break;
                 
                 case STAND_IN_POSITION:
@@ -76,21 +74,18 @@ public class Contestant extends Thread{
                         receivedClock = getReady(coachId, contId, myClock.clone());
                         myClock.update(receivedClock); // added
                         
-                        myClock.increment(); // added
                         state = EContestantsState.DO_YOUR_BEST;
-                        updateContestantState(coachId, contId, state); // ver depois
-                        myClock.update(receivedClock); // added
+                        updateContestantState(coachId, contId, state, myClock.clone()); // ver depois
+
                     }
                     else{
-                        myClock.increment(); // added
+
                         state = EContestantsState.SEAT_AT_THE_BENCH;
-                        updateContestantState(coachId, contId, state); // ver depois
-                        myClock.update(receivedClock); // added
-                        
-                        myClock.increment();
+                        updateContestantState(coachId, contId, state, myClock.clone()); 
+
                         contestStrength++;
-                        updateStrengthAndWrite(coachId, contId, contestStrength); // ver depois
-                        myClock.update(receivedClock); // added
+                        updateStrengthAndWrite(coachId, contId, contestStrength, myClock.clone());
+
                     }
                 break;
                 
@@ -102,16 +97,13 @@ public class Contestant extends Thread{
                     myClock.increment(); // added
                     receivedClock = seatDown(coachId,contId, myClock.clone()); 
                     myClock.update(receivedClock); // added
-                    
-                    myClock.increment(); // added
+
                     contestStrength--;
-                    updateStrengthAndWrite(coachId,contId, contestStrength);
-                    myClock.update(receivedClock); // added
-                    
-                    myClock.increment(); // added
+                    updateStrengthAndWrite(coachId,contId, contestStrength, myClock.clone());
+
                     state = EContestantsState.SEAT_AT_THE_BENCH;
-                    updateContestantState(coachId, contId, state);
-                    myClock.update(receivedClock); // added
+                    updateContestantState(coachId, contId, state, myClock.clone());
+
                 break;    
             }
             
@@ -141,7 +133,6 @@ public class Contestant extends Thread{
      * @return 
      */
     private boolean isPlayerSelected(int coachId, int contestId){
-        
         return bench.isPlayerSelected(coachId,contestId); 
     }
     
@@ -216,7 +207,7 @@ public class Contestant extends Thread{
      * @param contestStrength is the contestant strength
      */
     private void updateStrength(int coachId, int contId, int contestStrength) {
-        repository.updateStrength(coachId, contId, contestStrength);
+        repository.updateStrength(coachId, contId, contestStrength, myClock.clone());
     }
 
     
@@ -243,8 +234,8 @@ public class Contestant extends Thread{
      * @param contId is the contestant identifier (ID)
      * @param state is the contestant state
      */
-    private void updateContestantState(int coachId, int contId, EContestantsState state) {
-        repository.updateContestantState(coachId, contId, state);
+    private void updateContestantState(int coachId, int contId, EContestantsState state, VectorTimestamp vt) {
+        repository.updateContestantState(coachId, contId, state, vt);
     }
     
     /**
@@ -254,8 +245,8 @@ public class Contestant extends Thread{
      * @param contId is the contestant identifier (ID)
      * @param contestStrength is the strength of contestants
      */
-    private void updateStrengthAndWrite(int coachId, int contId, int contestStrength) {
-        repository.updateStrengthAndWrite(coachId, contId, contestStrength);
+    private void updateStrengthAndWrite(int coachId, int contId, int contestStrength, VectorTimestamp vt) {
+        repository.updateStrengthAndWrite(coachId, contId, contestStrength, vt);
        
     }
 

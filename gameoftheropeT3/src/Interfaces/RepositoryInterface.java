@@ -5,9 +5,6 @@
  */
 package Interfaces;
 
-import Structures.Enumerates.ECoachesState;
-import Structures.Enumerates.EContestantsState;
-import Structures.Enumerates.ERefereeState;
 import java.rmi.Remote;
 
 /**

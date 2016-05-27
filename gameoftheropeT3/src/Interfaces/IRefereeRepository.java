@@ -11,14 +11,14 @@ import Structures.VectorClock.VectorTimestamp;
  */
 public interface IRefereeRepository {
     
-    public void updateRefState(ERefereeState state);  
+    public void updateRefState(ERefereeState state, VectorTimestamp vt);  
 
-    public void updatePullPosition(int positionPull);
+    public void updatePullPosition(int positionPull, VectorTimestamp vt);
 
-    public void updateTrialNumber(int trialNumber);
+    public void updateTrialNumber(int trialNumber, VectorTimestamp vt);
 
-    public void updateGameNumber(int gameNumber);
+    public void updateGameNumber(int gameNumber, VectorTimestamp vt);
 
-    public VectorTimestamp isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt); 
+    public void isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt); 
               
 }

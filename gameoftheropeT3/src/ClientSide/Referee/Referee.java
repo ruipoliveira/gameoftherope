@@ -59,23 +59,19 @@ public class Referee extends Thread{
 
             switch(state){
                 case START_OF_THE_MATCH:
-                    myClock.increment(); // added                  
+         
                     nrGame++;
-                    updateGameNumber(nrGame);
-                    myClock.update(receivedClock); // added
-                    
-                    myClock.increment(); // added
+                    updateGameNumber(nrGame, myClock.clone());
+
                     nrTrial++;
-                    updateTrialNumber(nrTrial);
-                    myClock.update(receivedClock); // added
+                    updateTrialNumber(nrTrial, myClock.clone());
                     
                     myClock.increment(); // added
                     receivedClock = announceNewGame(nrGame,nrTrial, myClock.clone());
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment(); // added
                     state = ERefereeState.START_OF_A_GAME;
-                    myClock.update(receivedClock); // added
+
                     break; 
 
                 case START_OF_A_GAME:
@@ -83,10 +79,9 @@ public class Referee extends Thread{
                     receivedClock = callTrial(nrGame,nrTrial, myClock.clone()); 
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment();
                     state = ERefereeState.TEAMS_READY;
-                    updateRefState(state);
-                    myClock.update(receivedClock); // added
+                    updateRefState(state, myClock.clone());
+
                     break;
 
                 case TEAMS_READY:
@@ -94,10 +89,10 @@ public class Referee extends Thread{
                     receivedClock = startTrial(nrGame,nrTrial, myClock.clone());
                     myClock.update(receivedClock); // added
                     
-                    myClock.increment();
+
                     state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    updateRefState(state);
-                    myClock.update(receivedClock); // added
+                    updateRefState(state, myClock.clone());
+
                     break; 
 
                 case WAIT_FOR_TRIAL_CONCLUSION:
@@ -110,12 +105,10 @@ public class Referee extends Thread{
                     }
 
                     if(decision == GAME_CONTINUATION ){
-                        myClock.increment(); // added
                         System.out.println("Jogo vai continuar");
                         nrTrial++; 
                         state = ERefereeState.START_OF_A_GAME;
-                        updateRefState(state);
-                        myClock.update(receivedClock); // added
+                        updateRefState(state, myClock.clone());
                     }
                     else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
                         switch (decision) {
@@ -124,15 +117,15 @@ public class Referee extends Thread{
                                 break;
                             case KNOCK_OUT_A:
                                 System.out.println("Jogo acaba! - knock out! Ganha A");
-                                myClock.increment(); // added
-                                receivedClock = isKnockOut(nrGame, nrTrial, "A", myClock.clone()); // ver depois para o rep a cena dos clocks e tal e coisas
-                                myClock.update(receivedClock);
+                                
+                                isKnockOut(nrGame, nrTrial, "A", myClock.clone()); // ver depois para o rep a cena dos clocks e tal e coisas
+                                
                                 break;
                             case KNOCK_OUT_B:
                                 System.out.println("Jogo acaba! - knock out! Ganha B");
-                                myClock.increment(); // added
-                                receivedClock = isKnockOut(nrGame, nrTrial, "B", myClock.clone());
-                                myClock.update(receivedClock);
+                                
+                                isKnockOut(nrGame, nrTrial, "B", myClock.clone());
+                                
                                 break;
                             default:
                                 break;
@@ -144,32 +137,27 @@ public class Referee extends Thread{
                         receivedClock = declareGameWinner(posPull, myClock.clone()); 
                         myClock.update(receivedClock);
                         
-                        myClock.increment();
-                        receivedClock = setPositionPull(PULL_CENTER, myClock.clone()); 
-                        myClock.update(receivedClock);
+                        setPositionPull(PULL_CENTER, myClock.clone()); 
                         
-                        myClock.update(receivedClock);
                         state = ERefereeState.END_OF_A_GAME;
-                        updateRefState(state);  // actualiza no repositorio
-                        myClock.update(receivedClock); // added
+                        updateRefState(state, myClock.clone());  // actualiza no repositorio
+                        
                     }
                     break; 
 
                 case END_OF_A_GAME:
                     if(nrGame < nrGamesMax){
-                        myClock.increment(); // added
                         nrTrial=0;
                         state = ERefereeState.START_OF_THE_MATCH;
-                        updateRefState(state);
-                        myClock.update(receivedClock); // added
+                        updateRefState(state, myClock.clone());
+
                         
                     }
                     else{
-                        myClock.increment(); // added
+
                         state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                        updateRefState(state);
-                        myClock.update(receivedClock); // added
-                        
+                        updateRefState(state, myClock.clone());
+
                         myClock.increment(); // added
                         receivedClock = declareMatchWinner(myClock.clone());
                         myClock.update(receivedClock); // added
@@ -177,10 +165,9 @@ public class Referee extends Thread{
                     break;
 
                 case END_OF_THE_MATCH: 
-                    myClock.increment(); // added
+
                     System.out.println("Fim do match!");
                     endOp = false; 
-                    myClock.update(receivedClock); // added
                     break; 
             }
         }while(endOp);
@@ -282,8 +269,8 @@ public class Referee extends Thread{
      * 
      * @param state is the current referee state
      */
-    private void updateRefState(ERefereeState state) {
-
+    private void updateRefState(ERefereeState state, VectorTimestamp vt) {
+        repository.updateRefState(state, vt);        
     }
 
     /**
@@ -302,8 +289,8 @@ public class Referee extends Thread{
      * @param nrTrial is the number of the trial
      * @param team is the name of the team
      */
-    private void isKnockOut(int nrGame, int nrTrial, String team) {
-      repository.isKnockOut(nrGame, nrTrial, team);
+    private void isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt) {
+      repository.isKnockOut(nrGame, nrTrial, team, vt);
     }
     
     /**
@@ -321,8 +308,8 @@ public class Referee extends Thread{
      * 
      * @param nrGame is the number of the game
      */
-    private void updateGameNumber(int nrGame) {
-        repository.updateGameNumber(nrGame);
+    private void updateGameNumber(int nrGame, VectorTimestamp vt) {
+        repository.updateGameNumber(nrGame,vt);
     }
     
     /**
@@ -330,8 +317,8 @@ public class Referee extends Thread{
      * 
      * @param nrTrial is the number of the trial
      */
-    private void updateTrialNumber(int nrTrial) {
-        repository.updateTrialNumber(nrTrial);
+    private void updateTrialNumber(int nrTrial, VectorTimestamp vt) {
+        repository.updateTrialNumber(nrTrial, vt);
     }
     
 }

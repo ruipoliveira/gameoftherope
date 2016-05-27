@@ -192,7 +192,7 @@ public class MRepository implements RepositoryInterface{
     * @param state The Referee's current state
     */
     @Override
-    public synchronized void updateRefState(ERefereeState state){
+    public synchronized void updateRefState(ERefereeState state, VectorTimestamp vt){
         ref.setState(state);
         writeLine();
     }
@@ -204,7 +204,7 @@ public class MRepository implements RepositoryInterface{
     * @param idCoach Is the coach Identifier (ID)
     */
     @Override
-    public synchronized void updateCoachState(int idCoach, ECoachesState state){
+    public synchronized void updateCoachState(int idCoach, ECoachesState state, VectorTimestamp vt){
         lst_coach.get(idCoach-1).setState(state);  
         writeLine();
     }
@@ -217,7 +217,7 @@ public class MRepository implements RepositoryInterface{
     * @param idContest Is the contestant identifier (ID) 
     */
     @Override
-    public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state){
+    public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state, VectorTimestamp vt){
         lst_player.get(idTeam).get(idContest-1).setState(state); 
         writeLine();
     }
@@ -230,7 +230,7 @@ public class MRepository implements RepositoryInterface{
      * @param contestStrength Is the contestant's strength
      */
     @Override
-    public synchronized void updateStrength(int idTeam, int idContest, int contestStrength){ 
+    public synchronized void updateStrength(int idTeam, int idContest, int contestStrength, VectorTimestamp vt){ 
         lst_player.get(idTeam).get(idContest-1).setStrength(contestStrength); 
     }
     
@@ -242,7 +242,7 @@ public class MRepository implements RepositoryInterface{
      * @param contestStrength Is the contestant's strength
      */
     @Override
-    public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength){ 
+    public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength, VectorTimestamp vt){ 
         lst_player.get(idTeam).get(contestId-1).setStrength(contestStrength); 
         writeLine();
     }
@@ -253,7 +253,7 @@ public class MRepository implements RepositoryInterface{
      * @param posPull is the position of the pull
      */
     @Override
-    public synchronized void updatePullPosition(int posPull){
+    public synchronized void updatePullPosition(int posPull, VectorTimestamp vt){
         this.posPull = posPull;
         writeLine();
     }
@@ -264,7 +264,7 @@ public class MRepository implements RepositoryInterface{
      * @param nrTrial is the number of the trial 
      */
     @Override
-    public synchronized void updateTrialNumber(int nrTrial){
+    public synchronized void updateTrialNumber(int nrTrial, VectorTimestamp vt){
         this.nrTrial = nrTrial;
         writeLine();
     }
@@ -275,7 +275,7 @@ public class MRepository implements RepositoryInterface{
      * @param nrGame is the number of the game
      */
     @Override
-    public synchronized void updateGameNumber(int nrGame){
+    public synchronized void updateGameNumber(int nrGame, VectorTimestamp vt){
         this.nrGame = nrGame;
         nrTrial =0;
         posPull = 0; 
@@ -291,7 +291,7 @@ public class MRepository implements RepositoryInterface{
      * @param team 
      */
     @Override
-    public synchronized void isKnockOut(int nrGame, int nrTrial, String team ){
+    public synchronized void isKnockOut(int nrGame, int nrTrial, String team , VectorTimestamp vt){
         pw.println("Game "+nrGame+" was won by team "+team+" by knock out in "+nrTrial+" trials.");
     }
     
@@ -334,7 +334,7 @@ public class MRepository implements RepositoryInterface{
      * @param idPlayer Is the Contestant's identifier (ID)
      */
     @Override
-    public synchronized void addContestantsInPull(int idTeam, int idPlayer){
+    public synchronized void addContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){
         
         if (idTeam ==1 ){
             lstInPullA.add(idPlayer); 
@@ -351,7 +351,7 @@ public class MRepository implements RepositoryInterface{
      * @param idPlayer idPlayer Is the Contestant's identifier (ID)
      */
     @Override
-    public synchronized void removeContestantsInPull(int idTeam, int idPlayer){
+    public synchronized void removeContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){
 
         if (idTeam ==1 ){
             lstInPullA.removeIf(p -> p.equals(idPlayer));
