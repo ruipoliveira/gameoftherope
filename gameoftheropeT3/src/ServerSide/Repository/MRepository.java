@@ -273,6 +273,7 @@ public class MRepository implements RepositoryInterface{
      * updates the number of the game
      * 
      * @param nrGame is the number of the game
+     * @param vt
      */
     @Override
     public synchronized void updateGameNumber(int nrGame, VectorTimestamp vt){
@@ -332,6 +333,7 @@ public class MRepository implements RepositoryInterface{
      * 
      * @param idTeam Is the team identifier (ID) (or coachID)
      * @param idPlayer Is the Contestant's identifier (ID)
+     * @param vt
      */
     @Override
     public synchronized void addContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){
@@ -349,6 +351,7 @@ public class MRepository implements RepositoryInterface{
      * 
      * @param idTeam idTeam Is the team identifier (ID) (or coachID)
      * @param idPlayer idPlayer Is the Contestant's identifier (ID)
+     * @param vt
      */
     @Override
     public synchronized void removeContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){

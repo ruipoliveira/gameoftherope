@@ -64,7 +64,7 @@ public class BenchExec {
         /* instanciação do objecto remoto que representa a barbearia e geração de um stub para ele */
         MBench bench = null;                              // barbearia (representa o objecto remoto)
         BenchInterface benchInt = null;             // interface da barbearia
-        bench = new MBench(ConstConfigs.GAMES_PER_MATCH, ConstConfigs.CONTESTANTS_IN_TRIAL, ConstConfigs.ELEMENTS_IN_TEAM, ConstConfigs.OPPOSING_TEAMS);
+        bench = new MBench(ConstConfigs.GAMES_PER_MATCH, ConstConfigs.CONTESTANTS_IN_TRIAL, ConstConfigs.ELEMENTS_IN_TEAM, ConstConfigs.OPPOSING_TEAMS, repInt);
         try {
             benchInt = (BenchInterface) UnicastRemoteObject.exportObject((Remote) bench, rc.benchPort());
         } catch (RemoteException e) {

@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import Interfaces.BenchInterface;
+import Interfaces.RepositoryInterface;
+import ServerSide.Repository.MRepository;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
 
@@ -40,8 +42,10 @@ public class MBench implements BenchInterface{
     private final Map<Integer, List<Integer>> coachAndTeamInPull; 
     private VectorTimestamp clocks;
     
+    private final RepositoryInterface repository;
     
-    public MBench( int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam){
+    
+    public MBench( int gamesPerMatch, int constestantInTrial, int elementInTeam, int opposingTeam, RepositoryInterface repository){
         this.gamesPerMatch = gamesPerMatch; 
         this.elementInTeam = elementInTeam;
         this.constestantInTrial = constestantInTrial; 
@@ -57,7 +61,7 @@ public class MBench implements BenchInterface{
         endReview = 0; 
 
         totalPlayer = 2*elementInTeam;
-        
+        this.repository = repository; 
         
         for (int i =1; i<= 2; i++){
             coachAndTeamInBench.put(i, new ArrayList<>());
@@ -175,6 +179,7 @@ public class MBench implements BenchInterface{
      * @param numGame
      * @param numTrial 
      * @param vt 
+     * @return  
      */
     @Override
     public synchronized VectorTimestamp callTrial(int numGame, int numTrial, VectorTimestamp vt) {
@@ -268,7 +273,7 @@ public class MBench implements BenchInterface{
     @Override
     public synchronized VectorTimestamp seatDown(int coachId, int contestId, VectorTimestamp vt) {
         clocks.update(vt);
-        removeContestantsInPull(coachId, contestId);
+        repository.removeContestantsInPull(coachId, contestId, clocks.clone());
         finished++;
 
         while(finished % 2*constestantInTrial != 0){
@@ -382,16 +387,5 @@ public class MBench implements BenchInterface{
     @Override
     public boolean endOfTheGame(int c ){
         return numGame <= gamesPerMatch;
-    }
-
-    /**
-     * 
-     * @param coachId
-     * @param contestId 
-     */
-    private void removeContestantsInPull(int coachId, int contestId) {
-       
-    }
-    
-    
+    }    
 }
