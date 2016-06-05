@@ -96,6 +96,6 @@ public class RepositoryExec {
             e.printStackTrace();
             System.exit(1);
         }
-        System.out.println("O logging foi registado!");
+        System.out.println("O repository foi registado!");
     }
 }

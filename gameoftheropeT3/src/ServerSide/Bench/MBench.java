@@ -78,7 +78,7 @@ public class MBench implements BenchInterface{
         isEndReview = false; 
         finished = 0;
         
-        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
+        this.clocks = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
 
     }
     

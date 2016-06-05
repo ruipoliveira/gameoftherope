@@ -41,7 +41,7 @@ public class Referee extends Thread{
         this.nrGamesMax = nrGamesMax; 
         state = ERefereeState.START_OF_THE_MATCH;
         
-        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
+        myClock = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
 
     }
     

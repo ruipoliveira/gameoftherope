@@ -39,7 +39,7 @@ public class Coach extends Thread{
         this.repository = repository;
         state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
         
-        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, idCoach);
+        myClock = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, (idCoach-1)*ConstConfigs.ELEMENTS_IN_TEAM + idCoach );
     }
     
     /**

@@ -20,7 +20,10 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class PlaygroundExec {
     public static void main (String [] args){
-         /* obtenção da localização do serviço de registo RMI */
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        
+        /* obtenção da localização do serviço de registo RMI */
         String rmiRegHostName;                      // nome do sistema onde está localizado o serviço de registos RMI
         int rmiRegPortNumb;                         // port de escuta do serviço
 

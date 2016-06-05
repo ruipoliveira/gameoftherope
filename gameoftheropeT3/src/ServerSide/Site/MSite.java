@@ -24,7 +24,7 @@ public class MSite implements SiteInterface{
     
     public MSite(RepositoryInterface repository){
         endOp = false; 
-        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
+        this.clocks = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
         this.repository = repository; 
     }
     

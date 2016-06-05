@@ -55,7 +55,7 @@ public class MPlayground implements PlaygroundInterface{
         this.maxTrials = maxTrials;
         this.contestantInTrial = contestantInTrial;
         
-        this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
+        this.clocks = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
     }
 
     /**

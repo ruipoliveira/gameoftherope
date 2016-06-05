@@ -56,7 +56,7 @@ public class MRepository implements RepositoryInterface{
     * @param nrContestants is the number of the contestants in the simulation 
     * @throws FileNotFoundException is thrown when fails to write/open the file
     */
-    public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException{
+    public MRepository(String fName, int nrCoaches, int nrContestants) throws FileNotFoundException, RemoteException{
         
         this.fName = fName;
         log = new File(fName);
@@ -90,7 +90,7 @@ public class MRepository implements RepositoryInterface{
     /*
     * Writes the first lines of the header in the logger file created .
     */
-    public void initWriting(){
+    public void initWriting() throws RemoteException{
                 
         StringBuilder sb = new StringBuilder("Ref");
         StringBuilder sb2 = new StringBuilder("Sta ");
@@ -108,7 +108,7 @@ public class MRepository implements RepositoryInterface{
         sb.append("              Trial ");
         sb2.append("3 2 1 . 1 2 3 NB PS ");
         sb.append("               VCk");
-        for (int i = 0; i < ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
+        for (int i = 0; i < 2*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
                 sb2.append("  ").append(i);
         }
         
@@ -120,6 +120,7 @@ public class MRepository implements RepositoryInterface{
 
         pw.println(sb.toString());
         pw.println(sb2.toString());
+        writeLine(new VectorTimestamp(2*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0));
 
     }
         
@@ -162,7 +163,7 @@ public class MRepository implements RepositoryInterface{
         pw.printf(" %1d ", posPull); 
         
         int[] arrayClocks = vt.toIntArray();
-        for (int i = 0; i < ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
+        for (int i = 0; i < ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
             pw.printf(String.format(" %2d", arrayClocks[i]));
         }
         pw.println();
@@ -179,9 +180,22 @@ public class MRepository implements RepositoryInterface{
         pw.println("SIMULATION ENDED!");
         pw.println();
         pw.println("Legend: \nRef Sta    – state of the referee \nCoa # Stat - state of the coach of team # (# - 1 .. 2) \nCont # Sta – state of the contestant # (# - 1 .. 5) of team whose coach was listed to the immediate left\nCont # SG  – strength of the contestant # (# - 1 .. 5) of team whose coach was listed to the immediate left\nTRIAL – ?  – contestant identification at the position ? at the end of the rope for present trial (? - 1 .. 3)\nTRIAL – NB – trial number\nTRIAL – PS – position of the centre of the rope at the beginning of the trial\n");
+        
+        pw.println("VCk 0 - referee");
+        pw.println("VCk 1 - Coach 1");
+        pw.println("VCk 2 - Contestant 1 ");
+        pw.println("VCk 3 - Contestant 2 ");
+        pw.println("...");
+        pw.println("VCk 7 - Coach 2");
+        pw.println("VCk 8 - Contestant 1 ");
+        pw.println("VCk 9 - Contestant 2 ");
+        pw.println("...");
         pw.println("@authors Gabriel Vieira (68021) gabriel.vieira@ua.pt / Rui Oliveira (68779) ruipedrooliveira@ua.pt");
+        
         pw.flush();
         pw.close();
+        
+        
         
         System.out.println("\n Fim do repositorio!"); 
             

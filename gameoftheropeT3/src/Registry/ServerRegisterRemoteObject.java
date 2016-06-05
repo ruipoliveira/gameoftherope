@@ -20,7 +20,9 @@ public class ServerRegisterRemoteObject {
 
     public static void main(String[] args) {
         /* get location of the registry service */
-
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        
         String rmiRegHostName;                      // nome do sistema onde está localizado o serviço de registos RMI
         int rmiRegPortNumb;                         // port de escuta do serviço
 

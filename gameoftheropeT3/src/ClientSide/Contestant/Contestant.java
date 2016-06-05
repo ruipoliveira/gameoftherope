@@ -40,7 +40,7 @@ public class Contestant extends Thread{
         
         contestStrength = generateStrength();
         
-        myClock = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, contId + ConstConfigs.OPPOSING_TEAMS);
+        myClock = new VectorTimestamp(ConstConfigs.OPPOSING_TEAMS*ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, ((coachId-1)*ConstConfigs.ELEMENTS_IN_TEAM + coachId) + contId );
 
         try{
             updateStrength(coachId,contId,contestStrength, myClock.clone());  
@@ -257,7 +257,6 @@ public class Contestant extends Thread{
      */
     private void updateStrengthAndWrite(int coachId, int contId, int contestStrength, VectorTimestamp vt) throws RemoteException{
         repository.updateStrengthAndWrite(coachId, contId, contestStrength, vt);
-       
     }
 
 }
