@@ -1,6 +1,7 @@
 
 package ServerSide.Repository;
 import Interfaces.RepositoryInterface;
+import Structures.Constants.ConstConfigs;
 import Structures.Enumerates.ECoachesState;
 import Structures.Enumerates.EContestantsState;
 import Structures.Enumerates.ERefereeState;
@@ -106,6 +107,11 @@ public class MRepository implements RepositoryInterface{
 
         sb.append("              Trial ");
         sb2.append("3 2 1 . 1 2 3 NB PS ");
+        sb.append("               VCk");
+        for (int i = 0; i < ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
+                sb2.append("  ").append(i);
+        }
+        
         if (fistLine){
             pw.println("\t \t *Game of the Rope - Description of the internal state*"); 
             pw.println("\t \t "+hour());
@@ -121,7 +127,7 @@ public class MRepository implements RepositoryInterface{
     *  writes a line to the logger with the simulation information updated.
     */
     
-    public synchronized void writeLine() throws RemoteException{ 
+    public synchronized void writeLine(VectorTimestamp vt) throws RemoteException{ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
 
@@ -155,6 +161,10 @@ public class MRepository implements RepositoryInterface{
         pw.printf(" %1d ", nrTrial);
         pw.printf(" %1d ", posPull); 
         
+        int[] arrayClocks = vt.toIntArray();
+        for (int i = 0; i < ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1; i++) {
+            pw.printf(String.format(" %2d", arrayClocks[i]));
+        }
         pw.println();
 
     }
@@ -190,11 +200,13 @@ public class MRepository implements RepositoryInterface{
     * updates the state of the referee
     *
     * @param state The Referee's current state
+     * @param vt
+     * @throws java.rmi.RemoteException
     */
     @Override
     public synchronized void updateRefState(ERefereeState state, VectorTimestamp vt) throws RemoteException{
         ref.setState(state);
-        writeLine();
+        writeLine(vt);
     }
     
      /**
@@ -206,7 +218,7 @@ public class MRepository implements RepositoryInterface{
     @Override
     public synchronized void updateCoachState(int idCoach, ECoachesState state, VectorTimestamp vt) throws RemoteException{
         lst_coach.get(idCoach-1).setState(state);  
-        writeLine();
+        writeLine(vt);
     }
     
     /**
@@ -219,7 +231,7 @@ public class MRepository implements RepositoryInterface{
     @Override
     public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state, VectorTimestamp vt) throws RemoteException{
         lst_player.get(idTeam).get(idContest-1).setState(state); 
-        writeLine();
+        writeLine(vt);
     }
 
     /**
@@ -246,7 +258,7 @@ public class MRepository implements RepositoryInterface{
     @Override
     public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength, VectorTimestamp vt) throws RemoteException{ 
         lst_player.get(idTeam).get(contestId-1).setStrength(contestStrength); 
-        writeLine();
+        writeLine(vt);
     }
     
     /**
@@ -257,7 +269,7 @@ public class MRepository implements RepositoryInterface{
     @Override
     public synchronized void updatePullPosition(int posPull, VectorTimestamp vt) throws RemoteException{
         this.posPull = posPull;
-        writeLine();
+        writeLine(vt);
     }
     
     /**
@@ -268,7 +280,7 @@ public class MRepository implements RepositoryInterface{
     @Override
     public synchronized void updateTrialNumber(int nrTrial, VectorTimestamp vt) throws RemoteException{
         this.nrTrial = nrTrial;
-        writeLine();
+        writeLine(vt);
     }
     
     /**
@@ -283,7 +295,7 @@ public class MRepository implements RepositoryInterface{
         nrTrial =0;
         posPull = 0; 
         writeLineGame();
-        writeLine();
+        writeLine(vt);
     }
     
     /**
@@ -349,7 +361,7 @@ public class MRepository implements RepositoryInterface{
             lstInPullB.add(idPlayer); 
         }
         
-        writeLine();
+        writeLine(vt);
     } 
     
     /**
@@ -367,7 +379,7 @@ public class MRepository implements RepositoryInterface{
             lstInPullB.removeIf(p -> p.equals(idPlayer));
         }
 
-        writeLine();
+        writeLine(vt);
     }
 
     /*
