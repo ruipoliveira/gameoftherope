@@ -1,37 +1,38 @@
 
+echo "Enviar .class para Public/classes RMI - ws07.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r __bin/Interfaces __bin/ClientSide __bin/Structures sd0105@l040101-ws07.ua.pt:~/Public/classes
 
+echo "Enviar .class para Registry - ws07.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/Registry __bin/Structures sd0105@l040101-ws07.ua.pt:~/dir_registry
 
-set -x
-echo "  > Compilar todo o codigo (Makefile)"
-make;
+echo "Enviar .class para Bench - ws01.ua.pt "
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ServerSide __bin/Structures sd0105@l040101-ws01.ua.pt:~/dir_serverSide
 
-echo "  > Criar directorio para guardar ficheiros JAR, senao estiver criado"
-if [[ ! -e JARS ]]; then
-    mkdir JARS;
-fi
+echo "Enviar .class para Site - ws02.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ServerSide __bin/Structures sd0105@l040101-ws02.ua.pt:~/dir_serverSide
 
-echo "  > Gerar JARs"
-(cd __bin;
-jar cfe RMI_Server.jar Registry.ServerRegisterRemoteObject ./
-jar cfe Bench_vRMI.jar ServerSide.Bench.BenchExec ./
-jar cfe Playground_vRMI.jar ServerSide.Playground.PlaygroundExec ./
-jar cfe Site_vRMI.jar ServerSide.Site.SiteExec ./
-jar cfe Repository_vRMI.jar ServerSide.Repository.RepositoryExec ./
-jar cfe Coach_vRMI.jar ClientSide.Coach.CoachExec ./
-jar cfe Contestant_vRMI.jar ClientSide.Contestant.ContestantExec ./
-jar cfe Referee_vRMI.jar ClientSide.Referee.RefereeExec ./
-mv *.jar ../JARS/)
+echo "Enviar .class para Playground - ws03.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ServerSide __bin/Structures sd0105@l040101-ws03.ua.pt:~/dir_serverSide
 
-echo "  > Enviar JARs para as diferentes maquinas"
-(cd JARS;
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no RMI_Server.jar sd0105@l040101-ws07.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Repository_vRMI.jar sd0105@l040101-ws01.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Playground_vRMI.jar sd0105@l040101-ws05.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Site_vRMI.jar sd0105@l040101-ws04.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Bench_vRMI.jar sd0105@l040101-ws03.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Referee_vRMI.jar sd0105@l040101-ws02.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Contestant_vRMI.jar sd0105@l040101-ws06.ua.pt:~
-sshpass -p qualquercoisa scp -o StrictHostKeyChecking=no Coach_vRMI.jar sd0105@l040101-ws08.ua.pt:~
-)
+echo "Enviar .class para Repository - ws04.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ServerSide __bin/Structures sd0105@l040101-ws04.ua.pt:~/dir_serverSide
+
+echo "Enviar .class para Coach - ws05.ua.pt "
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ClientSide __bin/Structures sd0105@l040101-ws05.ua.pt:~/dir_clientSide
+
+echo "Enviar .class para Contestant - ws06.ua.pt "
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ClientSide __bin/Structures sd0105@l040101-ws06.ua.pt:~/dir_clientSide
+
+echo "Enviar .class para Referee - ws08.ua.pt"
+echo "" 
+sshpass -p qualquercoisa scp -r  __bin/Interfaces __bin/ClientSide __bin/Structures sd0105@l040101-ws08.ua.pt:~/dir_clientSide
 
 
