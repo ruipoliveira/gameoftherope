@@ -2,6 +2,7 @@
 package Interfaces;
 
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -9,5 +10,5 @@ import Structures.VectorClock.VectorTimestamp;
  * @version 2.0
  */
 public interface ICoachPlayground {  
-    public VectorTimestamp informReferee(int coachId, VectorTimestamp vt);
+    public VectorTimestamp informReferee(int coachId, VectorTimestamp vt) throws RemoteException;
 }

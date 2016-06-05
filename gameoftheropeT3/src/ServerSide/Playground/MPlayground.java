@@ -12,6 +12,7 @@ import Interfaces.PlaygroundInterface;
 import Interfaces.RepositoryInterface;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -63,7 +64,7 @@ public class MPlayground implements PlaygroundInterface{
      * @param nrTrial 
      */
     @Override
-    public synchronized VectorTimestamp startTrial(int nrGame,int nrTrial, VectorTimestamp vt) {
+    public synchronized VectorTimestamp startTrial(int nrGame,int nrTrial, VectorTimestamp vt) throws RemoteException {
         clocks.update(vt);
         this.nrGame = nrGame; 
         numTrial = nrTrial; 
@@ -89,7 +90,7 @@ public class MPlayground implements PlaygroundInterface{
      * @return decision trial decision 
      */
     @Override
-    public synchronized Object[] assertTrialDecision(VectorTimestamp vt) { 
+    public synchronized Object[] assertTrialDecision(VectorTimestamp vt) throws RemoteException { 
         
         clocks.update(vt);
         Object[] res = new Object[2];
@@ -166,7 +167,7 @@ public class MPlayground implements PlaygroundInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp informReferee(int coachId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp informReferee(int coachId, VectorTimestamp vt) throws RemoteException{
         clocks.update(vt);
         newTrial++;
         while(newTrial % 2 != 0){
@@ -196,7 +197,7 @@ public class MPlayground implements PlaygroundInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp setPositionPull(int posPull, VectorTimestamp vt){
+    public synchronized VectorTimestamp setPositionPull(int posPull, VectorTimestamp vt) throws RemoteException{
         clocks.update(vt);
         this.posPull = posPull; 
         return clocks.clone();
@@ -210,7 +211,7 @@ public class MPlayground implements PlaygroundInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt) throws RemoteException{
         clocks.update(vt);
         while(startTrial == false){
             try {
@@ -231,7 +232,7 @@ public class MPlayground implements PlaygroundInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt) {
+    public synchronized VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt) throws RemoteException{
         clocks.update(vt);
         while( playerInPull % contestantInTrial != 0){
             try { 
@@ -282,14 +283,14 @@ public class MPlayground implements PlaygroundInterface{
      * 
      * @param numTrial 
      */
-    private void updateTrialNumber(int numTrial) {
+    private void updateTrialNumber(int numTrial) throws RemoteException{
        repository.updateTrialNumber(numTrial, clocks.clone());
     }
     /**
      * 
      * @param posPull 
      */
-    private void updatePullPosition(int posPull) {
+    private void updatePullPosition(int posPull) throws RemoteException {
        repository.updatePullPosition(posPull, clocks.clone());
     }
     
@@ -298,7 +299,7 @@ public class MPlayground implements PlaygroundInterface{
      * @param coachId
      * @param contId 
      */
-    private void addContestantsInPull(int coachId, int contId) {
+    private void addContestantsInPull(int coachId, int contId) throws RemoteException {
         repository.addContestantsInPull(coachId, contId, clocks.clone()); 
     }
     

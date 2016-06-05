@@ -13,6 +13,7 @@ import Interfaces.RepositoryInterface;
 import ServerSide.Repository.MRepository;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -89,7 +90,7 @@ public class MBench implements BenchInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp callContestants(int coachId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp callContestants(int coachId, VectorTimestamp vt) throws RemoteException{
         clocks.update(vt);
         if (numTrial > 1 || numGame > 1){
             while(seatedA != constestantInTrial){
@@ -182,7 +183,7 @@ public class MBench implements BenchInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp callTrial(int numGame, int numTrial, VectorTimestamp vt) {
+    public synchronized VectorTimestamp callTrial(int numGame, int numTrial, VectorTimestamp vt) throws RemoteException{
         
         clocks.update(vt);
         this.numGame = numGame; 
@@ -221,7 +222,7 @@ public class MBench implements BenchInterface{
      * @return isSelected
      */
     @Override
-    public boolean isPlayerSelected(int coachId, int contestId){
+    public boolean isPlayerSelected(int coachId, int contestId) throws RemoteException{
         return coachAndTeamInPull.get(coachId).contains(contestId); 
     }
 
@@ -232,7 +233,7 @@ public class MBench implements BenchInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp reviewNotes(int coachId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp reviewNotes(int coachId, VectorTimestamp vt) throws RemoteException {
         
         clocks.update(vt);
         while(seatedA % constestantInTrial != 0 || seatedB % constestantInTrial != 0){
@@ -269,13 +270,16 @@ public class MBench implements BenchInterface{
      * @param contestId 
      * @param vt 
      * @return  
+     * @throws java.rmi.RemoteException  
      */
     @Override
-    public synchronized VectorTimestamp seatDown(int coachId, int contestId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp seatDown(int coachId, int contestId, VectorTimestamp vt) throws RemoteException {
         clocks.update(vt);
+        clocks.increment(); // added
         repository.removeContestantsInPull(coachId, contestId, clocks.clone());
         finished++;
-
+        clocks.update(vt);
+        
         while(finished % 2*constestantInTrial != 0){
             try {
                 wait();
@@ -307,7 +311,7 @@ public class MBench implements BenchInterface{
      * @return isSitting
      */
     @Override
-    public synchronized boolean allSittingTeams(){
+    public synchronized boolean allSittingTeams() throws RemoteException{
         return seatedA + seatedB == 2*constestantInTrial; 
     }
     
@@ -319,7 +323,7 @@ public class MBench implements BenchInterface{
      * @return  
      */
     @Override
-    public synchronized VectorTimestamp followCoachAdvice(int coachId, int contestId, VectorTimestamp vt) {
+    public synchronized VectorTimestamp followCoachAdvice(int coachId, int contestId, VectorTimestamp vt) throws RemoteException {
 
         clocks.update(vt);
         while (callContestant ==false){
@@ -385,7 +389,7 @@ public class MBench implements BenchInterface{
      * @return 
      */
     @Override
-    public boolean endOfTheGame(int c ){
+    public boolean endOfTheGame(int c ) throws RemoteException{
         return numGame <= gamesPerMatch;
     }    
 }

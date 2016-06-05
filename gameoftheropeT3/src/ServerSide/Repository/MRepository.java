@@ -121,7 +121,7 @@ public class MRepository implements RepositoryInterface{
     *  writes a line to the logger with the simulation information updated.
     */
     
-    public synchronized void writeLine(){ 
+    public synchronized void writeLine() throws RemoteException{ 
 
         pw.printf("%3s ",ref.getState().getAcronym()); 
 
@@ -164,7 +164,7 @@ public class MRepository implements RepositoryInterface{
     */
 
     
-    public synchronized void endWriting(){
+    public synchronized void endWriting() throws RemoteException{
         pw.println();
         pw.println("SIMULATION ENDED!");
         pw.println();
@@ -181,7 +181,7 @@ public class MRepository implements RepositoryInterface{
     * writes the number of a game in a line
     */
     
-    public synchronized void writeLineGame(){
+    public synchronized void writeLineGame() throws RemoteException{
         pw.println("Game "+nrGame);
         initWriting();
     }
@@ -192,7 +192,7 @@ public class MRepository implements RepositoryInterface{
     * @param state The Referee's current state
     */
     @Override
-    public synchronized void updateRefState(ERefereeState state, VectorTimestamp vt){
+    public synchronized void updateRefState(ERefereeState state, VectorTimestamp vt) throws RemoteException{
         ref.setState(state);
         writeLine();
     }
@@ -204,7 +204,7 @@ public class MRepository implements RepositoryInterface{
     * @param idCoach Is the coach Identifier (ID)
     */
     @Override
-    public synchronized void updateCoachState(int idCoach, ECoachesState state, VectorTimestamp vt){
+    public synchronized void updateCoachState(int idCoach, ECoachesState state, VectorTimestamp vt) throws RemoteException{
         lst_coach.get(idCoach-1).setState(state);  
         writeLine();
     }
@@ -217,7 +217,7 @@ public class MRepository implements RepositoryInterface{
     * @param idContest Is the contestant identifier (ID) 
     */
     @Override
-    public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state, VectorTimestamp vt){
+    public synchronized void updateContestantState(int idTeam, int idContest, EContestantsState state, VectorTimestamp vt) throws RemoteException{
         lst_player.get(idTeam).get(idContest-1).setState(state); 
         writeLine();
     }
@@ -228,9 +228,10 @@ public class MRepository implements RepositoryInterface{
      * @param idTeam Is the team identifier (ID) (or coachID)
      * @param idContest Is the contestant identifier (ID)
      * @param contestStrength Is the contestant's strength
+     * @param vt
      */
     @Override
-    public synchronized void updateStrength(int idTeam, int idContest, int contestStrength, VectorTimestamp vt){ 
+    public synchronized void updateStrength(int idTeam, int idContest, int contestStrength, VectorTimestamp vt) throws RemoteException{ 
         lst_player.get(idTeam).get(idContest-1).setStrength(contestStrength); 
     }
     
@@ -240,9 +241,10 @@ public class MRepository implements RepositoryInterface{
      * @param idTeam Is the team identifier (ID) (or coachID)
      * @param contestId Is the contestant identifier (ID)
      * @param contestStrength Is the contestant's strength
+     * @param vt
      */
     @Override
-    public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength, VectorTimestamp vt){ 
+    public synchronized void updateStrengthAndWrite(int idTeam,int contestId, int contestStrength, VectorTimestamp vt) throws RemoteException{ 
         lst_player.get(idTeam).get(contestId-1).setStrength(contestStrength); 
         writeLine();
     }
@@ -253,7 +255,7 @@ public class MRepository implements RepositoryInterface{
      * @param posPull is the position of the pull
      */
     @Override
-    public synchronized void updatePullPosition(int posPull, VectorTimestamp vt){
+    public synchronized void updatePullPosition(int posPull, VectorTimestamp vt) throws RemoteException{
         this.posPull = posPull;
         writeLine();
     }
@@ -264,7 +266,7 @@ public class MRepository implements RepositoryInterface{
      * @param nrTrial is the number of the trial 
      */
     @Override
-    public synchronized void updateTrialNumber(int nrTrial, VectorTimestamp vt){
+    public synchronized void updateTrialNumber(int nrTrial, VectorTimestamp vt) throws RemoteException{
         this.nrTrial = nrTrial;
         writeLine();
     }
@@ -276,7 +278,7 @@ public class MRepository implements RepositoryInterface{
      * @param vt
      */
     @Override
-    public synchronized void updateGameNumber(int nrGame, VectorTimestamp vt){
+    public synchronized void updateGameNumber(int nrGame, VectorTimestamp vt) throws RemoteException{
         this.nrGame = nrGame;
         nrTrial =0;
         posPull = 0; 
@@ -292,14 +294,15 @@ public class MRepository implements RepositoryInterface{
      * @param team 
      */
     @Override
-    public synchronized void isKnockOut(int nrGame, int nrTrial, String team , VectorTimestamp vt){
+    public synchronized void isKnockOut(int nrGame, int nrTrial, String team , VectorTimestamp vt) throws RemoteException{
         pw.println("Game "+nrGame+" was won by team "+team+" by knock out in "+nrTrial+" trials.");
     }
     
     /*
     * Say that the game ends
     */
-    public synchronized  void isEnd(int nrGame, String team){
+    @Override
+    public synchronized  void isEnd(int nrGame, String team) throws RemoteException{
         if (posPull != 4 )
             pw.println("Game "+nrGame+" was won by team "+team+" by points.");
         else if (posPull != -4)
@@ -310,14 +313,16 @@ public class MRepository implements RepositoryInterface{
     /*
     * Say that the result of the game was a draw
     */
-    public synchronized  void wasADraw(int nrGame){
+    @Override
+    public synchronized  void wasADraw(int nrGame) throws RemoteException{
         pw.println("Game "+nrGame+" was a draw");
     }       
     
     /*
     * Say that the match is over
     */
-    public synchronized void endMatch(String team, int resultA, int resultB){
+    @Override
+    public synchronized void endMatch(String team, int resultA, int resultB) throws RemoteException{
         
         if(resultA == resultB){
             pw.println("Match was a draw.");
@@ -336,7 +341,7 @@ public class MRepository implements RepositoryInterface{
      * @param vt
      */
     @Override
-    public synchronized void addContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){
+    public synchronized void addContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt) throws RemoteException{
         
         if (idTeam ==1 ){
             lstInPullA.add(idPlayer); 
@@ -354,7 +359,7 @@ public class MRepository implements RepositoryInterface{
      * @param vt
      */
     @Override
-    public synchronized void removeContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt){
+    public synchronized void removeContestantsInPull(int idTeam, int idPlayer, VectorTimestamp vt) throws RemoteException{
 
         if (idTeam ==1 ){
             lstInPullA.removeIf(p -> p.equals(idPlayer));
@@ -370,7 +375,7 @@ public class MRepository implements RepositoryInterface{
     * return true -> index exists
     * return false, otherwise
     */
-    private boolean indexExists(final List list, final int index) {
+    private boolean indexExists(final List list, final int index) throws RemoteException {
         return index >= 0 && index < list.size();
     }
 

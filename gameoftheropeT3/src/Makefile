@@ -37,6 +37,6 @@ CLASSES = \
 
 classes: $(CLASSES:.java=.class)
 
-__bin:
+__bin:  
 	mkdir __bin
 

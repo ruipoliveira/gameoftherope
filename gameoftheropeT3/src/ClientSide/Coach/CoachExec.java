@@ -112,8 +112,7 @@ public class CoachExec {
             System.exit(1);
         }
               
-        
-        
+
         ArrayList<Coach> coach = new ArrayList<>(ConstConfigs.OPPOSING_TEAMS);
     
         for (int idc = 1; idc <= ConstConfigs.OPPOSING_TEAMS ; idc++){

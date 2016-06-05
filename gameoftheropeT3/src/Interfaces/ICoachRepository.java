@@ -2,6 +2,7 @@ package Interfaces;
 
 import Structures.Enumerates.ECoachesState;
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -9,6 +10,6 @@ import Structures.VectorClock.VectorTimestamp;
  * @version 2.0
  */
 public interface ICoachRepository {
-    public void updateCoachState(int coachId, ECoachesState state, VectorTimestamp vt);
+    public void updateCoachState(int coachId, ECoachesState state, VectorTimestamp vt) throws RemoteException;
      
 }

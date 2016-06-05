@@ -2,6 +2,7 @@
 package Interfaces;
 
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -10,7 +11,7 @@ import Structures.VectorClock.VectorTimestamp;
  */
 public interface IContestantsPlayground {
     
-    public VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt);
+    public VectorTimestamp getReady(int coachId, int contId, VectorTimestamp vt) throws RemoteException;
 
-    public VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt);
+    public VectorTimestamp amDone(int coachId, int contId, int contestStrength, VectorTimestamp vt) throws RemoteException;
 }

@@ -1,3 +1,6 @@
+
+
+
 set -x
 echo "  > Compilar todo o codigo (Makefile)"
 make;

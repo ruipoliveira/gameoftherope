@@ -1,10 +1,12 @@
 package ServerSide.Site;
 
+import Interfaces.RepositoryInterface;
 import Interfaces.SiteInterface;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
 
 import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 
 /**
@@ -17,12 +19,13 @@ public class MSite implements SiteInterface{
     private int winnerTeamB; 
     private int nrTrial, numGame; 
     private final boolean endOp; 
-    
+    private final RepositoryInterface repository; 
     private final VectorTimestamp clocks;
     
-    public MSite(){
+    public MSite(RepositoryInterface repository){
         endOp = false; 
         this.clocks = new VectorTimestamp(ConstConfigs.ELEMENTS_IN_TEAM + ConstConfigs.OPPOSING_TEAMS + 1, 0);
+        this.repository = repository; 
     }
     
     /**
@@ -31,7 +34,7 @@ public class MSite implements SiteInterface{
      * @param nrTrial 
      */
     @Override
-    public synchronized VectorTimestamp announceNewGame(int numGame, int nrTrial, VectorTimestamp vt){
+    public synchronized VectorTimestamp announceNewGame(int numGame, int nrTrial, VectorTimestamp vt) throws RemoteException{
         
         clocks.update(vt);
         this.nrTrial = nrTrial; 
@@ -45,7 +48,7 @@ public class MSite implements SiteInterface{
      * @param posPull 
      */
     @Override
-    public synchronized VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt) {
+    public synchronized VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt) throws RemoteException {
         clocks.update(vt);
         if (posPull < 0 ){            
             System.out.println("Posicao da Corda: "+posPull+" | Game #"+numGame+" | Vence equipa A!"); 
@@ -71,7 +74,7 @@ public class MSite implements SiteInterface{
      * The referee announces which teams has won the match. Both internal state and match result should be saved.
      */
     @Override
-    public synchronized VectorTimestamp declareMatchWinner(VectorTimestamp vt) {
+    public synchronized VectorTimestamp declareMatchWinner(VectorTimestamp vt) throws RemoteException{
         
         clocks.update(vt);
         System.out.println("***********************************************************");
@@ -97,7 +100,7 @@ public class MSite implements SiteInterface{
      * @return 
      */
     @Override
-    public boolean endOperCoach(int id) {
+    public boolean endOperCoach(int id) throws RemoteException {
         return endOp; 
     }
     
@@ -105,16 +108,16 @@ public class MSite implements SiteInterface{
         return nrTrial; 
     }
 
-    private void isEnd(int numGame, String team) {
-       
+    private void isEnd(int numGame, String team) throws RemoteException{
+       repository.isEnd(numGame, team);
     }
 
-    private void wasADraw(int numGame) {
-       
+    private void wasADraw(int numGame) throws RemoteException {
+       repository.wasADraw(numGame);
     }
 
-    private void endMatch(String team, int winnerTeamA, int winnerTeamB) {
-       
+    private void endMatch(String team, int winnerTeamA, int winnerTeamB) throws RemoteException {
+       repository.endMatch(team, winnerTeamA, winnerTeamB);
     }
     
 }

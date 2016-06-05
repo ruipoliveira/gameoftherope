@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -9,7 +10,7 @@ import Structures.VectorClock.VectorTimestamp;
  */
 public interface IRefereeBench {
     
-    public VectorTimestamp callTrial(int nrTrial, int numGame, VectorTimestamp vt);
+    public VectorTimestamp callTrial(int nrTrial, int numGame, VectorTimestamp vt) throws RemoteException;
 
-    public boolean allSittingTeams(); 
+    public boolean allSittingTeams() throws RemoteException; 
 }

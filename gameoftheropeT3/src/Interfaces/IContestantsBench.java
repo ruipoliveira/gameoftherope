@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Structures.VectorClock.VectorTimestamp;
+import java.rmi.RemoteException;
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -9,10 +10,10 @@ import Structures.VectorClock.VectorTimestamp;
  */
 public interface IContestantsBench {
     
-    public VectorTimestamp seatDown(int coachId, int contId, VectorTimestamp vt);
+    public VectorTimestamp seatDown(int coachId, int contId, VectorTimestamp vt) throws RemoteException;
     
-    public VectorTimestamp followCoachAdvice(int coachId, int contId, VectorTimestamp vt);
+    public VectorTimestamp followCoachAdvice(int coachId, int contId, VectorTimestamp vt) throws RemoteException;
     
-    public boolean isPlayerSelected(int coachId, int contestId); 
+    public boolean isPlayerSelected(int coachId, int contestId) throws RemoteException; 
     
 }

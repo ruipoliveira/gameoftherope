@@ -64,7 +64,7 @@ public class SiteExec {
         /* instanciação do objecto remoto que representa a barbearia e geração de um stub para ele */
         MSite site = null;                              // barbearia (representa o objecto remoto)
         SiteInterface siteInt = null;             // interface da barbearia
-        site = new MSite();
+        site = new MSite(repInt);
         try {
             siteInt = (SiteInterface) UnicastRemoteObject.exportObject((Remote) site, rc.sitePort());
         } catch (RemoteException e) {
@@ -76,7 +76,7 @@ public class SiteExec {
 
         /* seu registo no serviço de registo RMI */
         String nameEntryBase = RegistryConfig.registerHandler;
-        String nameEntryObject = RegistryConfig.playgroundNameEntry;
+        String nameEntryObject = RegistryConfig.siteNameEntry;
         Registry registry = null;
         Register reg = null;
 

@@ -64,41 +64,41 @@ public class RegistryConfig {
      * @return parameter value
      */
     public int registryPort() {
-        return 22150;
+        return 22151;
     }
     /** 
      * Loads the parameter REGISTER_OBJECT_PORT from the configuration file.
      * @return parameter value
      */
     public int objectPort() {
-        return 22151;
+        return 22152;
     }
     /** 
      * Loads the parameter REPOSITORY_PORT from the configuration file.
      * @return parameter value
      */
     public int repositoryPort() {
-        return 22152;
+        return 22151;
     }
     /** 
      * Loads the parameter BENCH_PORT from the configuration file.
      * @return parameter value
      */
     public int benchPort() {
-        return 22154;
+        return 22151;
     }
     /** 
      * Loads the parameter PLAYGROUND_PORT from the configuration file.
      * @return parameter value
      */
     public int playgroundPort() {
-        return 22152;
+        return 22151;
     }
     /** 
      * Loads the parameter SITE_PORT from the configuration file.
      * @return parameter value
      */
     public int sitePort() {
-        return 22153;
+        return 22151;
     }
 }

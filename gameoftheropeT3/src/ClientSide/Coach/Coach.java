@@ -5,6 +5,7 @@ import Interfaces.*;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 import java.util.Arrays;
  
 
@@ -29,7 +30,7 @@ public class Coach extends Thread{
     
     private final int idCoach;
 
-    public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench, SiteInterface site){
+    public Coach(int idCoach, RepositoryInterface repository, PlaygroundInterface playground, BenchInterface bench, SiteInterface site) {
         this.setName("Coach "+idCoach);
         this.idCoach = idCoach;
         this.bench = bench;
@@ -45,39 +46,43 @@ public class Coach extends Thread{
      * Esta função representada o ciclo de vida de um treinador.
      */
     @Override
-    public void run(){
-        do {
-            switch(this.state){
-                case WAIT_FOR_REFEREE_COMMAND:
-                    if (!bench.endOfTheGame(idCoach)) break;
-                    
-                    myClock.increment(); // added    // ver melhor isto
-                    receivedClock = callContestants(idCoach, myClock.clone());
-                    myClock.update(receivedClock); // added
-                    
-                    state = ECoachesState.ASSEMBLE_TEAM;
-                    repository.updateCoachState(idCoach, state, myClock.clone() ); // ver depois
-                    break; 
+    public void run() {
+        try {
+            do {
+                switch(this.state){
+                    case WAIT_FOR_REFEREE_COMMAND:
+                        if (!bench.endOfTheGame(idCoach)) break;
 
-                case ASSEMBLE_TEAM:
-                    myClock.increment(); // added
-                    receivedClock = informReferee(idCoach, myClock.clone());
-                    myClock.update(receivedClock); // added
-                    
-                    state = ECoachesState.WATCH_TRIAL;
-                    repository.updateCoachState(idCoach, state, myClock.clone());
-                    break; 
-                    
-                case WATCH_TRIAL:
-                    myClock.increment(); // added
-                    receivedClock = reviewNotes(idCoach, myClock.clone());
-                    myClock.update(receivedClock); // added
-                    
-                    state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
-                    repository.updateCoachState(idCoach, state, myClock.clone()); // fazer mais tarde
-                    break;
-            }
-        }while (bench.endOfTheGame(idCoach));
+                        myClock.increment(); // added    // ver melhor isto
+                        receivedClock = callContestants(idCoach, myClock.clone());
+                        myClock.update(receivedClock); // added
+
+                        state = ECoachesState.ASSEMBLE_TEAM;
+                        repository.updateCoachState(idCoach, state, myClock.clone() ); // ver depois
+                        break; 
+
+                    case ASSEMBLE_TEAM:
+                        myClock.increment(); // added
+                        receivedClock = informReferee(idCoach, myClock.clone());
+                        myClock.update(receivedClock); // added
+
+                        state = ECoachesState.WATCH_TRIAL;
+                        repository.updateCoachState(idCoach, state, myClock.clone());
+                        break; 
+
+                    case WATCH_TRIAL:
+                        myClock.increment(); // added
+                        receivedClock = reviewNotes(idCoach, myClock.clone());
+                        myClock.update(receivedClock); // added
+
+                        state = ECoachesState.WAIT_FOR_REFEREE_COMMAND; 
+                        repository.updateCoachState(idCoach, state, myClock.clone()); // fazer mais tarde
+                        break;
+                }
+            }while (bench.endOfTheGame(idCoach));
+        } catch(RemoteException e) {
+            e.printStackTrace();
+        }
         
         System.out.println("Fim do treinador "+idCoach); 
     
@@ -88,7 +93,7 @@ public class Coach extends Thread{
      * 
      * @param idCoach is the coach identifier (ID)
      */
-    private VectorTimestamp callContestants(int idCoach, VectorTimestamp vt){
+    private VectorTimestamp callContestants(int idCoach, VectorTimestamp vt) throws RemoteException{
         return bench.callContestants(idCoach, vt);    
     }
     
@@ -97,7 +102,7 @@ public class Coach extends Thread{
      * 
      * @param idCoach 
      */
-    private VectorTimestamp informReferee(int idCoach, VectorTimestamp vt){   
+    private VectorTimestamp informReferee(int idCoach, VectorTimestamp vt) throws RemoteException{   
         return playground.informReferee(idCoach, vt);
     }
     
@@ -106,7 +111,7 @@ public class Coach extends Thread{
      * 
      * @param idCoach 
      */
-    private VectorTimestamp reviewNotes(int idCoach, VectorTimestamp vt){
+    private VectorTimestamp reviewNotes(int idCoach, VectorTimestamp vt) throws RemoteException{
         return bench.reviewNotes(idCoach, vt);
     }
     

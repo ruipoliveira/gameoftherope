@@ -5,6 +5,7 @@ import Interfaces.*;
 import Structures.Constants.ConstConfigs;
 import Structures.VectorClock.VectorTimestamp;
 import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 
 
@@ -53,124 +54,128 @@ public class Referee extends Thread{
         boolean endOp = true; 
         
         Object[] res = null;
+        try{
+            do{
+                char decision = 0; 
 
-        do{
-            char decision = 0; 
+                switch(state){
+                    case START_OF_THE_MATCH:
 
-            switch(state){
-                case START_OF_THE_MATCH:
-         
-                    nrGame++;
-                    updateGameNumber(nrGame, myClock.clone());
+                        nrGame++;
+                        updateGameNumber(nrGame, myClock.clone());
 
-                    nrTrial++;
-                    updateTrialNumber(nrTrial, myClock.clone());
-                    
-                    myClock.increment(); // added
-                    receivedClock = announceNewGame(nrGame,nrTrial, myClock.clone());
-                    myClock.update(receivedClock); // added
-                    
-                    state = ERefereeState.START_OF_A_GAME;
-
-                    break; 
-
-                case START_OF_A_GAME:
-                    myClock.increment();
-                    receivedClock = callTrial(nrGame,nrTrial, myClock.clone()); 
-                    myClock.update(receivedClock); // added
-                    
-                    state = ERefereeState.TEAMS_READY;
-                    updateRefState(state, myClock.clone());
-
-                    break;
-
-                case TEAMS_READY:
-                    myClock.increment(); // added
-                    receivedClock = startTrial(nrGame,nrTrial, myClock.clone());
-                    myClock.update(receivedClock); // added
-                    
-
-                    state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
-                    updateRefState(state, myClock.clone());
-
-                    break; 
-
-                case WAIT_FOR_TRIAL_CONCLUSION:
-                    if (allSittingTeams()){
-                        myClock.increment(); // added
-                        res = assertTrialDecision(myClock.clone());
-                        decision = (char)res[1]; 
-                        myClock.update((VectorTimestamp)res[0]); // added
-                                               
-                    }
-
-                    if(decision == GAME_CONTINUATION ){
-                        System.out.println("Jogo vai continuar");
-                        nrTrial++; 
-                        state = ERefereeState.START_OF_A_GAME;
-                        updateRefState(state, myClock.clone());
-                    }
-                    else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
-                        switch (decision) {
-                            case GAME_END:
-                                System.out.println("Jogo acaba! - excedeu numero de trials! ");
-                                break;
-                            case KNOCK_OUT_A:
-                                System.out.println("Jogo acaba! - knock out! Ganha A");
-                                
-                                isKnockOut(nrGame, nrTrial, "A", myClock.clone()); // ver depois para o rep a cena dos clocks e tal e coisas
-                                
-                                break;
-                            case KNOCK_OUT_B:
-                                System.out.println("Jogo acaba! - knock out! Ganha B");
-                                
-                                isKnockOut(nrGame, nrTrial, "B", myClock.clone());
-                                
-                                break;
-                            default:
-                                break;
-                        }
-                      
-                        int posPull = getPositionPull(); ///// VER MELHOR /////
-                        
-                        myClock.increment();
-                        receivedClock = declareGameWinner(posPull, myClock.clone()); 
-                        myClock.update(receivedClock);
-                        
-                        setPositionPull(PULL_CENTER, myClock.clone()); 
-                        
-                        state = ERefereeState.END_OF_A_GAME;
-                        updateRefState(state, myClock.clone());  // actualiza no repositorio
-                        
-                    }
-                    break; 
-
-                case END_OF_A_GAME:
-                    if(nrGame < nrGamesMax){
-                        nrTrial=0;
-                        state = ERefereeState.START_OF_THE_MATCH;
-                        updateRefState(state, myClock.clone());
-
-                        
-                    }
-                    else{
-
-                        state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
-                        updateRefState(state, myClock.clone());
+                        nrTrial++;
+                        updateTrialNumber(nrTrial, myClock.clone());
 
                         myClock.increment(); // added
-                        receivedClock = declareMatchWinner(myClock.clone());
+                        receivedClock = announceNewGame(nrGame,nrTrial, myClock.clone());
                         myClock.update(receivedClock); // added
-                    } 
-                    break;
 
-                case END_OF_THE_MATCH: 
+                        state = ERefereeState.START_OF_A_GAME;
 
-                    System.out.println("Fim do match!");
-                    endOp = false; 
-                    break; 
-            }
-        }while(endOp);
+                        break; 
+
+                    case START_OF_A_GAME:
+                        myClock.increment();
+                        receivedClock = callTrial(nrGame,nrTrial, myClock.clone()); 
+                        myClock.update(receivedClock); // added
+
+                        state = ERefereeState.TEAMS_READY;
+                        updateRefState(state, myClock.clone());
+
+                        break;
+
+                    case TEAMS_READY:
+                        myClock.increment(); // added
+                        receivedClock = startTrial(nrGame,nrTrial, myClock.clone());
+                        myClock.update(receivedClock); // added
+
+
+                        state = ERefereeState.WAIT_FOR_TRIAL_CONCLUSION;
+                        updateRefState(state, myClock.clone());
+
+                        break; 
+
+                    case WAIT_FOR_TRIAL_CONCLUSION:
+                        if (allSittingTeams()){
+                            myClock.increment(); // added
+                            res = assertTrialDecision(myClock.clone());
+                            decision = (char)res[1]; 
+                            myClock.update((VectorTimestamp)res[0]); // added
+
+                        }
+
+                        if(decision == GAME_CONTINUATION ){
+                            System.out.println("Jogo vai continuar");
+                            nrTrial++; 
+                            state = ERefereeState.START_OF_A_GAME;
+                            updateRefState(state, myClock.clone());
+                        }
+                        else if(decision == GAME_END || decision == KNOCK_OUT_A || decision == KNOCK_OUT_B ){
+                            switch (decision) {
+                                case GAME_END:
+                                    System.out.println("Jogo acaba! - excedeu numero de trials! ");
+                                    break;
+                                case KNOCK_OUT_A:
+                                    System.out.println("Jogo acaba! - knock out! Ganha A");
+
+                                    isKnockOut(nrGame, nrTrial, "A", myClock.clone()); // ver depois para o rep a cena dos clocks e tal e coisas
+
+                                    break;
+                                case KNOCK_OUT_B:
+                                    System.out.println("Jogo acaba! - knock out! Ganha B");
+
+                                    isKnockOut(nrGame, nrTrial, "B", myClock.clone());
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            int posPull = getPositionPull(); ///// VER MELHOR /////
+
+                            myClock.increment();
+                            receivedClock = declareGameWinner(posPull, myClock.clone()); 
+                            myClock.update(receivedClock);
+
+                            setPositionPull(PULL_CENTER, myClock.clone()); 
+
+                            state = ERefereeState.END_OF_A_GAME;
+                            updateRefState(state, myClock.clone());  // actualiza no repositorio
+
+                        }
+                        break; 
+
+                    case END_OF_A_GAME:
+                        if(nrGame < nrGamesMax){
+                            nrTrial=0;
+                            state = ERefereeState.START_OF_THE_MATCH;
+                            updateRefState(state, myClock.clone());
+
+
+                        }
+                        else{
+
+                            state = ERefereeState.END_OF_THE_MATCH; // termina o encontro
+                            updateRefState(state, myClock.clone());
+
+                            myClock.increment(); // added
+                            receivedClock = declareMatchWinner(myClock.clone());
+                            myClock.update(receivedClock); // added
+                        } 
+                        break;
+
+                    case END_OF_THE_MATCH: 
+
+                        System.out.println("Fim do match!");
+                        endOp = false; 
+                        break; 
+                }
+            }while(endOp);
+
+        } catch(RemoteException e) {
+            e.printStackTrace();
+        }
     }
     
 
@@ -196,7 +201,7 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param nrTrial is the number of the trial
      */
-    private VectorTimestamp callTrial(int nrGame, int nrTrial, VectorTimestamp vt){
+    private VectorTimestamp callTrial(int nrGame, int nrTrial, VectorTimestamp vt) throws RemoteException{
      
         return bench.callTrial(nrGame, nrTrial, vt);
     }
@@ -206,7 +211,7 @@ public class Referee extends Thread{
      * 
      * @param positionCenter is the center's position pull 
      */
-    private VectorTimestamp setPositionPull(int positionCenter, VectorTimestamp vt){
+    private VectorTimestamp setPositionPull(int positionCenter, VectorTimestamp vt) throws RemoteException{
         return playground.setPositionPull(positionCenter, vt); 
     }
     
@@ -216,7 +221,7 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param numTrial is the number of the trial
      */
-    private VectorTimestamp startTrial(int nrGame,int numTrial, VectorTimestamp vt){    
+    private VectorTimestamp startTrial(int nrGame,int numTrial, VectorTimestamp vt) throws RemoteException{    
         
         return playground.startTrial(nrGame,numTrial, vt);
     }
@@ -229,7 +234,7 @@ public class Referee extends Thread{
      * @return C the game will continue
      * @return E the game is over
      */
-    private Object[] assertTrialDecision(VectorTimestamp vt){
+    private Object[] assertTrialDecision(VectorTimestamp vt) throws RemoteException{
  
         return playground.assertTrialDecision(vt); 
     }
@@ -239,7 +244,7 @@ public class Referee extends Thread{
      * 
      * @param posPull is the position of the pull
      */
-    private VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt){
+    private VectorTimestamp declareGameWinner(int posPull, VectorTimestamp vt) throws RemoteException{
         
         return site.declareGameWinner(posPull, vt);
     }
@@ -248,7 +253,7 @@ public class Referee extends Thread{
      * referee decides the winner of the match
      * 
      */
-    private VectorTimestamp declareMatchWinner(VectorTimestamp vt){
+    private VectorTimestamp declareMatchWinner(VectorTimestamp vt) throws RemoteException{
          
         return site.declareMatchWinner(vt);
     }
@@ -259,7 +264,7 @@ public class Referee extends Thread{
      * @param nrGame is the number of the game
      * @param nrTrial is the number of the trial
      */
-    private VectorTimestamp announceNewGame(int nrGame, int nrTrial, VectorTimestamp vt){       
+    private VectorTimestamp announceNewGame(int nrGame, int nrTrial, VectorTimestamp vt) throws RemoteException{       
         return site.announceNewGame(nrGame, nrTrial, vt);
     }
     
@@ -269,7 +274,7 @@ public class Referee extends Thread{
      * 
      * @param state is the current referee state
      */
-    private void updateRefState(ERefereeState state, VectorTimestamp vt) {
+    private void updateRefState(ERefereeState state, VectorTimestamp vt) throws RemoteException{
         repository.updateRefState(state, vt);        
     }
 
@@ -278,7 +283,7 @@ public class Referee extends Thread{
      * 
      * @return the position of the pull
      */
-    private int getPositionPull() {
+    private int getPositionPull() throws RemoteException{
         return playground.getPositionPull(); 
     }
     
@@ -289,7 +294,7 @@ public class Referee extends Thread{
      * @param nrTrial is the number of the trial
      * @param team is the name of the team
      */
-    private void isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt) {
+    private void isKnockOut(int nrGame, int nrTrial, String team, VectorTimestamp vt) throws RemoteException{
       repository.isKnockOut(nrGame, nrTrial, team, vt);
     }
     
@@ -299,7 +304,7 @@ public class Referee extends Thread{
      * @return true if all contestants are sitting donw
      * @return false, otherwise
      */
-    private boolean allSittingTeams() {
+    private boolean allSittingTeams() throws RemoteException{
         return bench.allSittingTeams();
     }
     
@@ -308,7 +313,7 @@ public class Referee extends Thread{
      * 
      * @param nrGame is the number of the game
      */
-    private void updateGameNumber(int nrGame, VectorTimestamp vt) {
+    private void updateGameNumber(int nrGame, VectorTimestamp vt) throws RemoteException{
         repository.updateGameNumber(nrGame,vt);
     }
     
@@ -317,7 +322,7 @@ public class Referee extends Thread{
      * 
      * @param nrTrial is the number of the trial
      */
-    private void updateTrialNumber(int nrTrial, VectorTimestamp vt) {
+    private void updateTrialNumber(int nrTrial, VectorTimestamp vt) throws RemoteException {
         repository.updateTrialNumber(nrTrial, vt);
     }
     

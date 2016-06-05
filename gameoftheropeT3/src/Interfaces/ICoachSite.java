@@ -1,5 +1,7 @@
 package Interfaces;
 
+import java.rmi.RemoteException;
+
 
 /**
  * @author Gabriel Vieira (68021) gabriel.vieira@ua.pt
@@ -7,5 +9,5 @@ package Interfaces;
  * @version 2.0
  */
 public interface ICoachSite {
-    public boolean endOperCoach(int c);     
+    public boolean endOperCoach(int c) throws RemoteException;     
 }
