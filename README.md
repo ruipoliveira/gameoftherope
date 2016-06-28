@@ -1,6 +1,6 @@
 # Game of the rope
-Sistemas Distribuídos
-
+This project was developed for a Distributed Systems course at the Universidade de Aveiro, Portugal.
+---
 
 ### gameoftheropeT1:
 * Java concurrent rope game simulator.
@@ -16,9 +16,7 @@ Sistemas Distribuídos
 * Implementation with Remote Method Invocation (RMI). 
 * [Report](https://github.com/ruipoliveira/gameoftherope/blob/master/docs/SD_trabalho3_report(version_pt).pdf) pdf 
 
-
-This project was developed for a Distributed Systems course at the Universidade de Aveiro, Portugal.
-
+---
 ### Authors
 
 * Rui Oliveira (ruipedrooliveira@ua.pt)
