@@ -1,4 +1,5 @@
 # Game of the rope
+
 This project was developed for a Distributed Systems course at the Universidade de Aveiro, Portugal.
 ---
 
